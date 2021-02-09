@@ -1,0 +1,28 @@
+.SUBCKT inverter In Out vdd vnw vpw vss 
+MNM0 Out In vss vpw N M=1 L=ln W=wn
+MPM0 Out In vdd vnw P W=wp L=lp M=1
+.ENDS
+.SUBCKT nand2 A B Y vdd vnw vpw vss 
+MNM0 Y A net12 vpw N M=1 L=lna W=wna
+MNM1 net12 B vss vpw N M=1 L=lnb W=wnb
+MPM0 Y A vdd vnw P W=wpa L=lpa M=1
+MPM1 Y B vdd vnw P W=wpb L=lpb M=1
+.ENDS
+.SUBCKT writedriver2 bnksel1_b bnksel1_t bnksel2_b bnksel2_t bnksel3_b bnksel3_t bnksel4_b bnksel4_t cadd_n_0 cadd_n_1 iclk pdec00 pdec01 pdec02 pdec03 pdec04 pdec05 pdec06 pdec07 pdec10 pdec11 pdec12 pdec13 pdec14 pdec15 pdec16 pdec17 pdec0 pdec1 radd_n_0 reset vdd vnw vpw vss wenb wl_l<0> wl_l<1> wl_r<0> wl_r<1> wlclk0 wlclk1 
+Xdrvwlr1 nwl1 wl_r<1> vdd vnw vpw vss / inverter lp=0.13u wp=8.6u wn=5.7u 
++ ln=0.13u
+Xdrvwlr0 nwl0 wl_r<0> vdd vnw vpw vss / inverter lp=0.13u wp=8.6u wn=5.7u 
++ ln=0.13u
+Xpredrvwl0 rdec0 prewl0 vdd vnw vpw vss / inverter lp=0.13u wp=2.2u wn=1.4u 
++ ln=0.13u
+Xdrvwll1 nwl1 wl_l<1> vdd vnw vpw vss / inverter lp=0.13u wp=8.6u wn=5.7u 
++ ln=0.13u
+Xdrvwll0 nwl0 wl_l<0> vdd vnw vpw vss / inverter lp=0.13u wp=8.6u wn=5.7u 
++ ln=0.13u
+Xrowdec0 pdec1 pdec0 rdec0 vdd vnw vpw vss / nand2 lpb=0.13u wpb=0.460u 
++ lpa=0.13u wpa=0.460u wnb=0.345u lnb=0.13u wna=0.345u lna=0.13u
+XI11 wlclk0 prewl0 nwl0 vdd vnw vpw vss / nand2 lpb=0.13u wpb=4.32u lpa=0.13u 
++ wpa=4.32u wnb=4.32u lnb=0.13u wna=4.32u lna=0.13u
+XI10 wlclk1 prewl0 nwl1 vdd vnw vpw vss / nand2 lpb=0.13u wpb=4.32u lpa=0.13u 
++ wpa=4.32u wnb=4.32u lnb=0.13u wna=4.32u lna=0.13u
+.ENDS
