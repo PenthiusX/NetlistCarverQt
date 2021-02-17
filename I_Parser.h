@@ -19,5 +19,5 @@ class I_Parser
 {
 public:
     virtual ~I_Parser(){}
-    virtual  std::vector<CellCBKT*> parse() = 0;
+    virtual  std::vector<CellCBKT*> parse(QString netlistFilePath) = 0;
 };

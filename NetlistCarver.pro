@@ -8,6 +8,7 @@ CONFIG += c++11
 
 SOURCES += \
 #    lex.yy.cc \
+    cellcbkt.cpp \
     main.cpp \
     mainwindow.cpp \
     netlistparsercpp.cpp
