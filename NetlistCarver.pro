@@ -8,15 +8,14 @@ CONFIG += c++11
 
 SOURCES += \
 #    lex.yy.cc \
-    cellcbkt.cpp \
     main.cpp \
     mainwindow.cpp \
     netlistparsercpp.cpp
 
 HEADERS += \
     I_Parser.h \
-#    myscanner.h \
     cellcbkt.h \
+#    myscanner.h \
     mainwindow.h \
     netlistparsercpp.h
 

@@ -12,45 +12,38 @@ public:
 /*
   *
  */
-class MMos
+struct MMos
 {
-public:
-    MMos(){};
-    ~MMos(){};
-//    void setName(QString s);
-//    QString getName();
-//    void setPins(std::vector<QString> pins);
-//    std::vector<QString> getPins();
-//    void setDevices(std::vector<Device> d);
-//    std::vector<Device> getDevice();
-    
-//private:
     QString name;
     std::vector<QString> pins;
-    std::vector<Device> devices;
+    std::vector<Device> deviceProper;
+
+    //Resistance params
+    //Capacitance params
 };
+
+struct Res{
+    QString name;
+    std::vector<QString> pins;//defaut 2
+    unsigned int value;
+};
+
+struct Cap {
+    QString name;
+    std::vector<QString> pins;//defaut 2
+    unsigned int value;
+};
+
 /*
   *
  */
 class CellCBKT;
 
-class XMos {
-public:
-    XMos(){};
-    ~XMos(){};
-
-//    void setName(QString n);
-//    QString getName();
-//    void setPins(std::vector<QString> pins);
-//    std::vector<QString> getPins();
-//    //
-//    std::vector<std::map<char,float>> deviceParams;//Pending getset
-
-//private:
+struct XCall {
     QString name;
-    CellCBKT* cell;
+    CellCBKT* cell;//real refrence of the initial obj needs to be stored.
     std::vector<QString> pins;
-
+    std::vector<Device> deviceProper; //eg lp=0.13u wp=8.6u wn=5.7u
 };
 /*
   *
@@ -60,17 +53,11 @@ public:
     CellCBKT(){};
     ~CellCBKT(){};
 
-//    void setName(QString n);
-//    QString getName();
-//    void setXMosVec(std::vector<XMos*> xvec);
-//    std::vector<XMos*> getXMosVec();
-//    void setMMosVec(std::vector<MMos*> mvec);
-//    std::vector<MMos*> getMMosVec();
-
-//private:
     QString name;
-    std::vector<XMos*> xVec;
+    std::vector<XCall*> xVec;
     std::vector<MMos*> mVec;
+    //cap;
+    //res;
     std::vector<QString> port;//pin names
     std::vector<std::map<char,float>> deviceParams;
 };

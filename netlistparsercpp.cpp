@@ -1,17 +1,17 @@
 #include "netlistparsercpp.h"
 
-NetlistParserCpp::NetlistParserCpp()
+NetlistParserBF::NetlistParserBF()
 {
 
 }
 
-NetlistParserCpp::~NetlistParserCpp()
+NetlistParserBF::~NetlistParserBF()
 {
     for(auto ce : cells){delete ce;}
     lines.clear();
 }
 
-QString NetlistParserCpp::ReadStringFromQrc(QString Filename)
+QString NetlistParserBF::ReadStringFromQrc(QString Filename)
 {
     // Read text files from .qrc file
     // return as QString
@@ -33,7 +33,7 @@ QString NetlistParserCpp::ReadStringFromQrc(QString Filename)
 * the designed containers.
 * Author : Aditya
 */
-std::vector<CellCBKT*> NetlistParserCpp::parse(QString path)
+std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
 {
     qInfo() << "path" << path;
     QByteArray qba = ReadStringFromQrc(path).toLocal8Bit();
@@ -50,7 +50,7 @@ std::vector<CellCBKT*> NetlistParserCpp::parse(QString path)
 
     char* start = ".SUBCKT ";
     char* end  = ".ENDS";
-    char* mos = "M";
+    char* MMos = "M";
 
     //Regexp saves
     //(?<=\bSUBCKT\s)(\w+) to search word after SUBCKT
@@ -58,19 +58,18 @@ std::vector<CellCBKT*> NetlistParserCpp::parse(QString path)
 
     QRegExp rx(R"((\w+))");//word of any length
 
+    CellCBKT* tcell = new CellCBKT();//creates a new cell evertime it find a .SBKT in the linesss
     for(uint i = 0; i < lines.size() ; i++)
     {
         lines[i].replace("\n","");
+        uint count = 0;
+
         if(lines[i].contains(start))
         {
-            QString str = lines[i];
             QStringList name;
             int pos = 0;
-            uint count = 0;
 
-            tcell = new CellCBKT();//creates a new cell evertime it find a .SBKT in the line
-
-            while((pos = rx.indexIn(str,pos)) != -1)//parse over each word in the line
+           while((pos = rx.indexIn(lines[i],pos)) != -1)//parse over each word in the line
             {
                 if(count == 1)
                 {
@@ -83,16 +82,40 @@ std::vector<CellCBKT*> NetlistParserCpp::parse(QString path)
                 pos += rx.matchedLength();//iterate pos over each word
                 count++;
             }
-            cells.push_back(tcell);//populate the array of cells
+//            cells.push_back(tcell);//populate the array of cells
         }
-        if(lines[i][0] == mos){
+        if(lines[i][0] == MMos)
+        {
+//            qInfo() << lines[i];
+//            CellCBKT* tcell = new CellCBKT();//creates a new cell evertime it find a M in the line
+            int pos = 0;
+            count = 0;
+
+            ::MMos tm;
+            while((pos = rx.indexIn(lines[i],pos)) != -1)//parse over each word in the line
+            {
+                if(count == 0)
+                {
+                    tm.name = rx.cap(1);
+                }
+                if(count >= 1  && count <= 4)
+                {
+                   tm.pins.push_back(rx.cap(1));
+                }
+                pos += rx.matchedLength();//iterate pos over each word
+                count++;
+            }
+            tcell->mVec.push_back(&tm);
+        }
+        if(lines[i][0] == 'X')
+        {
             qInfo() << lines[i];
         }
-        if(lines[i][0] == 'X'){
-            qInfo() << lines[i];
-        }
-        if(lines[i].contains(end)){
+        if(lines[i].contains(end))
+        {
             qInfo() << "---------";//lines[i];
+            cells.push_back(tcell);
+            tcell = NULL;
         }
     }
     return cells;

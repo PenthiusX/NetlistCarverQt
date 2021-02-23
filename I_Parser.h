@@ -14,7 +14,7 @@
 /*
  * Interface work pending
  */
-class CellCBKT;
+
 class I_Parser
 {
 public:
