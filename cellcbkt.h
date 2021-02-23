@@ -17,7 +17,6 @@ struct MMos
     QString name;
     std::vector<QString> pins;
     std::vector<Device> deviceProper;
-
     //Resistance params
     //Capacitance params
 };

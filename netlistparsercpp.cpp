@@ -47,6 +47,7 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
             tb.clear();//clears the buffer for new line
         }
     }
+    lines.push_back(".ENDS");//Handeling the last line exception
 
     char* start = ".SUBCKT ";
     char* end  = ".ENDS";
@@ -57,8 +58,8 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
     //(\w+) word of any length
 
     QRegExp rx(R"((\w+))");//word of any length
+    CellCBKT* tcell;
 
-    CellCBKT* tcell = new CellCBKT();//creates a new cell evertime it find a .SBKT in the linesss
     for(uint i = 0; i < lines.size() ; i++)
     {
         lines[i].replace("\n","");
@@ -68,6 +69,7 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
         {
             QStringList name;
             int pos = 0;
+            tcell = new CellCBKT();//creates a new cell evertime it find a .SBKT in the linesss
 
            while((pos = rx.indexIn(lines[i],pos)) != -1)//parse over each word in the line
             {
@@ -91,21 +93,21 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
             int pos = 0;
             count = 0;
 
-            ::MMos tm;
+            ::MMos* tm = new ::MMos();
             while((pos = rx.indexIn(lines[i],pos)) != -1)//parse over each word in the line
             {
                 if(count == 0)
                 {
-                    tm.name = rx.cap(1);
+                    tm->name = rx.cap(1);
                 }
                 if(count >= 1  && count <= 4)
                 {
-                   tm.pins.push_back(rx.cap(1));
+                   tm->pins.push_back(rx.cap(1));
                 }
                 pos += rx.matchedLength();//iterate pos over each word
                 count++;
             }
-            tcell->mVec.push_back(&tm);
+            tcell->mVec.push_back(tm);
         }
         if(lines[i][0] == 'X')
         {
