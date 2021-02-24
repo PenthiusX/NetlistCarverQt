@@ -42,13 +42,22 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
     QByteArray qba = ReadStringFromQrc(path).toLocal8Bit();
     QByteArray tb;//temp buffer
 
+    uint newLineTrip = 0;
     for(uint i = 0 ; i < qba.length(); i++)
     {
         tb.push_back(qba[i]);
-        if(qba[i] == '\n')
+        if(qba[i] == '\n' && qba[i+1] != '+' && newLineTrip == 0)
         {
+                lines.push_back(QString::fromUtf8(tb));//push the line info into array
+                tb.clear();//clears the buffer for new line
+        }
+        if(qba[i] == '+'){
+            newLineTrip++;
+        }
+        if(qba[i] == '\n' && newLineTrip >= 1 && qba[i+1] != '+'){
             lines.push_back(QString::fromUtf8(tb));//push the line info into array
             tb.clear();//clears the buffer for new line
+            newLineTrip = 0;
         }
     }
     lines.push_back(".ENDS");//Handeling the last line exception
@@ -62,12 +71,14 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
     //(\w+) word of any length
 
     QRegExp rx(R"((\w+))");//word of any length
-    QRegExp rx2(R"((\w+=))");
+    QRegExp rx2(R"((\w+=\w+))");//word before = // for Mmos
+    QRegExp rx3(R"(\w+=\w+\.\w+)");//word before and after includeing numbers with decimals.//fors Xcall
     CellCBKT* tcell;
 
     for(uint i = 0; i < lines.size() ; i++)
     {
         lines[i].replace("\n","");
+        lines[i].replace('+',"");
         uint count = 0;
 
         if(lines[i].contains(start))
@@ -111,16 +122,22 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
                 count++;
             }
             pos = 0;
-//            while((pos = rx2.indexIn(lines[i],pos))){
-//                //for device properties
-//                QString ts = rx2.cap(1).remove(QRegularExpression("\\="));
-//                pos += rx2.matchedLength();//iterate pos over each word
-//            }
+            while((pos = rx2.indexIn(lines[i],pos)) != -1)
+            {
+                //for device properties
+                QString ts = rx2.cap(1);//.remove(QRegularExpression("\\="));
+                ts.truncate(ts.lastIndexOf(QChar('=')));
+                Device d;
+                d.paramName = ts;
+                d.paramValue = rx2.cap(1).remove(QRegularExpression("\\w+="));
+
+                pos += rx2.matchedLength();//iterate pos over each word
+            }
             tcell->mVec.push_back(tm);
         }
         if(lines[i][0] == 'X')
         {
-            qInfo() << lines[i];
+
         }
         if(lines[i].contains(end))
         {
