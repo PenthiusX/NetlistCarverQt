@@ -16,20 +16,18 @@ struct MMos
 {
     QString name;
     std::vector<QString> pins;
-    std::vector<Device> deviceProper;
-    //Resistance params
-    //Capacitance params
+    std::vector<Device> deviceProperties;
 };
 
 struct Res{
     QString name;
-    std::vector<QString> pins;//defaut 2
+    std::vector<QString> pins;//default 2
     unsigned int value;
 };
 
 struct Cap {
     QString name;
-    std::vector<QString> pins;//defaut 2
+    std::vector<QString> pins;//default 2
     unsigned int value;
 };
 

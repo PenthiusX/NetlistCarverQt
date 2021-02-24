@@ -26,4 +26,3 @@ XI11 wlclk0 prewl0 nwl0 vdd vnw vpw vss / nand2 lpb=0.13u wpb=4.32u lpa=0.13u
 XI10 wlclk1 prewl0 nwl1 vdd vnw vpw vss / nand2 lpb=0.13u wpb=4.32u lpa=0.13u 
 + wpa=4.32u wnb=4.32u lnb=0.13u wna=4.32u lna=0.13u
 .ENDS
-

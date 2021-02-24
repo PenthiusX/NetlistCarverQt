@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
 
     //--This will move to the--//
     I_Parser* n = new NetlistParserBF();
-    std::vector<CellCBKT*> t = n->parse("../NetlistCarver/netlistfiles/config.in");//path needs to come from a UI solution
+    std::vector<CellCBKT*> t = n->parse("../NetlistCarverQt/netlistfiles/config.in");//path needs to come from a UI solution
     //-------------------------//
 
     MainWindow w;

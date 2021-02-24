@@ -1,5 +1,8 @@
 #include "netlistparsercpp.h"
 
+#include <QRegularExpression>
+
+
 NetlistParserBF::NetlistParserBF()
 {
 
@@ -38,6 +41,7 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
     qInfo() << "path" << path;
     QByteArray qba = ReadStringFromQrc(path).toLocal8Bit();
     QByteArray tb;//temp buffer
+
     for(uint i = 0 ; i < qba.length(); i++)
     {
         tb.push_back(qba[i]);
@@ -58,6 +62,7 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
     //(\w+) word of any length
 
     QRegExp rx(R"((\w+))");//word of any length
+    QRegExp rx2(R"((\w+=))");
     CellCBKT* tcell;
 
     for(uint i = 0; i < lines.size() ; i++)
@@ -88,8 +93,6 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
         }
         if(lines[i][0] == MMos)
         {
-//            qInfo() << lines[i];
-//            CellCBKT* tcell = new CellCBKT();//creates a new cell evertime it find a M in the line
             int pos = 0;
             count = 0;
 
@@ -107,6 +110,12 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
                 pos += rx.matchedLength();//iterate pos over each word
                 count++;
             }
+            pos = 0;
+//            while((pos = rx2.indexIn(lines[i],pos))){
+//                //for device properties
+//                QString ts = rx2.cap(1).remove(QRegularExpression("\\="));
+//                pos += rx2.matchedLength();//iterate pos over each word
+//            }
             tcell->mVec.push_back(tm);
         }
         if(lines[i][0] == 'X')
