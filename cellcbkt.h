@@ -19,7 +19,7 @@ struct MMos
     std::vector<Device> deviceProperties;
 };
 
-struct Res{
+struct Res {
     QString name;
     std::vector<QString> pins;//default 2
     unsigned int value;

@@ -48,8 +48,8 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
         tb.push_back(qba[i]);
         if(qba[i] == '\n' && qba[i+1] != '+' && newLineTrip == 0)
         {
-                lines.push_back(QString::fromUtf8(tb));//push the line info into array
-                tb.clear();//clears the buffer for new line
+            lines.push_back(QString::fromUtf8(tb));//push the line info into array
+            tb.clear();//clears the buffer for new line
         }
         if(qba[i] == '+'){
             newLineTrip++;
@@ -62,17 +62,19 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
     }
     lines.push_back(".ENDS");//Handeling the last line exception
 
+    //Some tokens
     char* start = ".SUBCKT ";
     char* end  = ".ENDS";
     char* MMos = "M";
-
-    //Regexp saves
-    //(?<=\bSUBCKT\s)(\w+) to search word after SUBCKT
-    //(\w+) word of any length
+    char* XCall = "X";
 
     QRegExp rx(R"((\w+))");//word of any length
     QRegExp rx2(R"((\w+=\w+))");//word before = // for Mmos
     QRegExp rx3(R"(\w+=\w+\.\w+)");//word before and after includeing numbers with decimals.//fors Xcall
+    QRegExp rx4(R"(/\s\w+)");//word after / for name of cellSbkt
+
+    //\w+<\d>
+
     CellCBKT* tcell;
 
     for(uint i = 0; i < lines.size() ; i++)
@@ -87,7 +89,7 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
             int pos = 0;
             tcell = new CellCBKT();//creates a new cell evertime it find a .SBKT in the linesss
 
-           while((pos = rx.indexIn(lines[i],pos)) != -1)//parse over each word in the line
+            while((pos = rx.indexIn(lines[i],pos)) != -1)//parse over each word in the line
             {
                 if(count == 1)
                 {
@@ -100,44 +102,69 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
                 pos += rx.matchedLength();//iterate pos over each word
                 count++;
             }
-//            cells.push_back(tcell);//populate the array of cells
         }
-        if(lines[i][0] == MMos)
+        ::MMos* tm;
+        if(lines[i][0] == MMos)//Hits when a line has MMos
         {
             int pos = 0;
             count = 0;
 
-            ::MMos* tm = new ::MMos();
+            tm = new ::MMos();
             while((pos = rx.indexIn(lines[i],pos)) != -1)//parse over each word in the line
             {
-                if(count == 0)
+                if(count == 0)//First word
                 {
                     tm->name = rx.cap(1);
                 }
-                if(count >= 1  && count <= 4)
+                if(count >= 1  && count <= 4)//first 4 items
                 {
-                   tm->pins.push_back(rx.cap(1));
+                    tm->pins.push_back(rx.cap(1));
                 }
                 pos += rx.matchedLength();//iterate pos over each word
                 count++;
             }
             pos = 0;
-            while((pos = rx2.indexIn(lines[i],pos)) != -1)
+            while((pos = rx2.indexIn(lines[i],pos)) != -1)//parse over the device properties
             {
                 //for device properties
-                QString ts = rx2.cap(1);//.remove(QRegularExpression("\\="));
+                QString ts = rx2.cap(1);
                 ts.truncate(ts.lastIndexOf(QChar('=')));
                 Device d;
                 d.paramName = ts;
                 d.paramValue = rx2.cap(1).remove(QRegularExpression("\\w+="));
-
+                tm->deviceProperties.push_back(d);
                 pos += rx2.matchedLength();//iterate pos over each word
             }
-            tcell->mVec.push_back(tm);
-        }
-        if(lines[i][0] == 'X')
-        {
 
+            tcell->mVec.push_back(tm);//store the Mmos info
+        }
+
+        //Rus after all cells have been defined , Xcall will call only a defined cell
+        if(lines[i][0] == XCall)//Hits when a line has Xcall
+        {
+            int pos = 0;
+            ::XCall* xc = new ::XCall();
+            while((pos = rx.indexIn(lines[i],pos)) != -1)//parse over each word in the line
+            {
+                if(count == 0)//First word
+                {
+                    xc->name = rx.cap(1);
+                }
+//                if(count >= 1  && count <= 4)//first 4 items
+//                {
+//                    tm->pins.push_back(rx.cap(1));
+//                }
+                pos += rx.matchedLength();//iterate pos over each word
+                count++;
+            }
+            pos = 0;
+            while((pos = rx4.indexIn(lines[i],pos)) != -1)//capture the name of the Sbkt
+            {
+                QString name = rx4.cap(0);
+                name.remove("/ ");
+
+                pos += rx4.matchedLength();
+            }
         }
         if(lines[i].contains(end))
         {

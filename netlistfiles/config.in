@@ -1,13 +1,58 @@
+
+************************************************************************
+* Library Name: insemi_stdcell_130
+* Cell Name: nand2
+* View Name: schematic
+************************************************************************
+
+.SUBCKT nand1 A B Y vdd vnw vpw vss 
+*.PININFO A:I B:I vdd:I vnw:I vpw:I vss:I Y:O
+MNM0 Y A net12_4 vpw N M=1 L=lna W=wna
+Ra1 net12 net12_1 30
+Ra2 net12_1 net12_2 30
+Ra3 net12_2 net12_3 30
+Ra4 net12_3 net12_4 30
+ca1 A vss 10
+ca2 A B 10
+MNM1 net12 B vss vpw N M=1 L=lnb W=wnb
+MPM0 Y A vdd vnw P W=wpa L=lpa M=1
+MPM1 Y B vdd vnw P W=wpb L=lpb M=1
+.ENDS
+
+************************************************************************
+* Library Name: insemi_stdcell_130
+* Cell Name: nand3
+* View Name: schematic
+************************************************************************
+
+.SUBCKT nand3 A B C Y vdd vnw vpw vss 
+*.PININFO A:I B:I C:I vdd:I vnw:I vpw:I vss:I Y:O
+MM0 Y B vdd vnw P W=wpa L=lpa M=1
+MPM0 Y A vdd vnw P W=wpa L=lpa M=1
+MPM2 Y C vdd vnw P W=wpc L=lpc M=1
+MNM2 net92_4 C vss vpw N M=1 L=lnc W=wnc
+Ra21 net17 net92_1 40
+Ra22 net92_1 net92_2 40
+Ra23 net92_2 net92_3 40
+Ra24 net92_3 net92_4 40
+ca21 C vss 20
+ca22 Y B 20
+MNM1 net17 B net9 vpw N M=1 L=lnb W=wnb
+MNM0 Y A net17 vpw N M=1 L=lna W=wna
+.ENDS
+
 .SUBCKT inverter In Out vdd vnw vpw vss 
 MNM0 Out In vss vpw N M=1 L=ln W=wn
 MPM0 Out In vdd vnw P W=wp L=lp M=1
 .ENDS
+
 .SUBCKT nand2 A B Y vdd vnw vpw vss 
 MNM0 Y A net12 vpw N M=1 L=lna W=wna
 MNM1 net12 B vss vpw N M=1 L=lnb W=wnb
 MPM0 Y A vdd vnw P W=wpa L=lpa M=1
 MPM1 Y B vdd vnw P W=wpb L=lpb M=1
 .ENDS
+
 .SUBCKT writedriver2 bnksel1_b bnksel1_t bnksel2_b bnksel2_t bnksel3_b bnksel3_t bnksel4_b bnksel4_t cadd_n_0 cadd_n_1 iclk pdec00 pdec01 pdec02 pdec03 pdec04 pdec05 pdec06 pdec07 pdec10 pdec11 pdec12 pdec13 pdec14 pdec15 pdec16 pdec17 pdec0 pdec1 radd_n_0 reset vdd vnw vpw vss wenb wl_l<0> wl_l<1> wl_r<0> wl_r<1> wlclk0 wlclk1 
 Xdrvwlr1 nwl1 wl_r<1> vdd vnw vpw vss / inverter lp=0.13u wp=8.6u wn=5.7u 
 + ln=0.13u
