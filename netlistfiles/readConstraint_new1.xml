@@ -1,0 +1,60 @@
+
+<!--
+	This is a read constraint input file.
+	Here. <CONSTRAINT> tag  defines the type of constraint's like set_high, set_low, release, start_tracing, end_tracing and dump.
+		set_high      - set's all the nets and pins initial input value a 1 or VDD
+		set_low       - set's all the nets and pins initial input value a 0 or GND
+		relase        - Removes the listed nets under thi tag.
+		start_tracing - Staring point for carving the Netlist Object Model
+		end_tracing   - End point for carving the Netlist Object Model
+		dump          - Dump the data.
+-->
+
+<?xml version="1.0"?>
+<GF_CONSTRAINT name="GF22FDSOI">
+	<CONSTRAINT name="set_high">
+		<NET1> net1 </NET1>
+		<NET2> net2 </NET2>
+		<NET3> 
+			<GETNETS> net2?5 </GETNETS>
+			<GETNETS> net4?1 </GETNETS>
+		</NET3> 
+		<PINS> P1 </PINS>
+	</CONSTRAINT>
+
+	<CONSTRAINT name="set_low">
+		<NET1> net1 </NET1>
+		<NET2> net2 </NET2>
+		<GETNETS> net2?5 </GETNETS>
+		<PINS> P1 </PINS>
+	</CONSTRAINT>
+
+	<CONSTRAINT name="release">
+		<NET1> net1 </NET1>
+		<NET2> net2 </NET2>
+		<GETNETS> net2?5 </GETNETS>
+		<PINS> P1 </PINS>
+	</CONSTRAINT>
+
+	<CONSTRAINT name="start_tracing">
+		<NET1> net1 </NET1>
+		<NET2> net2 </NET2>
+		<GETNETS> net2?5 </GETNETS>
+		<PINS> P1 </PINS>
+	</CONSTRAINT>
+
+	<CONSTRAINT name="end_tracing">
+		<NET1> net1 </NET1>
+		<NET2> net2 </NET2>
+		<GETNETS> net2?5 </GETNETS>
+		<PINS> P1 </PINS>
+	</CONSTRAINT>
+	<CONSTRAINT name="dump">
+		<slow> 1 </slow>
+		<fast> 2 </fast>
+	</CONSTRAINT>
+
+	<CONSTRAINT name="path_tracing">
+	</CONSTRAINT>
+</GF_CONSTRAINT>
+

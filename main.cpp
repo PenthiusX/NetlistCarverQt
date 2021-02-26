@@ -6,11 +6,18 @@
 #include <cellcbkt.h>
 #include <vector>
 
+#include <ReadConstraint/ReadConstraint.h>
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    //--This will move to the--//
+    //Read constraint instance//
+     std::string readConstraintInputFile = "../NetlistCarverQt/netlistfiles/readConstraint_new1.xml" ;
+     CReadConstraints obj;
+     CReadConstraints c = obj.parseLoadConstraintFile( readConstraintInputFile );
+
+    //--Netlist parser Instansce--//
     I_Parser* n = new NetlistParserBF();
     std::vector<CellCBKT*> t = n->parse("../NetlistCarverQt/netlistfiles/config.in");//path needs to come from a UI solution
     //-------------------------//

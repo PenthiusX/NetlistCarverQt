@@ -7,23 +7,23 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-#    lex.yy.cc \
     main.cpp \
     mainwindow.cpp \
-    netlistparsercpp.cpp
+    netlistparsercpp.cpp \
+    ReadConstraint/ReadConstraint.cpp
 
 HEADERS += \
     I_Parser.h \
     cellcbkt.h \
-#    myscanner.h \
     mainwindow.h \
-    netlistparsercpp.h
+    netlistparsercpp.h \
+    ReadConstraint/ReadConstraint.h
 
 FORMS += \
     mainwindow.ui
 
 INCLUDEPATH +=  \
-C:\Program Files (x86)\GnuWin32\include
+externals/rapidXml
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

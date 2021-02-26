@@ -64,21 +64,22 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
     }
     lines.push_back(".ENDS");//Handeling the last line exception
 
-    //Some tokens
+    //Some tokens---------
     char* start = ".SUBCKT ";
     char* end  = ".ENDS";
     char* MMos = "M";
     char* XCall = "X";
     char* ResCall = "R";
     char* CapacCall = "C";
-
+    //--------------------
     QRegExp rx(R"((\w+))");//word of any length
     QRegExp rx2(R"((\w+=\w+))");//word before and after = // for Mmos
     QRegExp rx3(R"(\w+=\w+\.\w+)");//word before and after includeing numbers with decimals.//fors Xcall
     QRegExp rx4(R"(/\s\w+)");//word after / for name of cellSbkt
     QRegExp rx5(R"([a-z0-9/<>_-]{1,20})");//encompasses a wide set with /, <> and _ undersore from 2 to 20 letters
-    //\w+<\d>
+    //--------------------
 
+    //Start parsing the lines.
     CellCBKT* tcell;
     for(uint i = 0; i < lines.size() ; i++)
     {
@@ -86,12 +87,11 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
         lines[i].replace('+',"");//remove continue line char command
         uint count = 0;
 
+        //Start of cell hits when it fine .SUBCKT in file.
         if(lines[i].contains(start))
         {
-            QStringList name;
             int pos = 0;
             tcell = new CellCBKT();//creates a new cell evertime it find a .SBKT in the linesss
-
             while((pos = rx.indexIn(lines[i],pos)) != -1)//parse over each word in the line
             {
                 if(count == 1)
@@ -107,7 +107,8 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
             }
         }
 
-        if(lines[i][0] == MMos)//Hits when a line has MMos
+        //Hits when a line has MMos
+        if(lines[i][0] == MMos)
         {
             int pos = 0;
             count = 0;
@@ -143,7 +144,7 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
         }
 
         //Rus after all cells have been defined , Xcall will call only a defined cell
-        if(lines[i][0] == XCall)//Hits when a line has Xcall
+        if(lines[i][0] == XCall)
         {
             int pos = 0;
             ::XCall* xc = new ::XCall();
@@ -189,7 +190,9 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
             }
             tcell->xVec.push_back(xc);
         }
-        if(lines[i][0] == ResCall)//Hits when a line has Resistor
+
+        //Hits when a line has Resistor
+        if(lines[i][0] == ResCall)
         {
             int pos = 0;
             Res* r = new Res();
@@ -212,7 +215,9 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
             }
             tcell->rVec.push_back(r);
         }
-        if(lines[i][0] == CapacCall)//Hits when a line has Capacitor
+
+        //Hits when a line has Capacitor
+        if(lines[i][0] == CapacCall)
         {
             int pos = 0;
             Cap* c = new Cap();
@@ -235,21 +240,32 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
             }
             tcell->cVec.push_back(c);
         }
+
+        //When reaches .END of the spkt module
         if(lines[i].contains(end))
         {
-            qInfo() << "---------";//lines[i];
-            cells.push_back(tcell);
+            cells.push_back(tcell);//Push the sbkt module into the cells array.
             tcell = NULL;
         }
     }
     return cells;
 }
-
+/*
+ * Used to return the refrence of the cell for use in a Xcall container
+ * Must have the cells prepopulated.
+*/
 CellCBKT* NetlistParserBF::findCellFromName(QString name)
 {
-    for(uint i = 0 ; i< cells.size() ; i++){
-        if(cells[i]->name == name){
-            return cells[i];
+    if(cells.size() != 0){
+        for(uint i = 0 ; i< cells.size() ; i++){
+            if(cells[i]->name == name){
+                return cells[i];
+            }
         }
+        qInfo() << "no Cell with the matching name found";
     }
+    else{
+        qInfo() << "THe cell array is empty cant find any such Object";
+    }
+
 }
