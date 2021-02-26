@@ -40,7 +40,7 @@ struct XCall {
     QString name;
     CellCBKT* cell;//real refrence of the initial obj needs to be stored.
     std::vector<QString> pins;
-    std::vector<Device> deviceProper; //eg lp=0.13u wp=8.6u wn=5.7u
+    std::vector<Device> deviceProperties; //eg lp=0.13u wp=8.6u wn=5.7u
 };
 /*
   *
@@ -56,5 +56,5 @@ public:
     //cap;
     //res;
     std::vector<QString> port;//pin names
-    std::vector<std::map<char,float>> deviceParams;
+//    std::vector<std::map<char,float>> deviceParams;
 };

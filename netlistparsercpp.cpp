@@ -177,8 +177,16 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
                 pos += rx4.matchedLength();
             }
             pos = 0;
+            while((pos = rx3.indexIn(lines[i],pos)) != -1)//capture the name of the Sbkt
+            {
+                QString t = rx3.cap(0);
 
-
+                Device d;
+                d.paramName = rx3.cap(0).remove(QRegularExpression("=\\w+\\.\\w+"));
+                d.paramValue = rx3.cap(0).remove(QRegularExpression("\\w+="));
+                xc->deviceProperties.push_back(d);//add all device and values for the current Xcall;
+                pos += rx3.matchedLength();
+            }
             tcell->xVec.push_back(xc);
         }
         if(lines[i].contains(end))
