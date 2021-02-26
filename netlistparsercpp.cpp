@@ -72,7 +72,7 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
     QRegExp rx2(R"((\w+=\w+))");//word before = // for Mmos
     QRegExp rx3(R"(\w+=\w+\.\w+)");//word before and after includeing numbers with decimals.//fors Xcall
     QRegExp rx4(R"(/\s\w+)");//word after / for name of cellSbkt
-
+    QRegExp rx5(R"([a-z0-9/<>_-]{1,20})");//encompasses a wide set with /, <> and _ undersore from 2 to 20 letters
     //\w+<\d>
 
     CellCBKT* tcell;
@@ -144,17 +144,25 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
         {
             int pos = 0;
             ::XCall* xc = new ::XCall();
-            while((pos = rx.indexIn(lines[i],pos)) != -1)//parse over each word in the line
+            bool hitStop = false;
+            while((pos = rx5.indexIn(lines[i],pos)) != -1)//parse over each word in the line
             {
+                if(rx5.cap(0) == '/')
+                {
+                    hitStop = true;
+                }
                 if(count == 0)//First word
                 {
-                    xc->name = rx.cap(1);
+                    QString name = rx5.cap(0);
+                    name.insert(0,'X');
+                    xc->name = name;
                 }
-//                if(count >= 1  && count <= 4)//first 4 items
-//                {
-//                    tm->pins.push_back(rx.cap(1));
-//                }
-                pos += rx.matchedLength();//iterate pos over each word
+                if(!hitStop && count > 0)//first 4 items
+                {
+                    xc->pins.push_back(rx5.cap(0));
+                }
+                QString t = rx5.cap(0);
+                pos += rx5.matchedLength();//iterate pos over each word
                 count++;
             }
             pos = 0;
@@ -165,6 +173,8 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
                 xc->cell = findCellFromName(name);
                 pos += rx4.matchedLength();
             }
+
+            tcell->xVec.push_back(xc);
         }
         if(lines[i].contains(end))
         {
