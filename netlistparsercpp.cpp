@@ -162,7 +162,7 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
             {
                 QString name = rx4.cap(0);
                 name.remove("/ ");
-
+                xc->cell = findCellFromName(name);
                 pos += rx4.matchedLength();
             }
         }
@@ -174,4 +174,13 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
         }
     }
     return cells;
+}
+
+CellCBKT* NetlistParserBF::findCellFromName(QString name)
+{
+    for(uint i = 0 ; i< cells.size() ; i++){
+        if(cells[i]->name == name){
+            return cells[i];
+        }
+    }
 }

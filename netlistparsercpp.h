@@ -11,6 +11,7 @@ class NetlistParserBF : public I_Parser
         std::vector<CellCBKT*> parse(QString path);
 
     private:
+        CellCBKT* findCellFromName(QString name);
         QString ReadStringFromQrc(QString Filename);
         std::vector<QString> lines;
         std::vector<CellCBKT*> cells;
