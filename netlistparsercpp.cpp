@@ -51,10 +51,12 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
             lines.push_back(QString::fromUtf8(tb));//push the line info into array
             tb.clear();//clears the buffer for new line
         }
-        if(qba[i] == '+'){
+        if(qba[i] == '+')
+        {
             newLineTrip++;
         }
-        if(qba[i] == '\n' && newLineTrip >= 1 && qba[i+1] != '+'){
+        if(qba[i] == '\n' && newLineTrip >= 1 && qba[i+1] != '+')
+        {
             lines.push_back(QString::fromUtf8(tb));//push the line info into array
             tb.clear();//clears the buffer for new line
             newLineTrip = 0;
@@ -69,7 +71,7 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
     char* XCall = "X";
 
     QRegExp rx(R"((\w+))");//word of any length
-    QRegExp rx2(R"((\w+=\w+))");//word before = // for Mmos
+    QRegExp rx2(R"((\w+=\w+))");//word before and after = // for Mmos
     QRegExp rx3(R"(\w+=\w+\.\w+)");//word before and after includeing numbers with decimals.//fors Xcall
     QRegExp rx4(R"(/\s\w+)");//word after / for name of cellSbkt
     QRegExp rx5(R"([a-z0-9/<>_-]{1,20})");//encompasses a wide set with /, <> and _ undersore from 2 to 20 letters
@@ -147,17 +149,17 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
             bool hitStop = false;
             while((pos = rx5.indexIn(lines[i],pos)) != -1)//parse over each word in the line
             {
-                if(rx5.cap(0) == '/')
+                if(rx5.cap(0) == '/')//bool flag on / hit
                 {
                     hitStop = true;
                 }
-                if(count == 0)//First word
+                if(count == 0)//First word the name
                 {
                     QString name = rx5.cap(0);
                     name.insert(0,'X');
                     xc->name = name;
                 }
-                if(!hitStop && count > 0)//first 4 items
+                if(!hitStop && count > 0)//all pins till it hits '/' in file and skips the first word that is the name
                 {
                     xc->pins.push_back(rx5.cap(0));
                 }
@@ -170,9 +172,12 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
             {
                 QString name = rx4.cap(0);
                 name.remove("/ ");
+            // passes the real refrence to the object , so changes here will changes here will change the actual values
                 xc->cell = findCellFromName(name);
                 pos += rx4.matchedLength();
             }
+            pos = 0;
+
 
             tcell->xVec.push_back(xc);
         }
