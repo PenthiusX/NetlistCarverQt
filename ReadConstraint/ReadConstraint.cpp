@@ -12,11 +12,6 @@ using namespace rapidxml;
 using namespace std;
 
 
-/*
- ***  
- */
-
-
 CReadConstraints CReadConstraints::parseLoadConstraintFile( string readConstraintFile )
 {
 	string readConstraintType ;
@@ -151,19 +146,7 @@ CReadConstraints CReadConstraints::parseLoadConstraintFile( string readConstrain
 			}
 		}
 	}
-	constraintList.print();
+//	constraintList.print();
 
 	return constraintList ;
 }
-
-
-
-//int main()
-//{
-//	string readConstraintInputFile = "readConstraint_new1.xml" ;
-//	parseLoadConstraintFile( readConstraintInputFile );
-
-//	// print and dump all the constraint values. form classes or database.
-
-//	return 0;
-//}

@@ -1,12 +1,12 @@
-#include "mainwindow.h"
+
 #include <QApplication>
 #include <stdio.h>
-
-#include <netlistparsercpp.h>
-#include <cellcbkt.h>
 #include <vector>
 
-#include <ReadConstraint/ReadConstraint.h>
+#include "mainwindow.h"
+#include "ReadDesign/netlistparsercpp.h"
+#include "ReadDesign/cellcbkt.h"
+#include "ReadConstraint/ReadConstraint.h"
 
 int main(int argc, char *argv[])
 {

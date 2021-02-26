@@ -9,21 +9,21 @@ CONFIG += c++11
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
-    netlistparsercpp.cpp \
+    ReadDesign/netlistparsercpp.cpp \
     ReadConstraint/ReadConstraint.cpp
 
 HEADERS += \
-    I_Parser.h \
-    cellcbkt.h \
     mainwindow.h \
-    netlistparsercpp.h \
+    ReadDesign/I_Parser.h \
+    ReadDesign/cellcbkt.h \
+    ReadDesign/netlistparsercpp.h \
     ReadConstraint/ReadConstraint.h
 
 FORMS += \
     mainwindow.ui
 
 INCLUDEPATH +=  \
-externals/rapidXml
+    externals/rapidXml
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

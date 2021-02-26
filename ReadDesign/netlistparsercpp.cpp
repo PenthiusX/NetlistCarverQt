@@ -1,4 +1,4 @@
-#include "netlistparsercpp.h"
+#include "ReadDesign/netlistparsercpp.h"
 
 #include <QRegularExpression>
 
@@ -267,5 +267,4 @@ CellCBKT* NetlistParserBF::findCellFromName(QString name)
     else{
         qInfo() << "THe cell array is empty cant find any such Object";
     }
-
 }

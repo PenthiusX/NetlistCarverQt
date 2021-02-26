@@ -48,31 +48,31 @@ class CNetAndPinData
 		}
 
 
-		void printall()
-		{
-			cout << "*************************" << endl ;
-			if ( nets.size() > 0 )
-			{
-				cout << "Nets: " ;
-				 for (auto i = nets.begin(); i != nets.end(); ++i) 
-					         cout << *i << " ";
-				 cout << endl;
-			}	
-			if ( pins.size() > 0 )
-			{
-				cout << "Pins: " ;
-				 for (auto i = pins.begin(); i != pins.end(); ++i) 
-					         cout << *i << " ";
-				 cout << endl;
-			}	
-			if ( getNet.size() > 0 )
-			{
-				cout << "GetNets: " ;
-				 for (auto i = getNet.begin(); i != getNet.end(); ++i) 
-					         cout << *i << " ";
-				 cout << endl;
-			}	
-		}
+//		void printall()
+//		{
+//			cout << "*************************" << endl ;
+//			if ( nets.size() > 0 )
+//			{
+//				cout << "Nets: " ;
+//				 for (auto i = nets.begin(); i != nets.end(); ++i)
+//					         cout << *i << " ";
+//				 cout << endl;
+//			}
+//			if ( pins.size() > 0 )
+//			{
+//				cout << "Pins: " ;
+//				 for (auto i = pins.begin(); i != pins.end(); ++i)
+//					         cout << *i << " ";
+//				 cout << endl;
+//			}
+//			if ( getNet.size() > 0 )
+//			{
+//				cout << "GetNets: " ;
+//				 for (auto i = getNet.begin(); i != getNet.end(); ++i)
+//					         cout << *i << " ";
+//				 cout << endl;
+//			}
+//		}
 };
 
 // CReadConstraints class holds all types of Constraint types.
@@ -98,109 +98,109 @@ class CReadConstraints
 
         CReadConstraints parseLoadConstraintFile( string readConstraintFile );
 
-		void print()
-		{
-			cout << "Printing all the data" << endl ;
-			if ( setHigh.size() > 0)
-			{
-				for (int i = 0; i < setHigh.size(); i++) 
-				{
-					setHigh[i].printall() ;
-				}
-			}
-			else
-			{
-				cout << "sizeof setHigh  = 0" << endl ;
-			}
+//        void print()
+//        {
+//            cout << "Printing all the data" << endl ;
+//            if ( setHigh.size() > 0)
+//            {
+//                for (int i = 0; i < setHigh.size(); i++)
+//                {
+//                    setHigh[i].printall() ;
+//                }
+//            }
+//            else
+//            {
+//                cout << "sizeof setHigh  = 0" << endl ;
+//            }
 
-			if ( setLow.size() > 0)
-			{
-				for (int i = 0; i < setLow.size(); i++) 
-				{
-					setLow[i].printall() ;
-				}
-			}
-			else
-			{
-				cout << "sizeof setLow  = 0" << endl ;
-			}
+//            if ( setLow.size() > 0)
+//            {
+//                for (int i = 0; i < setLow.size(); i++)
+//                {
+//                    setLow[i].printall() ;
+//                }
+//            }
+//            else
+//            {
+//                cout << "sizeof setLow  = 0" << endl ;
+//            }
 
-			if ( release.size() > 0)
-			{
-				for (int i = 0; i < release.size(); i++) 
-				{
-					release[i].printall() ;
-				}
-			}
-			else
-			{
-				cout << "sizeof release  = 0" << endl ;
-			}
+//            if ( release.size() > 0)
+//            {
+//                for (int i = 0; i < release.size(); i++)
+//                {
+//                    release[i].printall() ;
+//                }
+//            }
+//            else
+//            {
+//                cout << "sizeof release  = 0" << endl ;
+//            }
 
-			if ( startTracing.size() > 0)
-			{
-				for (int i = 0; i < startTracing.size(); i++) 
-				{
-					startTracing[i].printall() ;
-				}
-			}
-			else
-			{
-				cout << "sizeof startTracing  = 0" << endl ;
-			}
+//            if ( startTracing.size() > 0)
+//            {
+//                for (int i = 0; i < startTracing.size(); i++)
+//                {
+//                    startTracing[i].printall() ;
+//                }
+//            }
+//            else
+//            {
+//                cout << "sizeof startTracing  = 0" << endl ;
+//            }
 
-			if ( endTracing.size() > 0)
-			{
-				for (int i = 0; i < endTracing.size(); i++) 
-				{
-					endTracing[i].printall() ;
-				}
-			}
-			else
-			{
-				cout << "sizeof endTracing  = 0" << endl ;
-			}
-		}
-		// Add the object into setHigh
-		void AddObjsIntoSetHigh( CNetAndPinData obj)
-		{
-			cout << "Adding into SetHigh" << endl ;
-			setHigh.push_back(obj);
-		}
+//            if ( endTracing.size() > 0)
+//            {
+//                for (int i = 0; i < endTracing.size(); i++)
+//                {
+//                    endTracing[i].printall() ;
+//                }
+//            }
+//            else
+//            {
+//                cout << "sizeof endTracing  = 0" << endl ;
+//            }
+//        }
+        // Add the object into setHigh
+        void AddObjsIntoSetHigh( CNetAndPinData obj)
+        {
+            cout << "Adding into SetHigh" << endl ;
+            setHigh.push_back(obj);
+        }
 
-		// Add the object into setLow
-		void AddObjsIntoSetLow( CNetAndPinData obj)
-		{
-			setLow.push_back(obj);
-		}
+        // Add the object into setLow
+        void AddObjsIntoSetLow( CNetAndPinData obj)
+        {
+            setLow.push_back(obj);
+        }
 
-		// Add the object into Release
-		void AddObjsIntoRelease( CNetAndPinData obj)
-		{
-			release.push_back(obj);
-		}
+        // Add the object into Release
+        void AddObjsIntoRelease( CNetAndPinData obj)
+        {
+            release.push_back(obj);
+        }
 
-		// Add the object into start Tracing
-		void AddObjsIntoStartTracing( CNetAndPinData obj)
-		{
-			startTracing.push_back(obj);
-		}
+        // Add the object into start Tracing
+        void AddObjsIntoStartTracing( CNetAndPinData obj)
+        {
+            startTracing.push_back(obj);
+        }
 
-		// Add the object into end Tracing
-		void AddObjsIntoEndTracing( CNetAndPinData obj)
-		{
-			endTracing.push_back(obj);
-		}
+        // Add the object into end Tracing
+        void AddObjsIntoEndTracing( CNetAndPinData obj)
+        {
+            endTracing.push_back(obj);
+        }
 
-		// Add the object into dumpPath
-		void AddObjsIntoDump( CNetAndPinData obj)
-		{
-			dumpPath.push_back(obj);
-		}
+        // Add the object into dumpPath
+        void AddObjsIntoDump( CNetAndPinData obj)
+        {
+            dumpPath.push_back(obj);
+        }
 
-		// Add the object into path_tracing
-		void AddObjsIntoPathTracing( CNetAndPinData obj)
-		{
-			path_tracing.push_back(obj);
-		}
+        // Add the object into path_tracing
+        void AddObjsIntoPathTracing( CNetAndPinData obj)
+        {
+            path_tracing.push_back(obj);
+        }
 };
