@@ -51,7 +51,7 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
             lines.push_back(QString::fromUtf8(tb));//push the line info into array
             tb.clear();//clears the buffer for new line
         }
-        if(qba[i] == '+')
+        if(qba[i] == '+')//handels cases when data forthe line is moved to nextline folowing a +
         {
             newLineTrip++;
         }
@@ -69,6 +69,8 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
     char* end  = ".ENDS";
     char* MMos = "M";
     char* XCall = "X";
+    char* ResCall = "R";
+    char* CapacCall = "C";
 
     QRegExp rx(R"((\w+))");//word of any length
     QRegExp rx2(R"((\w+=\w+))");//word before and after = // for Mmos
@@ -78,11 +80,10 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
     //\w+<\d>
 
     CellCBKT* tcell;
-
     for(uint i = 0; i < lines.size() ; i++)
     {
-        lines[i].replace("\n","");
-        lines[i].replace('+',"");
+        lines[i].replace("\n","");//removes newline char command
+        lines[i].replace('+',"");//remove continue line char command
         uint count = 0;
 
         if(lines[i].contains(start))
@@ -105,13 +106,13 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
                 count++;
             }
         }
-        ::MMos* tm;
+
         if(lines[i][0] == MMos)//Hits when a line has MMos
         {
             int pos = 0;
             count = 0;
 
-            tm = new ::MMos();
+            ::MMos* tm = new ::MMos();
             while((pos = rx.indexIn(lines[i],pos)) != -1)//parse over each word in the line
             {
                 if(count == 0)//First word
@@ -180,7 +181,6 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
             while((pos = rx3.indexIn(lines[i],pos)) != -1)//capture the name of the Sbkt
             {
                 QString t = rx3.cap(0);
-
                 Device d;
                 d.paramName = rx3.cap(0).remove(QRegularExpression("=\\w+\\.\\w+"));
                 d.paramValue = rx3.cap(0).remove(QRegularExpression("\\w+="));
@@ -188,6 +188,52 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
                 pos += rx3.matchedLength();
             }
             tcell->xVec.push_back(xc);
+        }
+        if(lines[i][0] == ResCall)//Hits when a line has Resistor
+        {
+            int pos = 0;
+            Res* r = new Res();
+            while((pos = rx.indexIn(lines[i],pos)) != -1)//parse over each word in the line
+            {
+                if(count == 0)
+                {
+                    r->name = rx.cap(0);// store sbkt name
+                }
+                if(count > 0)
+                { // saves the port names
+                    r->pins.push_back(rx.cap(0));
+                }
+                if(count > 2)
+                { // saves the port names
+                    r->value = rx.cap(0).toUInt();
+                }
+                pos += rx.matchedLength();//iterate pos over each word
+                count++;
+            }
+            tcell->rVec.push_back(r);
+        }
+        if(lines[i][0] == CapacCall)//Hits when a line has Capacitor
+        {
+            int pos = 0;
+            Cap* c = new Cap();
+            while((pos = rx.indexIn(lines[i],pos)) != -1)//parse over each word in the line
+            {
+                if(count == 0)
+                {
+                    c->name = rx.cap(0);// store sbkt name
+                }
+                if(count > 0)
+                { // saves the port names
+                    c->pins.push_back(rx.cap(0));
+                }
+                if(count > 2)
+                { // saves the port names
+                    c->value = rx.cap(0).toUInt();
+                }
+                pos += rx.matchedLength();//iterate pos over each word
+                count++;
+            }
+            tcell->cVec.push_back(c);
         }
         if(lines[i].contains(end))
         {

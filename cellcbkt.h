@@ -12,22 +12,22 @@ public:
 /*
   *
  */
-struct MMos
+struct MMos//Mmos
 {
     QString name;
     std::vector<QString> pins;
     std::vector<Device> deviceProperties;
 };
 
-struct Res {
+struct Res {//Resistor
     QString name;
-    std::vector<QString> pins;//default 2
+    std::vector<QString> pins;
     unsigned int value;
 };
 
-struct Cap {
+struct Cap {//Capacitor
     QString name;
-    std::vector<QString> pins;//default 2
+    std::vector<QString> pins;
     unsigned int value;
 };
 
@@ -36,7 +36,7 @@ struct Cap {
  */
 class CellCBKT;
 
-struct XCall {
+struct XCall { //Xcall container
     QString name;
     CellCBKT* cell;//real refrence of the initial obj needs to be stored.
     std::vector<QString> pins;
@@ -45,16 +45,16 @@ struct XCall {
 /*
   *
  */
-class CellCBKT {
+class CellCBKT {//Cell container
 public:
     CellCBKT(){};
     ~CellCBKT(){};
 
     QString name;
-    std::vector<XCall*> xVec;
-    std::vector<MMos*> mVec;
-    //cap;
-    //res;
+    std::vector<XCall*> xVec;//d
+    std::vector<MMos*> mVec;//d
+    std::vector<Res*> rVec;//p
+    std::vector<Cap*> cVec;//p
     std::vector<QString> port;//pin names
 //    std::vector<std::map<char,float>> deviceParams;
 };
