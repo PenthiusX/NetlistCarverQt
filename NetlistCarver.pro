@@ -23,7 +23,6 @@ FORMS += \
     mainwindow.ui
 
 INCLUDEPATH +=  \
-C:\Program Files (x86)\GnuWin32\include
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
