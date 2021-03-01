@@ -12,7 +12,7 @@ using namespace rapidxml;
 using namespace std;
 
 
-CReadConstraints CReadConstraints::parseLoadConstraintFile( string readConstraintFile )
+CReadConstraints CReadConstraints::parseLoadConstraintFile(string readConstraintFile)
 {
 	string readConstraintType ;
 	string netName ;

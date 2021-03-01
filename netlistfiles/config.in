@@ -10,8 +10,8 @@ Ra1 net12 net12_1 30
 Ra2 net12_1 net12_2 30
 Ra3 net12_2 net12_3 30
 Ra4 net12_3 net12_4 30
-ca1 A vss 10
-ca2 A B 10
+Ca1 A vss 10
+Ca2 A B 10
 MNM1 net12 B vss vpw N M=1 L=lnb W=wnb
 MPM0 Y A vdd vnw P W=wpa L=lpa M=1
 MPM1 Y B vdd vnw P W=wpb L=lpb M=1
@@ -26,8 +26,8 @@ Ra21 net17 net92_1 40
 Ra22 net92_1 net92_2 40
 Ra23 net92_2 net92_3 40
 Ra24 net92_3 net92_4 40
-ca21 C vss 20
-ca22 Y B 20
+Ca21 C vss 20
+Ca22 Y B 20
 MNM1 net17 B net9 vpw N M=1 L=lnb W=wnb
 MNM0 Y A net17 vpw N M=1 L=lna W=wna
 .ENDS

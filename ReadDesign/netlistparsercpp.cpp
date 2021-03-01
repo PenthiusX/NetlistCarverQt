@@ -1,7 +1,5 @@
 #include "ReadDesign/netlistparsercpp.h"
-
 #include <QRegularExpression>
-
 
 NetlistParserBF::NetlistParserBF()
 {
@@ -143,7 +141,7 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
             tcell->mVec.push_back(tm);//store the Mmos info
         }
 
-        //Rus after all cells have been defined , Xcall will call only a defined cell
+        //Runs after all cells have been defined , Xcall will call only a defined cell
         if(lines[i][0] == XCall)
         {
             int pos = 0;
@@ -203,11 +201,11 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
                     r->name = rx.cap(0);// store sbkt name
                 }
                 if(count > 0)
-                { // saves the port names
+                {
                     r->pins.push_back(rx.cap(0));
                 }
                 if(count > 2)
-                { // saves the port names
+                {
                     r->value = rx.cap(0).toUInt();
                 }
                 pos += rx.matchedLength();//iterate pos over each word
@@ -228,11 +226,11 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
                     c->name = rx.cap(0);// store sbkt name
                 }
                 if(count > 0)
-                { // saves the port names
+                {
                     c->pins.push_back(rx.cap(0));
                 }
                 if(count > 2)
-                { // saves the port names
+                {
                     c->value = rx.cap(0).toUInt();
                 }
                 pos += rx.matchedLength();//iterate pos over each word
@@ -243,9 +241,9 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
 
         //When reaches .END of the spkt module
         if(lines[i].contains(end))
-        {
-            cells.push_back(tcell);//Push the sbkt module into the cells array.
-            tcell = NULL;
+        {//Push the sbkt cell module populated above,into the cells array.
+            cells.push_back(tcell);
+            tcell = NULL;//clear the cell for use again for nex cell info.
         }
     }
     return cells;
