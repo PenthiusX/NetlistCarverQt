@@ -12,7 +12,7 @@ NetlistParserBF::~NetlistParserBF()
     lines.clear();
 }
 
-QString NetlistParserBF::ReadStringFromQrc(QString Filename)
+QString NetlistParserBF::readStringFromQrc(QString Filename)
 {
     // Read text files from .qrc file
     // return as QString
@@ -38,7 +38,7 @@ QString NetlistParserBF::ReadStringFromQrc(QString Filename)
 std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
 {
     qInfo() << "path" << path;
-    QByteArray qba = ReadStringFromQrc(path).toLocal8Bit();
+    QByteArray qba = readStringFromQrc(path).toLocal8Bit();
     QByteArray tb;//temp buffer
 
     //Stores the text from file into an array of strings
@@ -253,6 +253,19 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
         }
     }
     return cells;
+}
+
+std::vector<CellCBKT *> NetlistParserBF::parse(QString path, char hint)
+{
+    //start flatenign if hint = 'F'
+    if(hint == 'F'){
+        std::vector<CellCBKT *> locVec;
+        locVec = this->parse(path);
+    }
+    if(hint == 'R'){
+        std::vector<CellCBKT *> locVec;
+        return this->parse(path);
+    }
 }
 /*
  * Used to return the refrence of the cell for use in a Xcall container

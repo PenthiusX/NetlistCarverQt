@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
      CReadConstraints c = obj.parseLoadConstraintFile(readConstraintInputFile);
 
     //--Netlist parser Instansce--//
-    I_Parser* n = new NetlistParserBF();
+    NetlistParser_I* n = new NetlistParserBF();
     std::vector<CellCBKT*> tVector = n->parse("../NetlistCarverQt/netlistfiles/config.in");//path needs to come from a UI solution
     //-------------------------//
 

@@ -17,9 +17,10 @@
  * For interfacting with all Parser types and components.
  */
 
-class I_Parser
+class NetlistParser_I
 {
 public:
-    virtual ~I_Parser(){}
+    virtual ~NetlistParser_I(){}
     virtual  std::vector<CellCBKT*> parse(QString netlistFilePath) = 0;
+    virtual std::vector<CellCBKT*> parse(QString netlistFilePath,char hint) = 0;
 };

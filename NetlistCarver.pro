@@ -13,8 +13,8 @@ SOURCES += \
     ReadConstraint/ReadConstraint.cpp
 
 HEADERS += \
+    ReadDesign/NetlistParser_I.h \
     mainwindow.h \
-    ReadDesign/I_Parser.h \
     ReadDesign/cellcbkt.h \
     ReadDesign/netlistparsercpp.h \
     ReadConstraint/ReadConstraint.h

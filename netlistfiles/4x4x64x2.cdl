@@ -1,0 +1,1122 @@
+************************************************************************
+* auCdl Netlist:
+* 
+* Library Name: compiler_ts13
+* Top Cell Name: i16x4m4
+* View Name: schematic
+* Netlisted on: Jan 21 07:35:07 2019
+************************************************************************
+
+*.BIPOLAR
+*.RESI = 2000 
+*.RESVAL
+*.CAPVAL
+*.DIOPERI
+*.DIOAREA
+*.EQUATION
+*.SCALE METER
+*.MEGA
+.PARAM
+
+
+
+************************************************************************
+* Library Name: insemi_stdcell_130
+* Cell Name: inverter
+* View Name: schematic
+************************************************************************
+
+.SUBCKT inverter In Out vdd vnw vpw vss 
+*.PININFO In:I vdd:I vnw:I vpw:I vss:I Out:O
+MNM0 Out In vss vpw N M=1 L=ln W=wn
+MPM0 Out In vdd vnw P W=wp L=lp M=1
+.ENDS
+
+
+************************************************************************
+* Library Name: insemi_stdcell_130
+* Cell Name: nand2
+* View Name: schematic
+************************************************************************
+
+.SUBCKT nand2 A B Y vdd vnw vpw vss 
+*.PININFO A:I B:I vdd:I vnw:I vpw:I vss:I Y:O
+MNM0 Y A net12 vpw N M=1 L=lna W=wna
+MNM1 net12 B vss vpw N M=1 L=lnb W=wnb
+MPM0 Y A vdd vnw P W=wpa L=lpa M=1
+MPM1 Y B vdd vnw P W=wpb L=lpb M=1
+.ENDS
+
+
+************************************************************************
+* Library Name: compiler_ts13
+* Cell Name: writedriver2
+* View Name: schematic
+************************************************************************
+
+.SUBCKT writedriver2 bnksel1_b bnksel1_t bnksel2_b bnksel2_t bnksel3_b bnksel3_t bnksel4_b bnksel4_t cadd_n_0 cadd_n_1 iclk pdec00 pdec01 pdec02 pdec03 pdec04 pdec05 pdec06 pdec07 pdec10 pdec11 pdec12 pdec13 pdec14 pdec15 pdec16 pdec17 pdec0 pdec1 radd_n_0 reset vdd vnw vpw vss wenb wl_l<0> wl_l<1> wl_r<0> wl_r<1> wlclk0 wlclk1 
+*.SUBCKT writedriver2 bnksel1_b bnksel1_t bnksel2_b bnksel2_t bnksel3_b 
+*+ bnksel3_t bnksel4_b bnksel4_t cadd_n_0 cadd_n_1 iclk pdec00 pdec01 pdec02 
+*+ pdec03 pdec04 pdec05 pdec06 pdec07 pdec10 pdec11 pdec12 pdec13 pdec14 pdec15 
+*+ pdec16 pdec17 predec0 predec1 radd_n_0 reset vdd vnw vpw vss wenb wl_l<0> 
+*+ wl_l<1> wl_r<0> wl_r<1> wlclk0 wlclk1
+*.PININFO bnksel1_b:B bnksel1_t:B bnksel2_b:B bnksel2_t:B bnksel3_b:B 
+*.PININFO bnksel3_t:B bnksel4_b:B bnksel4_t:B cadd_n_0:B cadd_n_1:B iclk:B 
+*.PININFO pdec00:B pdec01:B pdec02:B pdec03:B pdec04:B pdec05:B pdec06:B 
+*.PININFO pdec07:B pdec10:B pdec11:B pdec12:B pdec13:B pdec14:B pdec15:B 
+*.PININFO pdec16:B pdec17:B predec0:B predec1:B radd_n_0:B reset:B vdd:B vnw:B 
+*.PININFO vpw:B vss:B wenb:B wl_l<0>:B wl_l<1>:B wl_r<0>:B wl_r<1>:B wlclk0:B 
+*.PININFO wlclk1:B
+Xdrvwlr1 nwl1 wl_r<1> vdd vnw vpw vss / inverter lp=0.13u wp=8.6u wn=5.7u 
++ ln=0.13u
+Xdrvwlr0 nwl0 wl_r<0> vdd vnw vpw vss / inverter lp=0.13u wp=8.6u wn=5.7u 
++ ln=0.13u
+Xpredrvwl0 rdec0 prewl0 vdd vnw vpw vss / inverter lp=0.13u wp=2.2u wn=1.4u 
++ ln=0.13u
+Xdrvwll1 nwl1 wl_l<1> vdd vnw vpw vss / inverter lp=0.13u wp=8.6u wn=5.7u 
++ ln=0.13u
+Xdrvwll0 nwl0 wl_l<0> vdd vnw vpw vss / inverter lp=0.13u wp=8.6u wn=5.7u 
++ ln=0.13u
+Xrowdec0 pdec1 pdec0 rdec0 vdd vnw vpw vss / nand2 lpb=0.13u wpb=0.460u 
++ lpa=0.13u wpa=0.460u wnb=0.345u lnb=0.13u wna=0.345u lna=0.13u
+XI11 wlclk0 prewl0 nwl0 vdd vnw vpw vss / nand2 lpb=0.13u wpb=4.32u lpa=0.13u 
++ wpa=4.32u wnb=4.32u lnb=0.13u wna=4.32u lna=0.13u
+XI10 wlclk1 prewl0 nwl1 vdd vnw vpw vss / nand2 lpb=0.13u wpb=4.32u lpa=0.13u 
++ wpa=4.32u wnb=4.32u lnb=0.13u wna=4.32u lna=0.13u
+.ENDS
+
+
+************************************************************************
+* Library Name: insemi_compiler_130
+* Cell Name: dealybuff
+* View Name: schematic
+************************************************************************
+
+.SUBCKT dealybuff In Out vdd vnw vpw vss 
+*.PININFO In:I vdd:I vnw:I vpw:I vss:I Out:O
+MPM0 in0p In vdd vnw P W=wp L=lp M=1
+MPM4 in1 In in0p vnw P W=wp L=lp M=1
+MPM6 in2 in1 in1p vnw P W=wp L=lp M=1
+MPM5 in1p in1 vdd vnw P W=wp L=lp M=1
+MPM7 in3 in2 in2p vnw P W=wp L=lp M=1
+MPM8 in2p in2 vdd vnw P W=wp L=lp M=1
+MPM9 in3p in3 vdd vnw P W=wp L=lp M=1
+MPM10 Out in3 in3p vnw P W=wp L=lp M=1
+MNM0 in0n In vss vpw N M=1 L=ln W=wn
+MNM5 in1n in1 vss vpw N M=1 L=ln W=wn
+MNM6 in2 in1 in1n vpw N M=1 L=ln W=wn
+MNM4 in1 In in0n vpw N M=1 L=ln W=wn
+MNM7 in3 in2 in2n vpw N M=1 L=ln W=wn
+MNM8 in2n in2 vss vpw N M=1 L=ln W=wn
+MNM9 in3n in3 vss vpw N M=1 L=ln W=wn
+MNM10 Out in3 in3n vpw N M=1 L=ln W=wn
+.ENDS
+
+
+************************************************************************
+* Library Name: insemi_compiler_130
+* Cell Name: sactrl
+* View Name: schematic
+************************************************************************
+
+.SUBCKT sactrl iclk nsae_l nsae_r rden sapch_l sapch_r vdd vnw vpw vss 
+*.PININFO vdd:I vnw:I vpw:I vss:I iclk:B nsae_l:B nsae_r:B rden:B sapch_l:B 
+*.PININFO sapch_r:B
+XI0 iclkn iclkb vdd vnw vpw vss / inverter lp=0.13u wp=0.17u wn=0.17u ln=0.13u
+XI1 nsae_nand sae vdd vnw vpw vss / inverter lp=0.13u wp=4.3u wn=2.8u ln=0.13u
+XI2 sae nsae_l vdd vnw vpw vss / inverter lp=0.13u wp=11.5u wn=8.6u ln=0.13u
+XI9 spch_nand nsapch vdd vnw vpw vss / inverter lp=0.13u wp=4.3u wn=2.8u 
++ ln=0.13u
+XI13 nsapch sapch_l vdd vnw vpw vss / inverter lp=0.13u wp=11.5u wn=8.6u 
++ ln=0.13u
+XI8 nsapch sapch_r vdd vnw vpw vss / inverter lp=0.13u wp=11.5u wn=8.6u 
++ ln=0.13u
+XI11 iclkb_buf iclkb_buf_n vdd vnw vpw vss / inverter lp=0.13u wp=0.17u 
++ wn=0.17u ln=0.13u
+XI12 sae nsae_r vdd vnw vpw vss / inverter lp=0.13u wp=11.5u wn=8.6u ln=0.13u
+XI4 iclkb iclkb_buf vdd vnw vpw vss / dealybuff wn=175n ln=130n lp=130n wp=175n
+XI3 iclkn iclkb_buf nsae_nand vdd vnw vpw vss / nand2 lpb=0.13u wpb=1.7u 
++ lpa=0.13u wpa=1.7u wnb=1.15u lnb=0.13u wna=1.15u lna=0.13u
+XI7 iclkn iclkb_buf_n spch_nand vdd vnw vpw vss / nand2 lpb=0.13u wpb=1.7u 
++ lpa=0.13u wpa=1.7u wnb=1.15u lnb=0.13u wna=1.15u lna=0.13u
+XI14 rden iclk iclkn vdd vnw vpw vss / nand2 lpb=0.13u wpb=1.7u lpa=0.13u 
++ wpa=1.7u wnb=1.15u lnb=0.13u wna=1.15u lna=0.13u
+.ENDS
+
+
+************************************************************************
+* Library Name: insemi_stdcell_130
+* Cell Name: nand3
+* View Name: schematic
+************************************************************************
+
+.SUBCKT nand3 A B C Y vdd vnw vpw vss 
+*.PININFO A:I B:I C:I vdd:I vnw:I vpw:I vss:I Y:O
+MM0 Y B vdd vnw P W=wpa L=lpa M=1
+MPM0 Y A vdd vnw P W=wpa L=lpa M=1
+MPM2 Y C vdd vnw P W=wpc L=lpc M=1
+MNM2 net9 C vss vpw N M=1 L=lnc W=wnc
+MNM1 net17 B net9 vpw N M=1 L=lnb W=wnb
+MNM0 Y A net17 vpw N M=1 L=lna W=wna
+.ENDS
+
+
+************************************************************************
+* Library Name: insemi_compiler_130
+* Cell Name: wclkgen
+* View Name: schematic
+************************************************************************
+
+.SUBCKT wclkgen bankselect iclk pdec0 pdec1 vdd vnw vpw vss wlclk0 wlclk1 
+*.PININFO wlclk0:O wlclk1:O bankselect:B iclk:B pdec0:B pdec1:B vdd:B vnw:B 
+*.PININFO vpw:B vss:B
+XI25 net6 wlclk1 vdd vnw vpw vss / inverter lp=0.13u wp=11.5u wn=8.6u ln=0.13u
+XI48 net14 wlclk0 vdd vnw vpw vss / inverter lp=0.13u wp=11.5u wn=11.5u 
++ ln=0.13u
+XI49 iclk pdec0 bankselect net14 vdd vnw vpw vss / nand3 wna=5.7u lna=0.13u 
++ wnb=5.7u lnb=0.13u wnc=5.7u lnc=0.13u lpc=0.13u wpc=5.7u lpa=0.13u wpa=5.7u
+XI24 iclk pdec1 bankselect net6 vdd vnw vpw vss / nand3 wna=5.7u lna=0.13u 
++ wnb=5.7u lnb=0.13u wnc=5.7u lnc=0.13u lpc=0.13u wpc=5.7u lpa=0.13u wpa=5.7u
+.ENDS
+
+
+************************************************************************
+* Library Name: insemi_compiler_130
+* Cell Name: 2x4_decoder
+* View Name: schematic
+************************************************************************
+
+.SUBCKT 2x4_decoder A0 A1 vdd vnw vpw vss y0 y1 y2 y3 
+*.PININFO A0:I A1:I vdd:I vnw:I vpw:I vss:I y0:O y1:O y2:O y3:O
+XI4 A0 A0BAR vdd vnw vpw vss / inverter lp=0.13u wp=0.460u wn=0.345u ln=0.13u
+XI5 A1 A1BAR vdd vnw vpw vss / inverter lp=0.13u wp=0.460u wn=0.345u ln=0.13u
+XI9 net040 y0 vdd vnw vpw vss / inverter lp=0.13u wp=2.8u wn=1.7u ln=0.13u
+XI18 net037 y1 vdd vnw vpw vss / inverter lp=0.13u wp=2.8u wn=1.7u ln=0.13u
+XI22 net023 y3 vdd vnw vpw vss / inverter lp=0.13u wp=2.8u wn=1.7u ln=0.13u
+XI19 net030 y2 vdd vnw vpw vss / inverter lp=0.13u wp=2.8u wn=1.7u ln=0.13u
+XI13 A0BAR A1BAR net040 vdd vnw vpw vss / nand2 lpb=0.13u wpb=0.57u lpa=0.13u 
++ wpa=0.57u wnb=0.57u lnb=0.13u wna=0.57u lna=0.13u
+XI17 A0 A1BAR net037 vdd vnw vpw vss / nand2 lpb=0.13u wpb=0.57u lpa=0.13u 
++ wpa=0.57u wnb=0.57u lnb=0.13u wna=0.57u lna=0.13u
+XI21 A0 A1 net023 vdd vnw vpw vss / nand2 lpb=0.13u wpb=0.57u lpa=0.13u 
++ wpa=0.57u wnb=0.57u lnb=0.13u wna=0.57u lna=0.13u
+XI20 A0BAR A1 net030 vdd vnw vpw vss / nand2 lpb=0.13u wpb=0.57u lpa=0.13u 
++ wpa=0.57u wnb=0.57u lnb=0.13u wna=0.57u lna=0.13u
+.ENDS
+
+
+************************************************************************
+* Library Name: insemi_compiler_130
+* Cell Name: columnselectcntrl
+* View Name: schematic
+************************************************************************
+
+.SUBCKT columnselectcntrl bnksel iclk pch_l pch_r rd_wenb rdsel_l<0> rdsel_l<1> rdsel_l<2> rdsel_l<3> rdsel_r<0> rdsel_r<1> rdsel_r<2> rdsel_r<3> vdd vnw vpw vss wr_wenb wrsel_l<0> wrsel_l<1> wrsel_l<2> wrsel_l<3> wrsel_r<0> wrsel_r<1> wrsel_r<2> wrsel_r<3> y0_c y1_c y2_c y3_c 
+*.PININFO vdd:I vnw:I vpw:I vss:I pch_l:O pch_r:O rdsel_l<0>:O rdsel_l<1>:O 
+*.PININFO rdsel_l<2>:O rdsel_l<3>:O rdsel_r<0>:O rdsel_r<1>:O rdsel_r<2>:O 
+*.PININFO rdsel_r<3>:O wrsel_l<0>:O wrsel_l<1>:O wrsel_l<2>:O wrsel_l<3>:O 
+*.PININFO wrsel_r<0>:O wrsel_r<1>:O wrsel_r<2>:O wrsel_r<3>:O bnksel:B iclk:B 
+*.PININFO rd_wenb:B wr_wenb:B y0_c:B y1_c:B y2_c:B y3_c:B
+XI6 net15 rd_top vdd vnw vpw vss / inverter lp=0.13u wp=2.8u wn=1.7u ln=0.13u
+XI5 net7 wr_top vdd vnw vpw vss / inverter lp=0.13u wp=2.8u wn=1.7u ln=0.13u
+XIrdselpredrv<0> net65<0> rdsel_inv<0> vdd vnw vpw vss / inverter lp=0.13u 
++ wp=2.8u wn=1.7u ln=0.13u
+XIrdselpredrv<1> net65<1> rdsel_inv<1> vdd vnw vpw vss / inverter lp=0.13u 
++ wp=2.8u wn=1.7u ln=0.13u
+XIrdselpredrv<2> net65<2> rdsel_inv<2> vdd vnw vpw vss / inverter lp=0.13u 
++ wp=2.8u wn=1.7u ln=0.13u
+XIrdselpredrv<3> net65<3> rdsel_inv<3> vdd vnw vpw vss / inverter lp=0.13u 
++ wp=2.8u wn=1.7u ln=0.13u
+XIpchdrv_r pch_inv pch_r vdd vnw vpw vss / inverter lp=0.13u wp=11.5u wn=8.6u 
++ ln=0.13u
+XIwrseldrv_r<0> wrsel_inv<0> wrsel_r<0> vdd vnw vpw vss / inverter lp=0.13u 
++ wp=11.5u wn=8.6u ln=0.13u
+XIwrseldrv_r<1> wrsel_inv<1> wrsel_r<1> vdd vnw vpw vss / inverter lp=0.13u 
++ wp=11.5u wn=8.6u ln=0.13u
+XIwrseldrv_r<2> wrsel_inv<2> wrsel_r<2> vdd vnw vpw vss / inverter lp=0.13u 
++ wp=11.5u wn=8.6u ln=0.13u
+XIwrseldrv_r<3> wrsel_inv<3> wrsel_r<3> vdd vnw vpw vss / inverter lp=0.13u 
++ wp=11.5u wn=8.6u ln=0.13u
+XIrdseldrv_r<0> rdsel_inv<0> rdsel_r<0> vdd vnw vpw vss / inverter lp=0.13u 
++ wp=11.5u wn=8.6u ln=0.13u
+XIrdseldrv_r<1> rdsel_inv<1> rdsel_r<1> vdd vnw vpw vss / inverter lp=0.13u 
++ wp=11.5u wn=8.6u ln=0.13u
+XIrdseldrv_r<2> rdsel_inv<2> rdsel_r<2> vdd vnw vpw vss / inverter lp=0.13u 
++ wp=11.5u wn=8.6u ln=0.13u
+XIrdseldrv_r<3> rdsel_inv<3> rdsel_r<3> vdd vnw vpw vss / inverter lp=0.13u 
++ wp=11.5u wn=8.6u ln=0.13u
+XIpchdrv_l pch_inv pch_l vdd vnw vpw vss / inverter lp=0.13u wp=11.5u wn=8.6u 
++ ln=0.13u
+XIwrseldrv_l<0> wrsel_inv<0> wrsel_l<0> vdd vnw vpw vss / inverter lp=0.13u 
++ wp=11.5u wn=8.6u ln=0.13u
+XIwrseldrv_l<1> wrsel_inv<1> wrsel_l<1> vdd vnw vpw vss / inverter lp=0.13u 
++ wp=11.5u wn=8.6u ln=0.13u
+XIwrseldrv_l<2> wrsel_inv<2> wrsel_l<2> vdd vnw vpw vss / inverter lp=0.13u 
++ wp=11.5u wn=8.6u ln=0.13u
+XIwrseldrv_l<3> wrsel_inv<3> wrsel_l<3> vdd vnw vpw vss / inverter lp=0.13u 
++ wp=11.5u wn=8.6u ln=0.13u
+XIrdseldrv_l<0> rdsel_inv<0> rdsel_l<0> vdd vnw vpw vss / inverter lp=0.13u 
++ wp=11.5u wn=8.6u ln=0.13u
+XIrdseldrv_l<1> rdsel_inv<1> rdsel_l<1> vdd vnw vpw vss / inverter lp=0.13u 
++ wp=11.5u wn=8.6u ln=0.13u
+XIrdseldrv_l<2> rdsel_inv<2> rdsel_l<2> vdd vnw vpw vss / inverter lp=0.13u 
++ wp=11.5u wn=8.6u ln=0.13u
+XIrdseldrv_l<3> rdsel_inv<3> rdsel_l<3> vdd vnw vpw vss / inverter lp=0.13u 
++ wp=11.5u wn=8.6u ln=0.13u
+XIpchpredrv pch_nand pch_inv vdd vnw vpw vss / inverter lp=0.13u wp=4.3u 
++ wn=2.8u ln=0.13u
+XIpchnand1 iclk bnksel clk_pch_n vdd vnw vpw vss / nand2 lpb=0.13u wpb=0.72u 
++ lpa=0.13u wpa=0.72u wnb=0.72u lnb=0.13u wna=0.72u lna=0.13u
+XIrdselnand<3> y0_c rd_top net65<0> vdd vnw vpw vss / nand2 lpb=0.13u wpb=2.8u 
++ lpa=0.13u wpa=2.8u wnb=2.8u lnb=0.13u wna=2.8u lna=0.13u
+XIrdselnand<2> y1_c rd_top net65<1> vdd vnw vpw vss / nand2 lpb=0.13u wpb=2.8u 
++ lpa=0.13u wpa=2.8u wnb=2.8u lnb=0.13u wna=2.8u lna=0.13u
+XIrdselnand<1> y2_c rd_top net65<2> vdd vnw vpw vss / nand2 lpb=0.13u wpb=2.8u 
++ lpa=0.13u wpa=2.8u wnb=2.8u lnb=0.13u wna=2.8u lna=0.13u
+XIrdselnand<0> y3_c rd_top net65<3> vdd vnw vpw vss / nand2 lpb=0.13u wpb=2.8u 
++ lpa=0.13u wpa=2.8u wnb=2.8u lnb=0.13u wna=2.8u lna=0.13u
+XIwrselnand<0> y0_c wr_top wrsel_inv<0> vdd vnw vpw vss / nand2 lpb=0.13u 
++ wpb=2.8u lpa=0.13u wpa=2.8u wnb=2.8u lnb=0.13u wna=2.8u lna=0.13u
+XIwrselnand<1> y1_c wr_top wrsel_inv<1> vdd vnw vpw vss / nand2 lpb=0.13u 
++ wpb=2.8u lpa=0.13u wpa=2.8u wnb=2.8u lnb=0.13u wna=2.8u lna=0.13u
+XIwrselnand<2> y2_c wr_top wrsel_inv<2> vdd vnw vpw vss / nand2 lpb=0.13u 
++ wpb=2.8u lpa=0.13u wpa=2.8u wnb=2.8u lnb=0.13u wna=2.8u lna=0.13u
+XIwrselnand<3> y3_c wr_top wrsel_inv<3> vdd vnw vpw vss / nand2 lpb=0.13u 
++ wpb=2.8u lpa=0.13u wpa=2.8u wnb=2.8u lnb=0.13u wna=2.8u lna=0.13u
+XIpchnand2 clk_pch_n clk_pch_n_dly pch_nand vdd vnw vpw vss / nand2 lpb=0.13u 
++ wpb=1.44u lpa=0.13u wpa=1.44u wnb=1.44u lnb=0.13u wna=1.44u lna=0.13u
+XIclkpchdly clk_pch_n clk_pch_n_dly vdd vnw vpw vss / dealybuff wn=175n 
++ ln=130n lp=130n wp=175n
+XI2 iclk rd_wenb bnksel net15 vdd vnw vpw vss / nand3 wna=1.44u lna=0.13u 
++ wnb=1.44u lnb=0.13u wnc=1.44u lnc=0.13u lpc=0.13u wpc=1.44u lpa=0.13u 
++ wpa=1.44u
+XI1 iclk wr_wenb bnksel net7 vdd vnw vpw vss / nand3 wna=1.44u lna=0.13u 
++ wnb=1.44u lnb=0.13u wnc=1.44u lnc=0.13u lpc=0.13u wpc=1.44u lpa=0.13u 
++ wpa=1.44u
+.ENDS
+
+
+************************************************************************
+* Library Name: compiler_ts13
+* Cell Name: local_control
+* View Name: schematic
+************************************************************************
+
+.SUBCKT local_control bnksel1_b bnksel1_t bnksel2_b bnksel2_t bnksel3_b bnksel3_t bnksel4_b bnksel4_t bot_bs bot_rowclk_0 bot_rowclk_1 cadd_n_0 cadd_n_1 iclk pch_bot_l pch_bot_r pch_top_l pch_top_r pdec00 pdec01 pdec02 pdec03 pdec04 pdec05 pdec06 pdec07 pdec10 pdec11 pdec12 pdec13 pdec14 pdec15 pdec16 pdec17 radd_n_0 rdsel_bot_l<0> rdsel_bot_l<1> rdsel_bot_l<2> rdsel_bot_l<3> rdsel_bot_r<0> rdsel_bot_r<1> rdsel_bot_r<2> rdsel_bot_r<3> rdsel_top_l<0> rdsel_top_l<1> rdsel_top_l<2> rdsel_top_l<3> rdsel_top_r<0> rdsel_top_r<1> rdsel_top_r<2> rdsel_top_r<3> reset sae_l sae_r saprech_l saprech_r top_bs top_rowclk_0 top_rowclk_1 vdd vnw vpw vss wenb wrsel_bot_l<0> wrsel_bot_l<1> wrsel_bot_l<2> wrsel_bot_l<3> wrsel_bot_r<0> wrsel_bot_r<1> wrsel_bot_r<2> wrsel_bot_r<3> wrsel_top_l<0> wrsel_top_l<1> wrsel_top_l<2> wrsel_top_l<3> wrsel_top_r<0> wrsel_top_r<1> wrsel_top_r<2> wrsel_top_r<3> 
+*.SUBCKT local_control bnksel1_b bnksel1_t bnksel2_b bnksel2_t bnksel3_b 
+*+ bnksel3_t bnksel4_b bnksel4_t bot_bs bot_rowclk_0 bot_rowclk_1 cadd_n_0 
+*+ cadd_n_1 iclk pch_bot_l pch_bot_r pch_top_l pch_top_r pdec00 pdec01 pdec02 
+*+ pdec03 pdec04 pdec05 pdec06 pdec07 pdec10 pdec11 pdec12 pdec13 pdec14 pdec15 
+*+ pdec16 pdec17 radd_n_0 rdsel_bot_l<0> rdsel_bot_l<1> rdsel_bot_l<2> 
+*+ rdsel_bot_l<3> rdsel_bot_r<0> rdsel_bot_r<1> rdsel_bot_r<2> rdsel_bot_r<3> 
+*+ rdsel_top_l<0> rdsel_top_l<1> rdsel_top_l<2> rdsel_top_l<3> rdsel_top_r<0> 
+*+ rdsel_top_r<1> rdsel_top_r<2> rdsel_top_r<3> reset sae_l sae_r saprech_l 
+*+ saprech_r top_bs top_rowclk_0 top_rowclk_1 vdd vnw vpw vss wenb 
+*+ wrsel_bot_l<0> wrsel_bot_l<1> wrsel_bot_l<2> wrsel_bot_l<3> wrsel_bot_r<0> 
+*+ wrsel_bot_r<1> wrsel_bot_r<2> wrsel_bot_r<3> wrsel_top_l<0> wrsel_top_l<1> 
+*+ wrsel_top_l<2> wrsel_top_l<3> wrsel_top_r<0> wrsel_top_r<1> wrsel_top_r<2> 
+*+ wrsel_top_r<3>
+*.PININFO bnksel1_b:B bnksel1_t:B bnksel2_b:B bnksel2_t:B bnksel3_b:B 
+*.PININFO bnksel3_t:B bnksel4_b:B bnksel4_t:B bot_bs:B bot_rowclk_0:B 
+*.PININFO bot_rowclk_1:B cadd_n_0:B cadd_n_1:B iclk:B pch_bot_l:B pch_bot_r:B 
+*.PININFO pch_top_l:B pch_top_r:B pdec00:B pdec01:B pdec02:B pdec03:B pdec04:B 
+*.PININFO pdec05:B pdec06:B pdec07:B pdec10:B pdec11:B pdec12:B pdec13:B 
+*.PININFO pdec14:B pdec15:B pdec16:B pdec17:B radd_n_0:B rdsel_bot_l<0>:B 
+*.PININFO rdsel_bot_l<1>:B rdsel_bot_l<2>:B rdsel_bot_l<3>:B rdsel_bot_r<0>:B 
+*.PININFO rdsel_bot_r<1>:B rdsel_bot_r<2>:B rdsel_bot_r<3>:B rdsel_top_l<0>:B 
+*.PININFO rdsel_top_l<1>:B rdsel_top_l<2>:B rdsel_top_l<3>:B rdsel_top_r<0>:B 
+*.PININFO rdsel_top_r<1>:B rdsel_top_r<2>:B rdsel_top_r<3>:B reset:B sae_l:B 
+*.PININFO sae_r:B saprech_l:B saprech_r:B top_bs:B top_rowclk_0:B 
+*.PININFO top_rowclk_1:B vdd:B vnw:B vpw:B vss:B wenb:B wrsel_bot_l<0>:B 
+*.PININFO wrsel_bot_l<1>:B wrsel_bot_l<2>:B wrsel_bot_l<3>:B wrsel_bot_r<0>:B 
+*.PININFO wrsel_bot_r<1>:B wrsel_bot_r<2>:B wrsel_bot_r<3>:B wrsel_top_l<0>:B 
+*.PININFO wrsel_top_l<1>:B wrsel_top_l<2>:B wrsel_top_l<3>:B wrsel_top_r<0>:B 
+*.PININFO wrsel_top_r<1>:B wrsel_top_r<2>:B wrsel_top_r<3>:B
+Xsactrl iclk sae_l sae_r rd_wenb saprech_l saprech_r vdd vnw vpw vss / sactrl
+Xwclkgen_top top_bs iclk wlclk_pdec_0 wlclk_pdec_1 vdd vnw vpw vss 
++ top_rowclk_0 top_rowclk_1 / wclkgen
+Xwclkgen_bot bot_bs iclk wlclk_pdec_0 wlclk_pdec_1 vdd vnw vpw vss 
++ bot_rowclk_0 bot_rowclk_1 / wclkgen
+XI0 a0_colm a1_colm vdd vnw vpw vss y0_c y1_c y2_c y3_c / 2x4_decoder
+Xcolselcntrl_top top_bs iclk pch_top_l pch_top_r rd_wenb rdsel_top_l<0> 
++ rdsel_top_l<1> rdsel_top_l<2> rdsel_top_l<3> rdsel_top_r<0> rdsel_top_r<1> 
++ rdsel_top_r<2> rdsel_top_r<3> vdd vnw vpw vss wr_wenb wrsel_top_l<0> 
++ wrsel_top_l<1> wrsel_top_l<2> wrsel_top_l<3> wrsel_top_r<0> wrsel_top_r<1> 
++ wrsel_top_r<2> wrsel_top_r<3> y0_c y1_c y2_c y3_c / columnselectcntrl
+Xcolselcntrl_bot bot_bs iclk pch_bot_l pch_bot_r rd_wenb rdsel_bot_l<0> 
++ rdsel_bot_l<1> rdsel_bot_l<2> rdsel_bot_l<3> rdsel_bot_r<0> rdsel_bot_r<1> 
++ rdsel_bot_r<2> rdsel_bot_r<3> vdd vnw vpw vss wr_wenb wrsel_bot_l<0> 
++ wrsel_bot_l<1> wrsel_bot_l<2> wrsel_bot_l<3> wrsel_bot_r<0> wrsel_bot_r<1> 
++ wrsel_bot_r<2> wrsel_bot_r<3> y0_c y1_c y2_c y3_c / columnselectcntrl
+XI46 wlclk_pdec_1 wlclk_pdec_0 vdd vnw vpw vss / inverter lp=0.13u wp=0.48u 
++ wn=0.345u ln=0.13u
+XI47 radd_n_0 wlclk_pdec_1 vdd vnw vpw vss / inverter lp=0.13u wp=0.46u 
++ wn=0.345u ln=0.13u
+XI58 rd_wenb wr_wenb vdd vnw vpw vss / inverter lp=0.13u wp=1.7u wn=1.15u 
++ ln=0.13u
+XI57 wenb rd_wenb vdd vnw vpw vss / inverter lp=0.13u wp=1.7u wn=1.15u ln=0.13u
+XI44 cadd_n_0 a0_colm vdd vnw vpw vss / inverter lp=0.13u wp=0.460u wn=0.345u 
++ ln=0.13u
+XI45 cadd_n_1 a1_colm vdd vnw vpw vss / inverter lp=0.13u wp=0.460u wn=0.345u 
++ ln=0.13u
+.ENDS
+
+
+************************************************************************
+* Library Name: insemi_compiler_130
+* Cell Name: senselatch
+* View Name: schematic
+************************************************************************
+
+.SUBCKT senselatch rdout sae sc st vdd vnw vpw vss 
+*.PININFO rdout:B sae:B sc:B st:B vdd:B vnw:B vpw:B vss:B
+MPM0 net86 saex vdd vnw P W=520n L=130n M=1
+MPM4 salat_int st net86 vnw P W=520n L=130n M=1
+MPM2 net78 sae vdd vnw P W=520n L=130n M=1
+MPM3 salat_int net57 net78 vnw P W=520n L=130n M=1
+MPM5 sadummy sc net74 vnw P W=520n L=130n M=1
+MPM6 net74 saex vdd vnw P W=520n L=130n M=1
+XI0 salat_int net57 vdd vnw vpw vss / inverter lp=0.13u wp=0.52u wn=0.345u 
++ ln=0.13u
+Xsalatoutdrv salat_int rdout vdd vnw vpw vss / inverter lp=0.13u wp=2.8u 
++ wn=1.7u ln=0.13u
+Xsaeinv_lat sae saex vdd vnw vpw vss / inverter lp=0.13u wp=0.52u wn=0.345u 
++ ln=0.13u
+MNM0 salat_int st net59 vpw N M=1 L=130n W=345n
+MNM1 net59 sae vss vpw N M=1 L=130n W=345n
+MNM2 salat_int net57 net51 vpw N M=1 L=130n W=345n
+MNM3 net51 saex vss vpw N M=1 L=130n W=345n
+MNM4 net47 sae vss vpw N M=1 L=130n W=345n
+MNM5 sadummy sc net47 vpw N M=1 L=130n W=345n
+.ENDS
+
+
+************************************************************************
+* Library Name: insemi_compiler_130
+* Cell Name: local_wdrv
+* View Name: schematic
+************************************************************************
+
+.SUBCKT local_wdrv din0 dout0 dout1 vdd vnw vpw vss 
+*.PININFO din0:I vdd:I vnw:I vpw:I vss:I dout0:O dout1:O
+XI0 din0 net24 vdd vnw vpw vss / inverter lp=0.13u wp=1.44u wn=0.72u ln=0.13u
+XI1 net24 dout0 vdd vnw vpw vss / inverter lp=0.13u wp=1.44u wn=0.72u ln=0.13u
+XI2 net6 dout1 vdd vnw vpw vss / inverter lp=0.13u wp=1.44u wn=0.72u ln=0.13u
+XI3 net24 net6 vdd vnw vpw vss / inverter lp=0.13u wp=1.44u wn=0.72u ln=0.13u
+.ENDS
+
+
+************************************************************************
+* Library Name: insemi_compiler_130
+* Cell Name: senseamp
+* View Name: schematic
+************************************************************************
+
+.SUBCKT senseamp sae sapchx sc st vdd vnw vpw vss 
+*.PININFO sae:B sapchx:B sc:B st:B vdd:B vnw:B vpw:B vss:B
+MPM0 sc st vdd vnw P W=345n L=130n M=1
+MPM1 st sc vdd vnw P W=345n L=130n M=1
+MPM5 st sapchx sc vnw P W=175n L=130n M=1
+MPM4 sc sapchx vdd vnw P W=175n L=130n M=1
+MPM3 st sapchx vdd vnw P W=175n L=130n M=1
+MNM0 sc st VG vpw N M=1 L=130n W=720n
+MNM1 st sc VG vpw N M=1 L=130n W=720n
+MNM2 VG sae vss vpw N M=1 L=130n W=510n
+.ENDS
+
+
+************************************************************************
+* Library Name: insemi_compiler_130
+* Cell Name: rdwrsel
+* View Name: schematic
+************************************************************************
+
+.SUBCKT rdwrsel bl nbl pchx rbl rdsel rnbl vdd vnw vpw wbl wnbl wrsel 
+*.PININFO pchx:I rdsel:I vdd:I vnw:I vpw:I wrsel:I bl:B nbl:B rbl:B rnbl:B 
+*.PININFO wbl:B wnbl:B
+MPM0 rbl rdsel bl vnw P W=720n L=130n M=1
+MPM2 rnbl rdsel nbl vnw P W=720n L=130n M=1
+MPM5 bl pchx nbl vnw P W=345n L=130n M=1
+MPM6 bl pchx vdd vnw P W=720n L=130n M=1
+MPM7 nbl pchx vdd vnw P W=720n L=130n M=1
+MNM1 bl wrsel wbl vpw N M=1 L=130n W=720n
+MNM2 nbl wrsel wnbl vpw N M=1 L=130n W=720n
+.ENDS
+
+
+************************************************************************
+* Library Name: insemi_compiler_130
+* Cell Name: rdwrselx4
+* View Name: schematic
+************************************************************************
+
+.SUBCKT rdwrselx4 blc0 blc1 blc2 blc3 blpchx blt0 blt1 blt2 blt3 rblc rblt rdselx0 rdselx1 rdselx2 rdselx3 vdd vnw vpw wblc wblt wrsel0 wrsel1 wrsel2 wrsel3 
+*.PININFO blc0:B blc1:B blc2:B blc3:B blpchx:B blt0:B blt1:B blt2:B blt3:B 
+*.PININFO rblc:B rblt:B rdselx0:B rdselx1:B rdselx2:B rdselx3:B vdd:B vnw:B 
+*.PININFO vpw:B wblc:B wblt:B wrsel0:B wrsel1:B wrsel2:B wrsel3:B
+XI1 blt1 blc1 blpchx rblt rdselx1 rblc vdd vnw vpw wblt wblc wrsel1 / rdwrsel
+XI0 blt0 blc0 blpchx rblt rdselx0 rblc vdd vnw vpw wblt wblc wrsel0 / rdwrsel
+XI3 blt3 blc3 blpchx rblt rdselx3 rblc vdd vnw vpw wblt wblc wrsel3 / rdwrsel
+XI2 blt2 blc2 blpchx rblt rdselx2 rblc vdd vnw vpw wblt wblc wrsel2 / rdwrsel
+.ENDS
+
+
+************************************************************************
+* Library Name: compiler_ts13
+* Cell Name: liomux4
+* View Name: schematic
+************************************************************************
+
+.SUBCKT liomux4 blc0_bot blc0_top blc1_bot blc1_top blc2_bot blc2_top blc3_bot blc3_top blpchx_bot blpchx_top blt0_bot blt0_top blt1_bot blt1_top blt2_bot blt2_top blt3_bot blt3_top lwdint rdout rdselx0_bot rdselx0_top rdselx1_bot rdselx1_top rdselx2_bot rdselx2_top rdselx3_bot rdselx3_top saex sapchx vdd vnw vpw vss wrsel0_bot wrsel0_top wrsel1_bot wrsel1_top wrsel2_bot wrsel2_top wrsel3_bot wrsel3_top 
+*.PININFO rdout:O blc0_bot:B blc0_top:B blc1_bot:B blc1_top:B blc2_bot:B 
+*.PININFO blc2_top:B blc3_bot:B blc3_top:B blpchx_bot:B blpchx_top:B 
+*.PININFO blt0_bot:B blt0_top:B blt1_bot:B blt1_top:B blt2_bot:B blt2_top:B 
+*.PININFO blt3_bot:B blt3_top:B lwdint:B rdselx0_bot:B rdselx0_top:B 
+*.PININFO rdselx1_bot:B rdselx1_top:B rdselx2_bot:B rdselx2_top:B 
+*.PININFO rdselx3_bot:B rdselx3_top:B saex:B sapchx:B vdd:B vnw:B vpw:B vss:B 
+*.PININFO wrsel0_bot:B wrsel0_top:B wrsel1_bot:B wrsel1_top:B wrsel2_bot:B 
+*.PININFO wrsel2_top:B wrsel3_bot:B wrsel3_top:B
+XIsenselat rdout sae sc st vdd vnw vpw vss / senselatch
+XI12 lwdint lwdatat lwdatac vdd vnw vpw vss / local_wdrv
+XIsenseamp sae sapchx sc st vdd vnw vpw vss / senseamp
+XI9 saex sae vdd vnw vpw vss / inverter lp=0.13u wp=0.345u wn=0.345u ln=0.13u
+XI14 blpchx_bot rdiso_bot vdd vnw vpw vss / inverter lp=0.13u wp=0.345u 
++ wn=0.345u ln=0.13u
+XI13 blpchx_top rdiso_top vdd vnw vpw vss / inverter lp=0.13u wp=0.345u 
++ wn=0.345u ln=0.13u
+Xrdwrselx4_top blc0_top blc1_top blc2_top blc3_top blpchx_top blt0_top 
++ blt1_top blt2_top blt3_top rblc_top rblt_top rdselx0_top rdselx1_top 
++ rdselx2_top rdselx3_top vdd vnw vpw lwdatac lwdatat wrsel0_top wrsel1_top 
++ wrsel2_top wrsel3_top / rdwrselx4
+Xrdwrselx4_bot blc0_bot blc1_bot blc2_bot blc3_bot blpchx_bot blt0_bot 
++ blt1_bot blt2_bot blt3_bot rblc_bot rblt_bot rdselx0_bot rdselx1_bot 
++ rdselx2_bot rdselx3_bot vdd vnw vpw lwdatac lwdatat wrsel0_bot wrsel1_bot 
++ wrsel2_bot wrsel3_bot / rdwrselx4
+Misopmc_b rblc_bot rdiso_bot sc vnw P W=720n L=130n M=1
+Misopmt_b rblt_bot rdiso_bot st vnw P W=720n L=130n M=1
+MPM5 st rdiso_top rblt_top vnw P W=720n L=130n M=1
+MPM6 sc rdiso_top rblc_top vnw P W=720n L=130n M=1
+MPM12 rblc_bot sapchx vdd vnw P W=345n L=130n M=1
+MPM11 rblt_bot sapchx vdd vnw P W=345n L=130n M=1
+MPM10 rblt_bot sapchx rblc_bot vnw P W=345n L=130n M=1
+MPM9 rblt_top sapchx rblc_top vnw P W=345n L=130n M=1
+MPM8 rblt_top sapchx vdd vnw P W=345n L=130n M=1
+MPM7 rblc_top sapchx vdd vnw P W=345n L=130n M=1
+.ENDS
+
+
+************************************************************************
+* Library Name: compiler_ts13
+* Cell Name: liomux8
+* View Name: schematic
+************************************************************************
+
+.SUBCKT liomux8 blc0_bot blc0_top blc1_bot blc1_top blc2_bot blc2_top blc3_bot blc3_top blpchx_bot blpchx_top blt0_bot blt0_top blt1_bot blt1_top blt2_bot blt2_top blt3_bot blt3_top lwdint rdout rdselx0_bot rdselx0_top rdselx1_bot rdselx1_top rdselx2_bot rdselx2_top rdselx3_bot rdselx3_top saex sapchx vdd vnw vpw vss wrsel0_bot wrsel0_top wrsel1_bot wrsel1_top wrsel2_bot wrsel2_top wrsel3_bot wrsel3_top 
+*.PININFO rdout:O blc0_bot:B blc0_top:B blc1_bot:B blc1_top:B blc2_bot:B 
+*.PININFO blc2_top:B blc3_bot:B blc3_top:B blpchx_bot:B blpchx_top:B 
+*.PININFO blt0_bot:B blt0_top:B blt1_bot:B blt1_top:B blt2_bot:B blt2_top:B 
+*.PININFO blt3_bot:B blt3_top:B lwdint:B rdselx0_bot:B rdselx0_top:B 
+*.PININFO rdselx1_bot:B rdselx1_top:B rdselx2_bot:B rdselx2_top:B 
+*.PININFO rdselx3_bot:B rdselx3_top:B saex:B sapchx:B vdd:B vnw:B vpw:B vss:B 
+*.PININFO wrsel0_bot:B wrsel0_top:B wrsel1_bot:B wrsel1_top:B wrsel2_bot:B 
+*.PININFO wrsel2_top:B wrsel3_bot:B wrsel3_top:B
+XIsenselat rdout sae sc st vdd vnw vpw vss / senselatch
+XI12 lwdint lwdatat lwdatac vdd vnw vpw vss / local_wdrv
+XIsenseamp sae sapchx sc st vdd vnw vpw vss / senseamp
+XI9 saex sae vdd vnw vpw vss / inverter lp=0.13u wp=0.345u wn=0.345u ln=0.13u
+XI14 blpchx_bot rdiso_bot vdd vnw vpw vss / inverter lp=0.13u wp=0.345u 
++ wn=0.345u ln=0.13u
+XI13 blpchx_top rdiso_top vdd vnw vpw vss / inverter lp=0.13u wp=0.345u 
++ wn=0.345u ln=0.13u
+Xrdwrselx4_top blc0_top blc1_top blc2_top blc3_top blpchx_top blt0_top 
++ blt1_top blt2_top blt3_top rblc_top rblt_top rdselx0_top rdselx1_top 
++ rdselx2_top rdselx3_top vdd vnw vpw lwdatac lwdatat wrsel0_top wrsel1_top 
++ wrsel2_top wrsel3_top / rdwrselx4
+Xrdwrselx4_bot blc0_bot blc1_bot blc2_bot blc3_bot blpchx_bot blt0_bot 
++ blt1_bot blt2_bot blt3_bot rblc_bot rblt_bot rdselx0_bot rdselx1_bot 
++ rdselx2_bot rdselx3_bot vdd vnw vpw lwdatac lwdatat wrsel0_bot wrsel1_bot 
++ wrsel2_bot wrsel3_bot / rdwrselx4
+Misopmc_b rblc_bot rdiso_bot sc vnw P W=720n L=130n M=1
+Misopmt_b rblt_bot rdiso_bot st vnw P W=720n L=130n M=1
+MPM5 st rdiso_top rblt_top vnw P W=720n L=130n M=1
+MPM6 sc rdiso_top rblc_top vnw P W=720n L=130n M=1
+MPM12 rblc_bot sapchx vdd vnw P W=345n L=130n M=1
+MPM11 rblt_bot sapchx vdd vnw P W=345n L=130n M=1
+MPM10 rblt_bot sapchx rblc_bot vnw P W=345n L=130n M=1
+MPM9 rblt_top sapchx rblc_top vnw P W=345n L=130n M=1
+MPM8 rblt_top sapchx vdd vnw P W=345n L=130n M=1
+MPM7 rblc_top sapchx vdd vnw P W=345n L=130n M=1
+.ENDS
+
+
+************************************************************************
+* Library Name: compiler_ts13
+* Cell Name: liomux16
+* View Name: schematic
+************************************************************************
+
+.SUBCKT liomux16 blc0_bot blc0_top blc1_bot blc1_top blc2_bot blc2_top blc3_bot blc3_top blpchx_bot blpchx_top blt0_bot blt0_top blt1_bot blt1_top blt2_bot blt2_top blt3_bot blt3_top lwdint rdout rdselx0_bot rdselx0_top rdselx1_bot rdselx1_top rdselx2_bot rdselx2_top rdselx3_bot rdselx3_top saex sapchx vdd vnw vpw vss wrsel0_bot wrsel0_top wrsel1_bot wrsel1_top wrsel2_bot wrsel2_top wrsel3_bot wrsel3_top 
+*.PININFO rdout:O blc0_bot:B blc0_top:B blc1_bot:B blc1_top:B blc2_bot:B 
+*.PININFO blc2_top:B blc3_bot:B blc3_top:B blpchx_bot:B blpchx_top:B 
+*.PININFO blt0_bot:B blt0_top:B blt1_bot:B blt1_top:B blt2_bot:B blt2_top:B 
+*.PININFO blt3_bot:B blt3_top:B lwdint:B rdselx0_bot:B rdselx0_top:B 
+*.PININFO rdselx1_bot:B rdselx1_top:B rdselx2_bot:B rdselx2_top:B 
+*.PININFO rdselx3_bot:B rdselx3_top:B saex:B sapchx:B vdd:B vnw:B vpw:B vss:B 
+*.PININFO wrsel0_bot:B wrsel0_top:B wrsel1_bot:B wrsel1_top:B wrsel2_bot:B 
+*.PININFO wrsel2_top:B wrsel3_bot:B wrsel3_top:B
+XIsenselat rdout sae sc st vdd vnw vpw vss / senselatch
+XI12 lwdint lwdatat lwdatac vdd vnw vpw vss / local_wdrv
+XIsenseamp sae sapchx sc st vdd vnw vpw vss / senseamp
+XI9 saex sae vdd vnw vpw vss / inverter lp=0.13u wp=0.345u wn=0.345u ln=0.13u
+XI14 blpchx_bot rdiso_bot vdd vnw vpw vss / inverter lp=0.13u wp=0.345u 
++ wn=0.345u ln=0.13u
+XI13 blpchx_top rdiso_top vdd vnw vpw vss / inverter lp=0.13u wp=0.345u 
++ wn=0.345u ln=0.13u
+Xrdwrselx4_top blc0_top blc1_top blc2_top blc3_top blpchx_top blt0_top 
++ blt1_top blt2_top blt3_top rblc_top rblt_top rdselx0_top rdselx1_top 
++ rdselx2_top rdselx3_top vdd vnw vpw lwdatac lwdatat wrsel0_top wrsel1_top 
++ wrsel2_top wrsel3_top / rdwrselx4
+Xrdwrselx4_bot blc0_bot blc1_bot blc2_bot blc3_bot blpchx_bot blt0_bot 
++ blt1_bot blt2_bot blt3_bot rblc_bot rblt_bot rdselx0_bot rdselx1_bot 
++ rdselx2_bot rdselx3_bot vdd vnw vpw lwdatac lwdatat wrsel0_bot wrsel1_bot 
++ wrsel2_bot wrsel3_bot / rdwrselx4
+Misopmc_b rblc_bot rdiso_bot sc vnw P W=720n L=130n M=1
+Misopmt_b rblt_bot rdiso_bot st vnw P W=720n L=130n M=1
+MPM5 st rdiso_top rblt_top vnw P W=720n L=130n M=1
+MPM6 sc rdiso_top rblc_top vnw P W=720n L=130n M=1
+MPM12 rblc_bot sapchx vdd vnw P W=345n L=130n M=1
+MPM11 rblt_bot sapchx vdd vnw P W=345n L=130n M=1
+MPM10 rblt_bot sapchx rblc_bot vnw P W=345n L=130n M=1
+MPM9 rblt_top sapchx rblc_top vnw P W=345n L=130n M=1
+MPM8 rblt_top sapchx vdd vnw P W=345n L=130n M=1
+MPM7 rblc_top sapchx vdd vnw P W=345n L=130n M=1
+.ENDS
+
+
+************************************************************************
+* Library Name: insemi_stdcell_130
+* Cell Name: transmission_gate
+* View Name: schematic
+************************************************************************
+
+.SUBCKT transmission_gate A B C D vnw vpw 
+*.PININFO A:I C:I D:I vnw:I vpw:I B:O
+MPM1 A C B vnw P W=wp L=lp M=1
+MNM1 A D B vpw N M=1 L=ln W=wn
+.ENDS
+
+
+************************************************************************
+* Library Name: insemi_stdcell_130
+* Cell Name: tristate_inverter
+* View Name: schematic
+************************************************************************
+
+.SUBCKT tristate_inverter A B C Y vdd vnw vpw vss 
+*.PININFO A:I B:I C:I vdd:I vnw:I vpw:I vss:I Y:O
+MPM1 net23 B vdd vnw P W=wpb L=lpb M=1
+MPM0 Y A net23 vnw P W=wpa L=lpa M=1
+MNM1 net8 C vss vpw N M=1 L=lnb W=wnb
+MNM0 Y A net8 vpw N M=1 L=lna W=wna
+.ENDS
+
+
+************************************************************************
+* Library Name: insemi_compiler_130
+* Cell Name: latch_ms
+* View Name: schematic
+************************************************************************
+
+.SUBCKT latch_ms In Out clk clkb vdd vnw vpw vss 
+*.PININFO In:I clk:I clkb:I vdd:I vnw:I vpw:I vss:I Out:O
+XI1 In Inb vdd vnw vpw vss / inverter lp=0.13u wp=0.345u wn=0.345u ln=0.13u
+XI2 Outb Out vdd vnw vpw vss / inverter lp=0.13u wp=0.89u wn=0.46u ln=0.13u
+XI0 Inb Outb clk clkb vnw vpw / transmission_gate wn=0.46u ln=130n lp=130n 
++ wp=0.46u
+XIfbinv Out clkb clk Outb vdd vnw vpw vss / tristate_inverter wna=0.345u 
++ lna=130n wnb=0.345u lnb=130n lpa=130n wpa=0.345u lpb=130n wpb=0.345u
+.ENDS
+
+
+************************************************************************
+* Library Name: compiler_ts13
+* Cell Name: gio4
+* View Name: schematic
+************************************************************************
+
+.SUBCKT gio4 D clk lwdint q rd_data vdd vnw vpw vss 
+*.PININFO D:B blc<0>:B blc<1>:B blc<2>:B blc<3>:B blt<0>:B blt<1>:B blt<2>:B 
+*.PININFO blt<3>:B clk:B lwdint:B q:B rd_data:B vdd:B vnw:B vpw:B vss:B
+XI0 D d_lat bclk clkn vdd vnw vpw vss / latch_ms
+XI6 d_lat_n lwdint vdd vnw vpw vss / inverter lp=0.13u wp=8.6u wn=8.6u ln=0.13u
+XI7 d_lat d_lat_n vdd vnw vpw vss / inverter lp=0.13u wp=2.6u wn=1.72u ln=0.13u
+XI2 clk clkn vdd vnw vpw vss / inverter lp=0.13u wp=0.345u wn=0.345u ln=0.13u
+XI3 clkn bclk vdd vnw vpw vss / inverter lp=0.13u wp=0.345u wn=0.345u ln=0.13u
+XI5 rd_data nq vdd vnw vpw vss / inverter lp=0.13u wp=1.3u wn=0.72u ln=0.13u
+XI4 nq q vdd vnw vpw vss / inverter lp=0.13u wp=4.3u wn=2.8u ln=0.13u
+.ENDS
+
+
+************************************************************************
+* Library Name: compiler_ts13
+* Cell Name: gio8
+* View Name: schematic
+************************************************************************
+
+.SUBCKT gio8 D clk lwdint q rd_data vdd vnw vpw vss 
+*.PININFO D:B blc<0>:B blc<1>:B blc<2>:B blc<3>:B blt<0>:B blt<1>:B blt<2>:B 
+*.PININFO blt<3>:B clk:B lwdint:B q:B rd_data:B vdd:B vnw:B vpw:B vss:B
+XI0 D d_lat bclk clkn vdd vnw vpw vss / latch_ms
+XI6 d_lat_n lwdint vdd vnw vpw vss / inverter lp=0.13u wp=8.6u wn=8.6u ln=0.13u
+XI7 d_lat d_lat_n vdd vnw vpw vss / inverter lp=0.13u wp=2.6u wn=1.72u ln=0.13u
+XI2 clk clkn vdd vnw vpw vss / inverter lp=0.13u wp=0.345u wn=0.345u ln=0.13u
+XI3 clkn bclk vdd vnw vpw vss / inverter lp=0.13u wp=0.345u wn=0.345u ln=0.13u
+XI5 rd_data nq vdd vnw vpw vss / inverter lp=0.13u wp=1.3u wn=0.72u ln=0.13u
+XI4 nq q vdd vnw vpw vss / inverter lp=0.13u wp=4.3u wn=2.8u ln=0.13u
+.ENDS
+
+
+************************************************************************
+* Library Name: compiler_ts13
+* Cell Name: gio16
+* View Name: schematic
+************************************************************************
+
+.SUBCKT gio16 D clk lwdint q rd_data vdd vnw vpw vss 
+*.PININFO D:B blc<0>:B blc<1>:B blc<2>:B blc<3>:B blt<0>:B blt<1>:B blt<2>:B 
+*.PININFO blt<3>:B clk:B lwdint:B q:B rd_data:B vdd:B vnw:B vpw:B vss:B
+XI0 D d_lat bclk clkn vdd vnw vpw vss / latch_ms
+XI6 d_lat_n lwdint vdd vnw vpw vss / inverter lp=0.13u wp=8.6u wn=8.6u ln=0.13u
+XI7 d_lat d_lat_n vdd vnw vpw vss / inverter lp=0.13u wp=2.6u wn=1.72u ln=0.13u
+XI2 clk clkn vdd vnw vpw vss / inverter lp=0.13u wp=0.345u wn=0.345u ln=0.13u
+XI3 clkn bclk vdd vnw vpw vss / inverter lp=0.13u wp=0.345u wn=0.345u ln=0.13u
+XI5 rd_data nq vdd vnw vpw vss / inverter lp=0.13u wp=1.3u wn=0.72u ln=0.13u
+XI4 nq q vdd vnw vpw vss / inverter lp=0.13u wp=4.3u wn=2.8u ln=0.13u
+.ENDS
+
+************************************************************************
+* Library Name: bitcell_130
+* Cell Name: SRAM6T
+* View Name: schematic
+************************************************************************
+
+.SUBCKT SRAM6T blc blt dc dt vdd vss wl vpw vnw 
+*.PININFO blc:B blt:B dc:B dt:B vdd:B vnw:B vpw:B vss:B wl:B
+MPDC dc dt vss vpw NHV M=1 L=180n W=400n
+MPDT dt dc vss vpw NHV M=1 L=180n W=400n
+MPGT dt wl blt vpw NHV M=1 L=180n W=260n
+MPGC dc wl blc vpw NHV M=1 L=180n W=260n
+MPUC dc dt vdd vnw PHV W=175n L=180n M=1
+MPUT dt dc vdd vnw PHV W=175n L=180n M=1
+.ENDS
+
+
+************************************************************************
+* Library Name: insemi_stdcell_130
+* Cell Name: nor2
+* View Name: schematic
+************************************************************************
+
+.SUBCKT nor2 A B Y vdd vnw vpw vss 
+*.PININFO A:I B:I vdd:I vnw:I vpw:I vss:I Y:O
+MPM0 Y A net18 vnw P W=wpa L=lpa M=1
+MPM1 net18 B vdd vnw P W=wpb L=lpb M=1
+MNM0 Y B vss vpw N M=1 L=lnb W=wnb
+MNM1 Y A vss vpw N M=1 L=lna W=wna
+.ENDS
+
+
+************************************************************************
+* Library Name: insemi_stdcell_130
+* Cell Name: inverter2stack
+* View Name: schematic
+************************************************************************
+
+.SUBCKT inverter2stack In Out vdd vnw vpw vss 
+*.PININFO In:I vdd:I vnw:I vpw:I vss:I Out:O
+MNM0 Out In net26 vpw N M=1 L=ln W=wn
+MNM2 net26 In vss vpw N M=1 L=ln W=wn
+MPM0 Out In net11 vnw P W=wp L=lp M=1
+MPM1 net11 In vdd vnw P W=wp L=lp M=1
+.ENDS
+
+
+************************************************************************
+* Library Name: insemi_compiler_130
+* Cell Name: reset_delay
+* View Name: schematic
+************************************************************************
+
+.SUBCKT reset_delay In Out vdd vnw vpw vss 
+*.PININFO In:I vdd:I vnw:I vpw:I vss:I Out:O
+XI4 In net23 net5 vdd vnw vpw vss / nor2 wna=0.17u lna=0.13u wnb=0.17u 
++ lnb=0.13u lpb=0.13u wpb=0.17u lpa=0.13u wpa=0.17u
+XI5 net5 Out vdd vnw vpw vss / inverter lp=0.13u wp=0.17u wn=0.17u ln=0.13u
+XI0 net071 net35 vdd vnw vpw vss / inverter2stack lp=0.13u wp=0.17u wn=0.17u 
++ ln=0.13u
+XI1 net35 net29 vdd vnw vpw vss / inverter2stack lp=0.13u wp=0.17u wn=0.17u 
++ ln=0.13u
+XI2 net17 net23 vdd vnw vpw vss / inverter2stack lp=0.13u wp=0.17u wn=0.17u 
++ ln=0.13u
+XI3 net29 net17 vdd vnw vpw vss / inverter2stack lp=0.13u wp=0.17u wn=0.17u 
++ ln=0.13u
+XI9 net021 net042 vdd vnw vpw vss / inverter2stack lp=0.13u wp=0.17u wn=0.17u 
++ ln=0.13u
+XI8 net042 net036 vdd vnw vpw vss / inverter2stack lp=0.13u wp=0.17u wn=0.17u 
++ ln=0.13u
+XI7 net024 net071 vdd vnw vpw vss / inverter2stack lp=0.13u wp=0.17u wn=0.17u 
++ ln=0.13u
+XI6 net036 net024 vdd vnw vpw vss / inverter2stack lp=0.13u wp=0.17u wn=0.17u 
++ ln=0.13u
+XI13 In net030 vdd vnw vpw vss / inverter2stack lp=0.13u wp=0.17u wn=0.17u 
++ ln=0.13u
+XI12 net030 net022 vdd vnw vpw vss / inverter2stack lp=0.13u wp=0.17u wn=0.17u 
++ ln=0.13u
+XI11 net048 net021 vdd vnw vpw vss / inverter2stack lp=0.13u wp=0.17u wn=0.17u 
++ ln=0.13u
+XI10 net022 net048 vdd vnw vpw vss / inverter2stack lp=0.13u wp=0.17u wn=0.17u 
++ ln=0.13u
+.ENDS
+
+
+************************************************************************
+* Library Name: insemi_compiler_130
+* Cell Name: DEC3x8AND
+* View Name: schematic
+************************************************************************
+
+.SUBCKT DEC3x8AND A0 A1 A2 Y0 Y1 Y2 Y3 Y4 Y5 Y6 Y7 vdd vnw vpw vss 
+*.PININFO A0:I A1:I A2:I vdd:I vnw:I vpw:I vss:I Y0:O Y1:O Y2:O Y3:O Y4:O Y5:O 
+*.PININFO Y6:O Y7:O
+XI9 net129 Y0 vdd vnw vpw vss / inverter lp=0.13u wp=8.6u wn=5.7u ln=0.13u
+XI10 net122 Y1 vdd vnw vpw vss / inverter lp=0.13u wp=8.6u wn=5.7u ln=0.13u
+XI11 net115 Y2 vdd vnw vpw vss / inverter lp=0.13u wp=8.6u wn=5.7u ln=0.13u
+XI12 net50 Y3 vdd vnw vpw vss / inverter lp=0.13u wp=8.6u wn=5.7u ln=0.13u
+XI13 net45 Y4 vdd vnw vpw vss / inverter lp=0.13u wp=8.6u wn=5.7u ln=0.13u
+XI15 net80 Y6 vdd vnw vpw vss / inverter lp=0.13u wp=8.6u wn=5.7u ln=0.13u
+XI16 net30 Y7 vdd vnw vpw vss / inverter lp=0.13u wp=8.6u wn=5.7u ln=0.13u
+XI17 A1 net21 vdd vnw vpw vss / inverter lp=0.13u wp=4.3u wn=2.8u ln=0.13u
+XI19 A0 net16 vdd vnw vpw vss / inverter lp=0.13u wp=4.3u wn=2.8u ln=0.13u
+XI46 A2 net26 vdd vnw vpw vss / inverter lp=0.13u wp=4.3u wn=2.8u ln=0.13u
+XI54 net87 Y5 vdd vnw vpw vss / inverter lp=0.13u wp=8.6u wn=5.7u ln=0.13u
+XI68 A0 A1 A2 net30 vdd vnw vpw vss / nand3 wna=4.3u lna=130n wnb=4.3u 
++ lnb=130n wnc=4.3u lnc=130n lpc=130n wpc=2.8u lpa=130n wpa=2.8u
+XI60 net16 net21 net26 net129 vdd vnw vpw vss / nand3 wna=4.3u lna=130n 
++ wnb=4.3u lnb=130n wnc=4.3u lnc=130n lpc=130n wpc=2.8u lpa=130n wpa=2.8u
+XI67 net16 A1 A2 net80 vdd vnw vpw vss / nand3 wna=4.3u lna=130n wnb=4.3u 
++ lnb=130n wnc=4.3u lnc=130n lpc=130n wpc=2.8u lpa=130n wpa=2.8u
+XI66 A0 net21 A2 net87 vdd vnw vpw vss / nand3 wna=4.3u lna=130n wnb=4.3u 
++ lnb=130n wnc=4.3u lnc=130n lpc=130n wpc=2.8u lpa=130n wpa=2.8u
+XI65 net16 net21 A2 net45 vdd vnw vpw vss / nand3 wna=4.3u lna=130n wnb=4.3u 
++ lnb=130n wnc=4.3u lnc=130n lpc=130n wpc=2.8u lpa=130n wpa=2.8u
+XI64 A0 A1 net26 net50 vdd vnw vpw vss / nand3 wna=4.3u lna=130n wnb=4.3u 
++ lnb=130n wnc=4.3u lnc=130n lpc=130n wpc=2.8u lpa=130n wpa=2.8u
+XI63 net16 A1 net26 net115 vdd vnw vpw vss / nand3 wna=4.3u lna=130n wnb=4.3u 
++ lnb=130n wnc=4.3u lnc=130n lpc=130n wpc=2.8u lpa=130n wpa=2.8u
+XI62 A0 net21 net26 net122 vdd vnw vpw vss / nand3 wna=4.3u lna=130n wnb=4.3u 
++ lnb=130n wnc=4.3u lnc=130n lpc=130n wpc=2.8u lpa=130n wpa=2.8u
+.ENDS
+
+
+************************************************************************
+* Library Name: insemi_compiler_130
+* Cell Name: latch_addr
+* View Name: schematic
+************************************************************************
+
+.SUBCKT latch_addr In Out clk clkb vdd vnw vpw vss 
+*.PININFO In:I clk:I clkb:I vdd:I vnw:I vpw:I vss:I Out:O
+XI1 In Inb vdd vnw vpw vss / inverter lp=0.13u wp=0.69u wn=0.345u ln=0.13u
+XI2 Outb Out vdd vnw vpw vss / inverter lp=0.13u wp=1.44u wn=0.86u ln=0.13u
+XI0 Inb Outb clk clkb vnw vpw / transmission_gate wn=0.69u ln=130n lp=130n 
++ wp=0.69u
+XIfbinv Out clkb clk Outb vdd vnw vpw vss / tristate_inverter wna=0.46u 
++ lna=130n wnb=0.46u lnb=130n lpa=130n wpa=0.345u lpb=130n wpb=0.345u
+.ENDS
+
+
+************************************************************************
+* Library Name: insemi_compiler_130
+* Cell Name: Clk_generator
+* View Name: schematic
+************************************************************************
+
+.SUBCKT Clk_generator CEN clk iclk reset vdd vnw vpw vss vsse 
+*.PININFO CEN:I clk:I reset:I vdd:I vnw:I vpw:I vss:I vsse:I iclk:O
+XI15 net036 trip vdd vnw vpw vss / inverter lp=0.13u wp=0.40u wn=0.20u ln=0.13u
+XI12 net013 net0112 vdd vnw vpw vss / inverter lp=0.13u wp=0.52u wn=0.345u 
++ ln=0.13u
+XI11 net099 dnclk vdd vnw vpw vss / inverter lp=0.13u wp=2.8u wn=1.7u ln=0.13u
+XI19 clk net047 vdd vnw vpw vss / inverter lp=0.13u wp=0.52u wn=0.345u ln=0.13u
+XI7 net013 iclk vdd vnw vpw vss / inverter lp=0.13u wp=11.52u wn=5.7u ln=0.13u
+MNM2 net37 dnclk vsse vpw N M=1 L=130n W=11.52u
+MNM6 net0104 reset vsse vpw N M=1 L=130n W=2.8u
+MNM5 net013 net0112 net0104 vpw N M=1 L=130n W=2.8u
+MNM7 net013 clk net37 vpw N M=1 L=130n W=11.52u
+XI17 net047 CEN net099 vdd vnw vpw vss / nand2 lpb=0.13u wpb=0.52u lpa=0.13u 
++ wpa=0.52u wnb=0.52u lnb=0.13u wna=0.52u lna=0.13u
+XI14 clk dnclk net036 vdd vnw vpw vss / nand2 lpb=0.13u wpb=0.69u lpa=0.13u 
++ wpa=0.69u wnb=0.69u lnb=0.13u wna=0.69u lna=0.13u
+MPM0 net013 reset vdd vnw P W=2.8u L=130n M=1
+MPM1 net063 net0112 net013 vnw P W=345n L=130n M=1
+MPM3 net063 trip vdd vnw P W=345n L=130n M=1
+.ENDS
+
+
+************************************************************************
+* Library Name: compiler_ts13
+* Cell Name: GCK
+* View Name: schematic
+************************************************************************
+
+.SUBCKT GCK A<0> A<1> A<2> A<3> A<4> A<5> A<6> A<7> A<8> A<9> A<10> A<11> bnksel1_b bnksel1_t bnksel2_b bnksel2_t bnksel3_b bnksel3_t bnksel4_b bnksel4_t cadd_n_0 cadd_n_1 cen clk iclk pdec00 pdec01 pdec02 pdec03 pdec04 pdec05 pdec06 pdec07 pdec10 pdec11 pdec12 pdec13 pdec14 pdec15 pdec16 pdec17 radd_n_0 reset vdd vnw vpw vss vsse wclk wen wenb wlclk0 wlclk1 
+*.PININFO A<0>:B A<1>:B A<2>:B A<3>:B A<4>:B A<5>:B A<6>:B A<7>:B A<8>:B 
+*.PININFO A<9>:B A<10>:B A<11>:B bnksel1_b:B bnksel1_t:B bnksel2_b:B 
+*.PININFO bnksel2_t:B bnksel3_b:B bnksel3_t:B bnksel4_b:B bnksel4_t:B 
+*.PININFO cadd_n_0:B cadd_n_1:B cen:B clk:B iclk:B pdec00:B pdec01:B pdec02:B 
+*.PININFO pdec03:B pdec04:B pdec05:B pdec06:B pdec07:B pdec10:B pdec11:B 
+*.PININFO pdec12:B pdec13:B pdec14:B pdec15:B pdec16:B pdec17:B radd_n_0:B 
+*.PININFO reset:B vdd:B vnw:B vpw:B vss:B vsse:B wclk:B wen:B wenb:B wlclk0:B 
+*.PININFO wlclk1:B
+XICLKresetpath niclk reset vdd vnw vpw vss / reset_delay
+XIpredec1 la<6> la<7> la<8> pdec10 pdec11 pdec12 pdec13 pdec14 pdec15 pdec16 
++ pdec17 vdd vnw vpw vss / DEC3x8AND
+XIpredec0 la<3> la<4> la<5> pdec00 pdec01 pdec02 pdec03 pdec04 pdec05 pdec06 
++ pdec07 vdd vnw vpw vss / DEC3x8AND
+XIbankdec la<9> la<10> la<11> bnksel1_b bnksel1_t bnksel2_b bnksel2_t 
++ bnksel3_b bnksel3_t bnksel4_b bnksel4_t vdd vnw vpw vss / DEC3x8AND
+XIwendrv net43 wenb vdd vnw vpw vss / inverter lp=0.13u wp=2.8u wn=1.7u 
++ ln=0.13u
+XI24 la<1> cadd_n_1 vdd vnw vpw vss / inverter lp=0.13u wp=8.6u wn=5.7u 
++ ln=0.13u
+XIwenpredrv wen_lat net43 vdd vnw vpw vss / inverter lp=0.13u wp=2.8u wn=1.7u 
++ ln=0.13u
+XI23 la<0> cadd_n_0 vdd vnw vpw vss / inverter lp=0.13u wp=8.6u wn=5.7u 
++ ln=0.13u
+XI17 nwclk wclk vdd vnw vpw vss / inverter lp=0.13u wp=8.6u wn=5.7u ln=0.13u
+XIrowadd0drv la<2> radd_n_0 vdd vnw vpw vss / inverter lp=0.13u wp=8.6u 
++ wn=5.7u ln=0.13u
+XIbclkdrv niclk biclk vdd vnw vpw vss / inverter lp=0.13u wp=2.8u wn=1.7u 
++ ln=0.13u
+XIniclkdrv iclk niclk vdd vnw vpw vss / inverter lp=0.13u wp=2.8u wn=1.7u 
++ ln=0.13u
+XIbankaddrlat<0> A<9> la<9> biclk niclk vdd vnw vpw vss / latch_addr
+XIbankaddrlat<1> A<10> la<10> biclk niclk vdd vnw vpw vss / latch_addr
+XIbankaddrlat<2> A<11> la<11> biclk niclk vdd vnw vpw vss / latch_addr
+XIddrlat<0> A<0> la<0> biclk niclk vdd vnw vpw vss / latch_addr
+XIddrlat<1> A<1> la<1> biclk niclk vdd vnw vpw vss / latch_addr
+XIddrlat<2> A<2> la<2> biclk niclk vdd vnw vpw vss / latch_addr
+XIddrlat<3> A<3> la<3> biclk niclk vdd vnw vpw vss / latch_addr
+XIddrlat<4> A<4> la<4> biclk niclk vdd vnw vpw vss / latch_addr
+XIddrlat<5> A<5> la<5> biclk niclk vdd vnw vpw vss / latch_addr
+XIddrlat<6> A<6> la<6> biclk niclk vdd vnw vpw vss / latch_addr
+XIddrlat<7> A<7> la<7> biclk niclk vdd vnw vpw vss / latch_addr
+XIddrlat<8> A<8> la<8> biclk niclk vdd vnw vpw vss / latch_addr
+XIwenlat wen wen_lat biclk niclk vdd vnw vpw vss / latch_addr
+XIclkgen cen clk iclk reset vdd vnw vpw vss vsse / Clk_generator
+XI16 wen_lat iclk nwclk vdd vnw vpw vss / nand2 lpb=0.13u wpb=2.8u lpa=0.13u 
++ wpa=2.8u wnb=2.8u lnb=0.13u wna=2.8u lna=0.13u
+.ENDS
+
+
+
+
+.SUBCKT Gclk_cg_inv_wn1p7_wp2p8 Out vdd In vss vpw vnw 
+.ENDS
+
+.SUBCKT Gclk_Dec_Nand_wnABC2p8u_wpABC4p3u C Y vdd A B vpw vnw 
+.ENDS
+
+.SUBCKT Gclk_Dec_inv_wn2p8u_wp4p3u Out In vdd vss vpw vnw 
+.ENDS
+
+.SUBCKT Gclk_Dec_inv_wn5p7u_wp8p6u vdd Out In vss vpw vnw 
+.ENDS
+
+.SUBCKT Gclk_rd_Tri_inv_wnp0p17 Out In vss vdd vpw vnw 
+.ENDS
+
+.SUBCKT Gclk_rd_inv_wnp0p17 Out vdd In vss vpw vnw 
+.ENDS
+
+.SUBCKT Gclk_rd_Nor_wnpAB0p17 B A vss vdd Y vpw vnw 
+.ENDS
+
+.SUBCKT Gclk_cg_inv_wn0p345u_wp0p52u Out In vss vdd vpw vnw 
+.ENDS
+
+.SUBCKT Gclk_cg_nand_wnpab0p52 vss vdd B Y vpw vnw 
+.ENDS
+
+.SUBCKT Gclk_cg_inv_wn5p7u_wp11p5u Out vdd In vss vpw vnw 
+.ENDS
+
+.SUBCKT Gclk_cg_nand_wnpab0p69 vss vdd B Y vpw vnw 
+.ENDS
+
+.SUBCKT Gclk_cg_inv_wn0p20_wp0p40 vdd vss In Out vpw vnw 
+.ENDS
+
+.SUBCKT Gclk_DEC3x8AND Y6 Y4 Y2 Y5 Y3 Y7 A2 Y0 Y1 A1 A0 vpw vnw vdd vss 
+.ENDS
+
+.SUBCKT Gclk_reset_delay Out In vpw vdd vnw vss 
+.ENDS
+
+.SUBCKT Gclk_nand_wnpab2p8_lf vdd vss B A Y vpw vnw 
+.ENDS
+
+.SUBCKT Gclk_Clk_generator iclk CEN vnw vpw reset clk vsse vss vdd 
+.ENDS
+
+.SUBCKT Gck_latch_addr In clk clkb Out vdd vss vpw vnw 
+.ENDS
+
+.SUBCKT Gio_inv_wnp8p6u Out in vss vdd vpw vnw 
+.ENDS
+
+.SUBCKT Gio_Dec_inv_wn2p8u_wp4p3u vss vdd In Out vpw vnw 
+.ENDS
+
+.SUBCKT Gio_inv_wnp0p345u out in vpw vnw 
+.ENDS
+
+.SUBCKT Gio_inv_wp2p6u_wn1p72u in out vpw vnw 
+.ENDS
+
+.SUBCKT Gio_inv_wn0p72u_wp1p3u out in vpw vnw 
+.ENDS
+
+.SUBCKT liomux4_inv_wnp0p345_lf In vss Out vdd vpw vnw 
+.ENDS
+
+.SUBCKT WD_inv_wn5p7u_wp8p6u vss Out In vdd vpw vnw 
+.ENDS
+
+.SUBCKT WD_nand_wnab4p3u_wpab4p3u Y A B vdd vss vpw vnw 
+.ENDS
+
+.SUBCKT WD_nand_wnab0p345u_wpab0p46u Y vss vdd B vpw vnw 
+.ENDS
+
+.SUBCKT WD_inv_wn1p4u_wp2p2u vdd Out In vss vpw vnw 
+.ENDS
+
+.SUBCKT LC_sactrl_inv_wnp0p17u vdd out in vss vpw vnw 
+.ENDS
+
+.SUBCKT LC_sactrl_inv_wn8p6u_wp11p5u vss in out vdd vpw vnw 
+.ENDS
+
+.SUBCKT LC_sactrl_inv_wn2p8u_wp4p3u vdd out in vss vpw vnw 
+.ENDS
+
+.SUBCKT LC_sactrl_nand_wp1p7u_wn1p15u A vdd vss B Y vpw vnw 
+.ENDS
+
+.SUBCKT dealybuff_sacntrl vss in out vdd vpw vnw 
+.ENDS
+
+.SUBCKT LC_wclkgen_nand_wpn5p7u C B Y vdd vss A vpw vnw 
+.ENDS
+
+.SUBCKT LC_wclkgen_inv_wnp11p5u out vss in vdd vpw vnw 
+.ENDS
+
+.SUBCKT LC_wclkgen_inv_wp11p5u_wn8p6u vdd out in vss vpw vnw 
+.ENDS
+
+.SUBCKT LC_inv_wn0p345u_wp0p46u out in vpw vnw 
+.ENDS
+
+.SUBCKT LC_clmsltr_nand_wpn1p44u vss vdd A B C Y vpw vnw 
+.ENDS
+
+.SUBCKT LC_clmslctr_inv_wp11p5u_wn8p6u in out vss vdd vpw vnw 
+.ENDS
+
+.SUBCKT LC_clmsltr_nand_wpn2p8u Y B A vdd vss vpw vnw 
+.ENDS
+
+.SUBCKT LC_clmsltr_nand_wpn1p44uab vss vdd A Y B vpw vnw 
+.ENDS
+
+.SUBCKT LC_clmsltr_inv_wp2p8u_wn1p7u vdd out in vss vpw vnw 
+.ENDS
+
+.SUBCKT LC_clmsltr_nand_wpn0p72u vdd Y A vss B vpw vnw 
+.ENDS
+
+.SUBCKT dealybuff_clmstrl out in vss vdd vpw vnw 
+.ENDS
+
+.SUBCKT LC_2x4dec_nand_wnp0p57u vss Y A B vdd vpw vnw 
+.ENDS
+
+.SUBCKT LC_2x4dec_inv_wn1p7u_wp2p8u vdd out in vss vpw vnw 
+.ENDS
+
+.SUBCKT LC_inv_wn1p15u_wp1p7u vdd in out vss vpw vnw 
+.ENDS
+
+.SUBCKT LC_inv_wn0p345u_wp0p48u out in vpw vnw 
+.ENDS
+
+.SUBCKT bitcell_mux_slice_0 blc<0> blc<1> blc<2> blc<3> blt<0> blt<1> blt<2> blt<3> vdd vss wl vpw vnw 
+XSRAM6T__1 blc<0> blt<0> dc1 dt1 vdd vss wl vpw vnw SRAM6T 
+XSRAM6T__2 blc<1> blt<1> dc2 dt2 vdd vss wl vpw vnw SRAM6T 
+XSRAM6T__3 blc<2> blt<2> dc3 dt3 vdd vss wl vpw vnw SRAM6T 
+XSRAM6T__4 blc<3> blt<3> dc4 dt4 vdd vss wl vpw vnw SRAM6T 
+.ENDS
+
+.SUBCKT bitcell_mux_slice_1 blc<0> blc<1> blc<2> blc<3> blt<0> blt<1> blt<2> blt<3> vdd vss wl vpw vnw 
+XSRAM6T__1 blc<0> blt<0> dc1 dt1 vdd vss wl vpw vnw SRAM6T 
+XSRAM6T__2 blc<1> blt<1> dc2 dt2 vdd vss wl vpw vnw SRAM6T 
+XSRAM6T__3 blc<2> blt<2> dc3 dt3 vdd vss wl vpw vnw SRAM6T 
+XSRAM6T__4 blc<3> blt<3> dc4 dt4 vdd vss wl vpw vnw SRAM6T 
+.ENDS
+
+.SUBCKT bitcell_2xmux_slice blc<0> blc<1> blc<2> blc<3> blt<0> blt<1> blt<2> blt<3> vdd vss wl<0> wl<1> vpw vnw 
+Xbitcell_mux_slice_0__1 blc<0> blc<1> blc<2> blc<3> blt<0> blt<1> blt<2> blt<3> vdd vss wl<0> vpw vnw bitcell_mux_slice_0 
+Xbitcell_mux_slice_1__2 blc<0> blc<1> blc<2> blc<3> blt<0> blt<1> blt<2> blt<3> vdd vss wl<1> vpw vnw bitcell_mux_slice_1 
+.ENDS
+
+.SUBCKT GIO_Array_Slice D<0> D<1> D<2> D<3> wclk lwdint0 lwdint1 lwdint2 lwdint3 q<0> q<1> q<2> q<3> rdout0 rdout1 rdout2 rdout3 vdd vss vnw vpw bnksel0 bnksel2 bnksel4 bnksel6 bnksel1 bnksel3 bnksel5 bnksel7 A<0> A<1> A<2> A<3> A<4> A<5> A<6> A<7> A<8> A<9> A<10> A<11> pdec00 pdec01 pdec02 pdec03 pdec04 pdec05 pdec06 pdec07 pdec10 pdec11 pdec12 pdec13 pdec14 pdec15 pdec16 pdec17 cadd_n_0 cadd_n_1 radd_n_0 vsse reset wen wenb iclk clk cen wlclk0 wlclk1 
+Xgio4__1 D<0> wclk lwdint0 q<0> rdout0 vdd vnw vpw vss gio4 
+Xgio4__2 D<1> wclk lwdint1 q<1> rdout1 vdd vnw vpw vss gio4 
+XGCK__3 A<0> A<1> A<2> A<3> A<4> A<5> A<6> A<7> A<8> A<9> A<10> A<11> bnksel0 bnksel1 bnksel2 bnksel3 bnksel4 bnksel5 bnksel6 bnksel7 cadd_n_0 cadd_n_1 cen clk iclk pdec00 pdec01 pdec02 pdec03 pdec04 pdec05 pdec06 pdec07 pdec10 pdec11 pdec12 pdec13 pdec14 pdec15 pdec16 pdec17 radd_n_0 reset vdd vnw vpw vss vsse wclk wen wenb wlclk0 wlclk1 GCK 
+Xgio4__4 D<2> wclk lwdint2 q<2> rdout2 vdd vnw vpw vss gio4 
+Xgio4__5 D<3> wclk lwdint3 q<3> rdout3 vdd vnw vpw vss gio4 
+.ENDS
+
+.SUBCKT core_array_slice_X pdec0 pdec1 wenb vpw vnw pdec00 pdec01 pdec02 pdec03 pdec04 pdec05 pdec06 pdec07 pdec10 pdec11 pdec12 pdec13 pdec14 pdec15 pdec16 pdec17 cadd_n_0 cadd_n_1 bnksel0 bnksel2 bnksel4 bnksel6 bnksel1 bnksel3 bnksel5 bnksel7 wlclk0 wlclk1 vss vdd reset iclk radd_n_0 blc<0> blc<1> blc<2> blc<3> blc<4> blc<5> blc<6> blc<7> blc<8> blc<9> blc<10> blc<11> blc<12> blc<13> blc<14> blc<15> blt<0> blt<1> blt<2> blt<3> blt<4> blt<5> blt<6> blt<7> blt<8> blt<9> blt<10> blt<11> blt<12> blt<13> blt<14> blt<15> 
+Xbitcell_2xmux_slice__1 blc<0> blc<1> blc<2> blc<3> blt<0> blt<1> blt<2> blt<3> vdd vss wl_l<0> wl_l<1> vpw vnw bitcell_2xmux_slice 
+Xbitcell_2xmux_slice__2 blc<4> blc<5> blc<6> blc<7> blt<4> blt<5> blt<6> blt<7> vdd vss wl_l<0> wl_l<1> vpw vnw bitcell_2xmux_slice 
+Xwritedriver2__3 bnksel0 bnksel1 bnksel2 bnksel3 bnksel4 bnksel5 bnksel6 bnksel7 cadd_n_0 cadd_n_1 iclk pdec00 pdec01 pdec02 pdec03 pdec04 pdec05 pdec06 pdec07 pdec10 pdec11 pdec12 pdec13 pdec14 pdec15 pdec16 pdec17 pdec0 pdec1 radd_n_0 reset vdd vnw vpw vss wenb wl_l<0> wl_l<1> wl_r<0> wl_r<1> wlclk0 wlclk1 writedriver2 
+Xbitcell_2xmux_slice__4 blc<8> blc<9> blc<10> blc<11> blt<8> blt<9> blt<10> blt<11> vdd vss wl_r<0> wl_r<1> vpw vnw bitcell_2xmux_slice 
+Xbitcell_2xmux_slice__5 blc<12> blc<13> blc<14> blc<15> blt<12> blt<13> blt<14> blt<15> vdd vss wl_r<0> wl_r<1> vpw vnw bitcell_2xmux_slice 
+.ENDS
+
+.SUBCKT lio_array_slice vdd vss vnw vpw lwdint0 lwdint1 lwdint2 lwdint3 rdout0 rdout1 rdout2 rdout3 bnksel1 bnksel3 bnksel5 bnksel7 bnksel0 bnksel2 bnksel4 bnksel6 cadd_n_0 cadd_n_1 reset sae_left sae_right saprech_left saprech_right wenb pch_bot_left pch_bot_right pch_top_left pch_top_right iclk bot_rowclk_0 bot_rowclk_1 top_rowclk_0 top_rowclk_1 pdec00 pdec01 pdec02 pdec03 pdec04 pdec05 pdec06 pdec07 pdec10 pdec11 pdec12 pdec13 pdec14 pdec15 pdec16 pdec17 radd_n_0 
+Xliomux4__1 pch_bot_left pch_top_left lwdint0 rdout0 sae_left saprech_left vdd vnw vpw vss liomux4 
+Xliomux4__2 pch_bot_left pch_top_left lwdint1 rdout1 sae_left saprech_left vdd vnw vpw vss liomux4 
+Xlocal_control__3 bnksel0 bnksel1 bnksel2 bnksel3 bnksel4 bnksel5 bnksel6 bnksel7 bnksel0 bot_rowclk_0 bot_rowclk_1 cadd_n_0 cadd_n_1 iclk pch_bot_left pch_bot_right pch_top_left pch_top_right pdec00 pdec01 pdec02 pdec03 pdec04 pdec05 pdec06 pdec07 pdec10 pdec11 pdec12 pdec13 pdec14 pdec15 pdec16 pdec17 radd_n_0 rdsel_bot_left<0> rdsel_bot_left<1> rdsel_bot_left<2> rdsel_bot_left<3> rdsel_bot_right<0> rdsel_bot_right<1> rdsel_bot_right<2> rdsel_bot_right<3> rdsel_top_left<0> rdsel_top_left<1> rdsel_top_left<2> rdsel_top_left<3> rdsel_top_right<0> rdsel_top_right<1> rdsel_top_right<2> rdsel_top_right<3> reset sae_left sae_right saprech_left saprech_right bnksel1 top_rowclk_0 top_rowclk_1 vdd vnw vpw vss wenb wrsel_bot_left<0> wrsel_bot_left<1> wrsel_bot_left<2> wrsel_bot_left<3> wrsel_bot_right<0> wrsel_bot_right<1> wrsel_bot_right<2> wrsel_bot_right<3> wrsel_top_left<0> wrsel_top_left<1> wrsel_top_left<2> wrsel_top_left<3> wrsel_top_right<0> wrsel_top_right<1> wrsel_top_right<2> wrsel_top_right<3> local_control 
+Xliomux4__4 pch_bot_right pch_top_right lwdint2 rdout2 sae_right saprech_right vdd vnw vpw vss liomux4 
+Xliomux4__5 pch_bot_right pch_top_right lwdint3 rdout3 sae_right saprech_right vdd vnw vpw vss liomux4 
+.ENDS
+
+.SUBCKT 64x4x4 D<0> D<1> D<2> D<3> clk q<0> q<1> q<2> q<3> vdd vss A<0> A<1> A<2> A<3> A<4> A<5> vsse wen cen vpw vnw 
+XGIO_Array_Slice__1 D<0> D<1> D<2> D<3> wclk lwdint0 lwdint1 lwdint2 lwdint3 q<0> q<1> q<2> q<3> rdout0 rdout1 rdout2 rdout3 vdd vss vnw vpw bnksel0 bnksel2 bnksel4 bnksel6 bnksel1 bnksel3 bnksel5 bnksel7 A<0> A<1> A<2> A<3> A<4> A<5> pdec00 pdec01 pdec02 pdec03 pdec04 pdec05 pdec06 pdec07 pdec10 pdec11 pdec12 pdec13 pdec14 pdec15 pdec16 pdec17 cadd_n_0 cadd_n_1 radd_n_0 vsse reset wen wenb iclk clk cen wlclk0 wlclk1 GIO_Array_Slice 
+Xcore_array_slice_X__2 pdec00 pdec10 wenb vpw vnw pdec00 pdec01 pdec02 pdec03 pdec04 pdec05 pdec06 pdec07 pdec10 pdec11 pdec12 pdec13 pdec14 pdec15 pdec16 pdec17 cadd_n_0 cadd_n_1 bnksel0 bnksel2 bnksel4 bnksel6 bnksel1 bnksel3 bnksel5 bnksel7 wlclk0 wlclk1 vss vdd reset iclk radd_n_0 bot_blc<0> bot_blc<1> bot_blc<2> bot_blc<3> bot_blc<4> bot_blc<5> bot_blc<6> bot_blc<7> bot_blc<8> bot_blc<9> bot_blc<10> bot_blc<11> bot_blc<12> bot_blc<13> bot_blc<14> bot_blc<15> bot_blt<0> bot_blt<1> bot_blt<2> bot_blt<3> bot_blt<4> bot_blt<5> bot_blt<6> bot_blt<7> bot_blt<8> bot_blt<9> bot_blt<10> bot_blt<11> bot_blt<12> bot_blt<13> bot_blt<14> bot_blt<15> core_array_slice_X 
+Xcore_array_slice_X__3 pdec00 pdec11 wenb vpw vnw pdec00 pdec01 pdec02 pdec03 pdec04 pdec05 pdec06 pdec07 pdec10 pdec11 pdec12 pdec13 pdec14 pdec15 pdec16 pdec17 cadd_n_0 cadd_n_1 bnksel0 bnksel2 bnksel4 bnksel6 bnksel1 bnksel3 bnksel5 bnksel7 wlclk0 wlclk1 vss vdd reset iclk radd_n_0 bot_blc<0> bot_blc<1> bot_blc<2> bot_blc<3> bot_blc<4> bot_blc<5> bot_blc<6> bot_blc<7> bot_blc<8> bot_blc<9> bot_blc<10> bot_blc<11> bot_blc<12> bot_blc<13> bot_blc<14> bot_blc<15> bot_blt<0> bot_blt<1> bot_blt<2> bot_blt<3> bot_blt<4> bot_blt<5> bot_blt<6> bot_blt<7> bot_blt<8> bot_blt<9> bot_blt<10> bot_blt<11> bot_blt<12> bot_blt<13> bot_blt<14> bot_blt<15> core_array_slice_X 
+Xcore_array_slice_X__4 pdec01 pdec10 wenb vpw vnw pdec00 pdec01 pdec02 pdec03 pdec04 pdec05 pdec06 pdec07 pdec10 pdec11 pdec12 pdec13 pdec14 pdec15 pdec16 pdec17 cadd_n_0 cadd_n_1 bnksel0 bnksel2 bnksel4 bnksel6 bnksel1 bnksel3 bnksel5 bnksel7 wlclk0 wlclk1 vss vdd reset iclk radd_n_0 bot_blc<0> bot_blc<1> bot_blc<2> bot_blc<3> bot_blc<4> bot_blc<5> bot_blc<6> bot_blc<7> bot_blc<8> bot_blc<9> bot_blc<10> bot_blc<11> bot_blc<12> bot_blc<13> bot_blc<14> bot_blc<15> bot_blt<0> bot_blt<1> bot_blt<2> bot_blt<3> bot_blt<4> bot_blt<5> bot_blt<6> bot_blt<7> bot_blt<8> bot_blt<9> bot_blt<10> bot_blt<11> bot_blt<12> bot_blt<13> bot_blt<14> bot_blt<15> core_array_slice_X 
+Xcore_array_slice_X__5 pdec01 pdec11 wenb vpw vnw pdec00 pdec01 pdec02 pdec03 pdec04 pdec05 pdec06 pdec07 pdec10 pdec11 pdec12 pdec13 pdec14 pdec15 pdec16 pdec17 cadd_n_0 cadd_n_1 bnksel0 bnksel2 bnksel4 bnksel6 bnksel1 bnksel3 bnksel5 bnksel7 wlclk0 wlclk1 vss vdd reset iclk radd_n_0 bot_blc<0> bot_blc<1> bot_blc<2> bot_blc<3> bot_blc<4> bot_blc<5> bot_blc<6> bot_blc<7> bot_blc<8> bot_blc<9> bot_blc<10> bot_blc<11> bot_blc<12> bot_blc<13> bot_blc<14> bot_blc<15> bot_blt<0> bot_blt<1> bot_blt<2> bot_blt<3> bot_blt<4> bot_blt<5> bot_blt<6> bot_blt<7> bot_blt<8> bot_blt<9> bot_blt<10> bot_blt<11> bot_blt<12> bot_blt<13> bot_blt<14> bot_blt<15> core_array_slice_X 
+Xlio_array_slice__6 vdd vss vnw vpw lwdint0 lwdint1 lwdint2 lwdint3 rdout0 rdout1 rdout2 rdout3 bnksel1 bnksel3 bnksel5 bnksel7 bnksel0 bnksel2 bnksel4 bnksel6 cadd_n_0 cadd_n_1 reset sae_left sae_right saprech_left saprech_right wenb pch_bot_left pch_bot_right pch_top_left pch_top_right iclk wlclk0 wlclk1 wlclk2 wlclk3 pdec00 pdec01 pdec02 pdec03 pdec04 pdec05 pdec06 pdec07 pdec10 pdec11 pdec12 pdec13 pdec14 pdec15 pdec16 pdec17 radd_n_0 lio_array_slice 
+Xcore_array_slice_X__7 pdec00 pdec10 wenb vpw vnw pdec00 pdec01 pdec02 pdec03 pdec04 pdec05 pdec06 pdec07 pdec10 pdec11 pdec12 pdec13 pdec14 pdec15 pdec16 pdec17 cadd_n_0 cadd_n_1 bnksel0 bnksel2 bnksel4 bnksel6 bnksel1 bnksel3 bnksel5 bnksel7 wlclk2 wlclk3 vss vdd reset iclk radd_n_0 top_blc<0> top_blc<1> top_blc<2> top_blc<3> top_blc<4> top_blc<5> top_blc<6> top_blc<7> top_blc<8> top_blc<9> top_blc<10> top_blc<11> top_blc<12> top_blc<13> top_blc<14> top_blc<15> top_blt<0> top_blt<1> top_blt<2> top_blt<3> top_blt<4> top_blt<5> top_blt<6> top_blt<7> top_blt<8> top_blt<9> top_blt<10> top_blt<11> top_blt<12> top_blt<13> top_blt<14> top_blt<15> core_array_slice_X 
+Xcore_array_slice_X__8 pdec00 pdec11 wenb vpw vnw pdec00 pdec01 pdec02 pdec03 pdec04 pdec05 pdec06 pdec07 pdec10 pdec11 pdec12 pdec13 pdec14 pdec15 pdec16 pdec17 cadd_n_0 cadd_n_1 bnksel0 bnksel2 bnksel4 bnksel6 bnksel1 bnksel3 bnksel5 bnksel7 wlclk2 wlclk3 vss vdd reset iclk radd_n_0 top_blc<0> top_blc<1> top_blc<2> top_blc<3> top_blc<4> top_blc<5> top_blc<6> top_blc<7> top_blc<8> top_blc<9> top_blc<10> top_blc<11> top_blc<12> top_blc<13> top_blc<14> top_blc<15> top_blt<0> top_blt<1> top_blt<2> top_blt<3> top_blt<4> top_blt<5> top_blt<6> top_blt<7> top_blt<8> top_blt<9> top_blt<10> top_blt<11> top_blt<12> top_blt<13> top_blt<14> top_blt<15> core_array_slice_X 
+Xcore_array_slice_X__9 pdec01 pdec10 wenb vpw vnw pdec00 pdec01 pdec02 pdec03 pdec04 pdec05 pdec06 pdec07 pdec10 pdec11 pdec12 pdec13 pdec14 pdec15 pdec16 pdec17 cadd_n_0 cadd_n_1 bnksel0 bnksel2 bnksel4 bnksel6 bnksel1 bnksel3 bnksel5 bnksel7 wlclk2 wlclk3 vss vdd reset iclk radd_n_0 top_blc<0> top_blc<1> top_blc<2> top_blc<3> top_blc<4> top_blc<5> top_blc<6> top_blc<7> top_blc<8> top_blc<9> top_blc<10> top_blc<11> top_blc<12> top_blc<13> top_blc<14> top_blc<15> top_blt<0> top_blt<1> top_blt<2> top_blt<3> top_blt<4> top_blt<5> top_blt<6> top_blt<7> top_blt<8> top_blt<9> top_blt<10> top_blt<11> top_blt<12> top_blt<13> top_blt<14> top_blt<15> core_array_slice_X 
+Xcore_array_slice_X__10 pdec01 pdec11 wenb vpw vnw pdec00 pdec01 pdec02 pdec03 pdec04 pdec05 pdec06 pdec07 pdec10 pdec11 pdec12 pdec13 pdec14 pdec15 pdec16 pdec17 cadd_n_0 cadd_n_1 bnksel0 bnksel2 bnksel4 bnksel6 bnksel1 bnksel3 bnksel5 bnksel7 wlclk2 wlclk3 vss vdd reset iclk radd_n_0 top_blc<0> top_blc<1> top_blc<2> top_blc<3> top_blc<4> top_blc<5> top_blc<6> top_blc<7> top_blc<8> top_blc<9> top_blc<10> top_blc<11> top_blc<12> top_blc<13> top_blc<14> top_blc<15> top_blt<0> top_blt<1> top_blt<2> top_blt<3> top_blt<4> top_blt<5> top_blt<6> top_blt<7> top_blt<8> top_blt<9> top_blt<10> top_blt<11> top_blt<12> top_blt<13> top_blt<14> top_blt<15> core_array_slice_X 
+Xcore_array_slice_X__11 pdec00 pdec10 wenb vpw vnw pdec00 pdec01 pdec02 pdec03 pdec04 pdec05 pdec06 pdec07 pdec10 pdec11 pdec12 pdec13 pdec14 pdec15 pdec16 pdec17 cadd_n_0 cadd_n_1 bnksel0 bnksel2 bnksel4 bnksel6 bnksel1 bnksel3 bnksel5 bnksel7 wlclk2 wlclk3 vss vdd reset iclk radd_n_0 top_blc<0> top_blc<1> top_blc<2> top_blc<3> top_blc<4> top_blc<5> top_blc<6> top_blc<7> top_blc<8> top_blc<9> top_blc<10> top_blc<11> top_blc<12> top_blc<13> top_blc<14> top_blc<15> top_blt<0> top_blt<1> top_blt<2> top_blt<3> top_blt<4> top_blt<5> top_blt<6> top_blt<7> top_blt<8> top_blt<9> top_blt<10> top_blt<11> top_blt<12> top_blt<13> top_blt<14> top_blt<15> core_array_slice_X 
+.ENDS
+
+
