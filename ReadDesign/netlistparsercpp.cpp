@@ -30,8 +30,9 @@ QString NetlistParserBF::ReadStringFromQrc(QString Filename)
 }
 
 /*
-* ParseFIle function , Parses over netlist file and allocated the info into
-* the designed containers.
+* ParseFIle function , Parses over netlist file and allocates the info into
+* the designed containers.THe outuput will be presented in the objects returned
+* in this case the 'cells' vector.
 * Author : Aditya
 */
 std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
@@ -40,6 +41,8 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
     QByteArray qba = ReadStringFromQrc(path).toLocal8Bit();
     QByteArray tb;//temp buffer
 
+    //Stores the text from file into an array of strings
+    //for each line.
     uint newLineTrip = 0;
     for(uint i = 0 ; i < qba.length(); i++)
     {
@@ -69,12 +72,13 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
     char* XCall = "X";
     char* ResCall = "R";
     char* CapacCall = "C";
-    //--------------------
+    //Regexp captures-----
     QRegExp rx(R"((\w+))");//word of any length
     QRegExp rx2(R"((\w+=\w+))");//word before and after = // for Mmos
     QRegExp rx3(R"(\w+=\w+\.\w+)");//word before and after includeing numbers with decimals.//fors Xcall
-    QRegExp rx4(R"(/\s\w+)");//word after / for name of cellSbkt
+    QRegExp rx4(R"(/\s\w+)");//word after '/' for name of cellSbkt
     QRegExp rx5(R"([a-z0-9/<>_-]{1,20})");//encompasses a wide set with /, <> and _ undersore from 2 to 20 letters
+    QRegExp rx6(R"((\w+)|([a-z0-9\/<>_-]{1,20}))");//
     //--------------------
 
     //Start parsing the lines.
@@ -83,24 +87,24 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
     {
         lines[i].replace("\n","");//removes newline char command
         lines[i].replace('+',"");//remove continue line char command
-        uint count = 0;
-
+        uint count;
         //Start of cell hits when it fine .SUBCKT in file.
         if(lines[i].contains(start))
         {
             int pos = 0;
+            count = 0;
             tcell = new CellCBKT();//creates a new cell evertime it find a .SBKT in the linesss
-            while((pos = rx.indexIn(lines[i],pos)) != -1)//parse over each word in the line
+            while((pos = rx6.indexIn(lines[i],pos)) != -1)//parse over each word in the line
             {
                 if(count == 1)
                 {
-                    tcell->name = rx.cap(1);// store sbkt name
+                    tcell->name = rx6.cap(0);// store sbkt name
                 }
                 if(count >= 2)
                 { // saves the port names
-                    tcell->port.push_back(rx.cap(1));
+                    tcell->port.push_back(rx6.cap(0));
                 }
-                pos += rx.matchedLength();//iterate pos over each word
+                pos += rx6.matchedLength();//iterate pos over each word
                 count++;
             }
         }
@@ -137,7 +141,6 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
                 tm->deviceProperties.push_back(d);
                 pos += rx2.matchedLength();//iterate pos over each word
             }
-
             tcell->mVec.push_back(tm);//store the Mmos info
         }
 
@@ -145,11 +148,12 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
         if(lines[i][0] == XCall)
         {
             int pos = 0;
+            count = 0;
             ::XCall* xc = new ::XCall();
             bool hitStop = false;
-            while((pos = rx5.indexIn(lines[i],pos)) != -1)//parse over each word in the line
+            while((pos = rx5.indexIn(lines[i],pos)) != -1)
             {
-                if(rx5.cap(0) == '/')//bool flag on / hit
+                if(rx5.cap(0) == '/')//bool flag on '/' hit
                 {
                     hitStop = true;
                 }
@@ -159,7 +163,7 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
                     name.insert(0,'X');
                     xc->name = name;
                 }
-                if(!hitStop && count > 0)//all pins till it hits '/' in file and skips the first word that is the name
+                if(!hitStop && count > 0)//all pins till it hits '/' in file ,and skips the first word that is the name.
                 {
                     xc->pins.push_back(rx5.cap(0));
                 }
@@ -172,7 +176,7 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
             {
                 QString name = rx4.cap(0);
                 name.remove("/ ");
-            // passes the real refrence to the object , so changes here will changes here will change the actual values
+            // passes the real refrence to the object , so changes to the cell here will change the actual values.
                 xc->cell = findCellFromName(name);
                 pos += rx4.matchedLength();
             }
@@ -193,22 +197,23 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
         if(lines[i][0] == ResCall)
         {
             int pos = 0;
+            count = 0;
             Res* r = new Res();
-            while((pos = rx.indexIn(lines[i],pos)) != -1)//parse over each word in the line
+            while((pos = rx6.indexIn(lines[i],pos)) != -1)//parse over each word in the line
             {
                 if(count == 0)
                 {
-                    r->name = rx.cap(0);// store sbkt name
+                    r->name = rx6.cap(0);// store sbkt name
                 }
-                if(count > 0)
+                if(count > 0 )
                 {
-                    r->pins.push_back(rx.cap(0));
+                    r->pins.push_back(rx6.cap(0));
                 }
-                if(count > 2)
+                if(count > 0 && count < 2)
                 {
-                    r->value = rx.cap(0).toUInt();
+                    r->value = rx6.cap(0).toUInt();
                 }
-                pos += rx.matchedLength();//iterate pos over each word
+                pos += rx6.matchedLength();//iterate pos over each word
                 count++;
             }
             tcell->rVec.push_back(r);
@@ -218,22 +223,23 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
         if(lines[i][0] == CapacCall)
         {
             int pos = 0;
+            count = 0;
             Cap* c = new Cap();
-            while((pos = rx.indexIn(lines[i],pos)) != -1)//parse over each word in the line
+            while((pos = rx6.indexIn(lines[i],pos)) != -1)//parse over each word in the line
             {
                 if(count == 0)
                 {
-                    c->name = rx.cap(0);// store sbkt name
+                    c->name = rx6.cap(0);// store sbkt name
                 }
-                if(count > 0)
+                if(count > 0 && count < 2)
                 {
-                    c->pins.push_back(rx.cap(0));
+                    c->pins.push_back(rx6.cap(0));
                 }
                 if(count > 2)
                 {
-                    c->value = rx.cap(0).toUInt();
+                    c->value = rx6.cap(0).toUInt();
                 }
-                pos += rx.matchedLength();//iterate pos over each word
+                pos += rx6.matchedLength();//iterate pos over each word
                 count++;
             }
             tcell->cVec.push_back(c);

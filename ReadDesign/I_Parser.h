@@ -12,7 +12,9 @@
 #include "cellcbkt.h"
 
 /*
- * Interface work pending
+ * Interface use only
+ * No implementations will be defined here.
+ * For interfacting with all Parser types and components.
  */
 
 class I_Parser

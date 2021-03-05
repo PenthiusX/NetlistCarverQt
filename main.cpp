@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
     //Read constraint instance//
      std::string readConstraintInputFile = "../NetlistCarverQt/netlistfiles/readConstraint_new1.xml" ;
      CReadConstraints obj;
-     CReadConstraints c = obj.parseLoadConstraintFile( readConstraintInputFile );
+     CReadConstraints c = obj.parseLoadConstraintFile(readConstraintInputFile);
 
     //--Netlist parser Instansce--//
     I_Parser* n = new NetlistParserBF();
