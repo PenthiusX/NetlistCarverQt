@@ -39,8 +39,8 @@ class CellCBKT;
 struct XCall { //Xcall container
     QString name;
     CellCBKT* cell;//real refrence of the initial obj needs to be stored.
-    std::vector<QString> pins;
-    std::vector<Device> deviceProperties; //eg lp=0.13u wp=8.6u wn=5.7u
+    std::vector<QString> ports;
+    std::vector<Device> deviceProperties;//eg lp=0.13u wp=8.6u wn=5.7u
 };
 /*
   *
@@ -48,6 +48,14 @@ struct XCall { //Xcall container
 class CellCBKT {//Cell container
 public:
     CellCBKT(){};
+    CellCBKT(const CellCBKT &cpyc){//copy costructor
+        QString name = cpyc.name;
+        std::vector<XCall*> xVec = cpyc.xVec;//d
+        std::vector<MMos*> mVec = cpyc.mVec;//d
+        std::vector<Res*> rVec = cpyc.rVec;//p
+        std::vector<Cap*> cVec = cpyc.cVec;//p
+        std::vector<QString> ports = cpyc.ports;//pin names
+    };
     ~CellCBKT(){};
 
     QString name;
@@ -55,6 +63,6 @@ public:
     std::vector<MMos*> mVec;//d
     std::vector<Res*> rVec;//p
     std::vector<Cap*> cVec;//p
-    std::vector<QString> port;//pin names
+    std::vector<QString> ports;//pin names
 //    std::vector<std::map<char,float>> deviceParams;
 };

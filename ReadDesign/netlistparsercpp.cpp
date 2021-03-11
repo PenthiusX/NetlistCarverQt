@@ -102,7 +102,7 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
                 }
                 if(count >= 2)
                 { // saves the port names
-                    tcell->port.push_back(rx6.cap(0));
+                    tcell->ports.push_back(rx6.cap(0));
                 }
                 pos += rx6.matchedLength();//iterate pos over each word
                 count++;
@@ -165,7 +165,7 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
                 }
                 if(!hitStop && count > 0)//all pins till it hits '/' in file ,and skips the first word that is the name.
                 {
-                    xc->pins.push_back(rx5.cap(0));
+                    xc->ports.push_back(rx5.cap(0));
                 }
                 QString t = rx5.cap(0);
                 pos += rx5.matchedLength();//iterate pos over each word
@@ -176,7 +176,7 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
             {
                 QString name = rx4.cap(0);
                 name.remove("/ ");
-            // passes the real refrence to the object , so changes to the cell here will change the actual values.
+                // passes the real refrence to the object , so changes to the cell here will change the actual values.
                 xc->cell = findCellFromName(name);
                 pos += rx4.matchedLength();
             }
@@ -252,17 +252,50 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
             tcell = NULL;//clear the cell for use again for nex cell info.
         }
     }
+
     return cells;
 }
 
 std::vector<CellCBKT *> NetlistParserBF::parse(QString path, char hint)
 {
     //start flatenign if hint = 'F'
-    if(hint == 'F'){
+    if(hint == 'F')
+    {
         std::vector<CellCBKT *> locVec;
         locVec = this->parse(path);
+
+        for(uint n = 0; n < locVec.size(); n++)
+        {
+            if(locVec[n]->xVec.size() != 0)
+            {
+                for(uint x = 0 ; x < locVec[n]->xVec.size() ; x++)
+                {
+                    //FOr each xcall push the relvant mos /res/cap variant in existant vectors
+                    if(locVec[n]->xVec[x]->cell->mVec.size() != 0)
+                    {
+                        MMos* tm = new MMos;
+                        for(uint m = 0 ; m < locVec[n]->xVec[x]->cell->mVec.size() ; m++)
+                        {
+                            QString ss = "//";
+                            tm->name = locVec[n]->xVec[x]->name + ss + locVec[n]->xVec[x]->cell->mVec[m]->name;
+                            locVec[n]->mVec.push_back(tm);
+                        }
+                        for(uint p = 0 ; p < locVec[n]->xVec[x]->ports.size();p++)
+                        {
+                            tm->pins.push_back(locVec[n]->xVec[x]->ports[p]);
+                        }
+                    }
+                }
+                locVec[n]->xVec.clear();
+            }
+            else
+            {
+                qInfo() << "No Xcall found to flatten";
+            }
+        }
     }
-    if(hint == 'R'){
+    if(hint == 'R')
+    {
         std::vector<CellCBKT *> locVec;
         return this->parse(path);
     }
