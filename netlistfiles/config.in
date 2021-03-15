@@ -4,7 +4,7 @@
 * View Name: schematic
 ************************************************************************
 
-.SUBCKT nand2 A B Y vdd vnw vpw vss wl_r<1>
+.SUBCKT nand2 A B Y vdd vnw vpw vss
 MNM0 Y A net12_4 vpw N M=1 L=lna W=wna
 Ra1 net12 net12_1 30
 Ra2 net12_1 net12_2 30
@@ -17,7 +17,7 @@ MPM0 Y A vdd vnw P W=wpa L=lpa M=1
 MPM1 Y B vdd vnw P W=wpb L=lpb M=1
 .ENDS
 
-.SUBCKT nand3 A B C Y vdd vnw vpw vss wl_r<1>
+.SUBCKT nand3 A B C Y vdd vnw vpw vss
 MM0 Y B vdd vnw P W=wpa L=lpa M=1
 MPM0 Y A vdd vnw P W=wpa L=lpa M=1
 MPM2 Y C vdd vnw P W=wpc L=lpc M=1
@@ -32,12 +32,12 @@ MNM1 net17 B net9 vpw N M=1 L=lnb W=wnb
 MNM0 Y A net17 vpw N M=1 L=lna W=wna
 .ENDS
 
-.SUBCKT inverter In Out vdd vnw vpw vss wl_r<1>
+.SUBCKT inverter In Out vdd vnw vpw vss
 MNM0 Out In vss vpw N M=1 L=ln W=wn
 MPM0 Out In vdd vnw P W=wp L=lp M=1
 .ENDS
 
-.SUBCKT nand2 A B Y vdd vnw vpw vss wl_r<1>
+.SUBCKT nand2 A B Y vdd vnw vpw vss
 MNM0 Y A net12 vpw N M=1 L=lna W=wna
 MNM1 net12 B vss vpw N M=1 L=lnb W=wnb
 MPM0 Y A vdd vnw P W=wpa L=lpa M=1

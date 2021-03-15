@@ -4,8 +4,8 @@
 #include <vector>
 #include <map>
 
-struct Device {
-public:
+struct Device {//used for keeping two string values that have some association.
+public:        //Can be param and value or Pin association between Mos and Xcall.
     QString paramName;
     QString paramValue;
 };
@@ -15,19 +15,19 @@ public:
 struct MMos//Mmos
 {
     QString name;
-    std::vector<QString> pins;
+    std::vector<QString> ports;
     std::vector<Device> deviceProperties;
 };
 
 struct Res {//Resistor
     QString name;
-    std::vector<QString> pins;
+    std::vector<QString> ports;
     unsigned int value;
 };
 
 struct Cap {//Capacitor
     QString name;
-    std::vector<QString> pins;
+    std::vector<QString> ports;
     unsigned int value;
 };
 
