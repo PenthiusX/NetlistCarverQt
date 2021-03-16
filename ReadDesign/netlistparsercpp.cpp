@@ -315,6 +315,7 @@ std::vector<CellCBKT *> NetlistParserBF::parse(QString path, char hint)
         {
             if(locVec[n]->xVec.size() != 0)
             {
+                qInfo() << "Flatenning started" << locVec[n]->name;
                 for(uint x = 0 ; x < locVec[n]->xVec.size() ; x++)//for every Xcall
                 {
                     //FOr each xcall push the relvant mos /res/cap variant in existant vectors
@@ -356,7 +357,7 @@ std::vector<CellCBKT *> NetlistParserBF::parse(QString path, char hint)
             }
             else
             {
-                qInfo() << "No Xcall found to flatten";
+                qInfo() << "No Xcall found to flatten in" << locVec[n]->name;
             }
         }
     }
