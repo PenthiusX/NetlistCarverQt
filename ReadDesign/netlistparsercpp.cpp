@@ -256,7 +256,7 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
     return cells;
 }
 
-std::vector<Device> getPortNameMatchArray(std::vector<QString> xc ,std::vector<QString> mcr){
+std::vector<Device> NetlistParserBF::getPortNameMatchArray(std::vector<QString> xc ,std::vector<QString> mcr){
 
     std::vector<Device> d;
 
@@ -270,7 +270,7 @@ std::vector<Device> getPortNameMatchArray(std::vector<QString> xc ,std::vector<Q
     return d;
 }
 
-std::map<QString,QString> getPortNameMatchMap(std::vector<QString> xc ,std::vector<QString> mcr){
+std::map<QString,QString> NetlistParserBF::getPortNameMatchMap(std::vector<QString> xc ,std::vector<QString> mcr){
 
     std::map<QString,QString> compMap;
 
@@ -326,6 +326,7 @@ std::vector<CellCBKT *> NetlistParserBF::parse(QString path, char hint)
                             }
 
                             locVec[n]->mVec.push_back(tm);
+                            tm = NULL;
                         }
 
                         for(uint m = 0 ; m < locVec[n]->xVec[x]->cell->rVec.size() ; m++)
@@ -339,7 +340,7 @@ std::vector<CellCBKT *> NetlistParserBF::parse(QString path, char hint)
 
                         for(uint p = 0 ; p < locVec[n]->xVec[x]->ports.size();p++)
                         {
-                            tm->ports.push_back(locVec[n]->xVec[x]->ports[p]);
+                            //tm->ports.push_back(locVec[n]->xVec[x]->ports[p]);
 
                         }
                     }
