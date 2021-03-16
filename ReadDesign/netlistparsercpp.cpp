@@ -280,13 +280,26 @@ std::map<QString,QString> NetlistParserBF::getPortNameMatchMap(std::vector<QStri
     return compMap;
 }
 
-QString findRelavantPort(QString po,std::vector<Device> arr,QString Xcallname){
+QString NetlistParserBF::findRelativePort(QString po,std::vector<Device> arr,QString Xcallname){
     for(uint i = 0 ; i < arr.size() ; i++){
         if(po == arr[i].paramName){
             return arr[i].paramValue;
         }
     }
-    return po + "//" + Xcallname;//if name does not match then add it as an internal conntection
+    return po + "/" + Xcallname;//if name does not match then add it as an internal conntection
+}
+
+Device comapreAndRevertDeviceValue(Device cellMos,std::vector<Device> XcallDevices){
+
+    Device rd;
+    for(uint n = 0 ; n < XcallDevices.size() ; n++){
+        if(cellMos.paramValue == XcallDevices[n].paramName){
+            rd.paramName = cellMos.paramName;
+            rd.paramValue = XcallDevices[n].paramValue;
+            return rd;
+        }
+    }
+    return cellMos;
 }
 
 std::vector<CellCBKT *> NetlistParserBF::parse(QString path, char hint)
@@ -305,8 +318,6 @@ std::vector<CellCBKT *> NetlistParserBF::parse(QString path, char hint)
                 for(uint x = 0 ; x < locVec[n]->xVec.size() ; x++)//for every Xcall
                 {
                     //FOr each xcall push the relvant mos /res/cap variant in existant vectors
-                    if(locVec[n]->xVec[x]->cell->mVec.size() != 0)
-                    {
                         if(locVec[n]->xVec[x]->ports.size() == locVec[n]->xVec[x]->cell->ports.size())
                         {//number ports for xcall and its relvant cell need to be the same
 
@@ -315,20 +326,23 @@ std::vector<CellCBKT *> NetlistParserBF::parse(QString path, char hint)
                         MMos* tm;
                         for(uint m = 0 ; m < locVec[n]->xVec[x]->cell->mVec.size() ; m++)//For every Mmos in Xcall cell.
                         {
-                            QString ss = "//";
                             tm = new MMos;
-                            tm->name = locVec[n]->xVec[x]->name + ss + locVec[n]->xVec[x]->cell->mVec[m]->name;//set name
+                            tm->name = locVec[n]->xVec[x]->name + "/" + locVec[n]->xVec[x]->cell->mVec[m]->name;//set name
 
                             for(uint p = 0 ; p < locVec[n]->xVec[x]->cell->mVec[m]->ports.size(); p++)//set port names
                             {
-                                tm->ports.push_back(findRelavantPort(locVec[n]->xVec[x]->cell->mVec[m]->ports[p],dt,locVec[n]->xVec[x]->name));
+                                tm->ports.push_back(findRelativePort(locVec[n]->xVec[x]->cell->mVec[m]->ports[p],dt,locVec[n]->xVec[x]->name));
+                            }
+                            for(uint d = 0 ; d < locVec[n]->xVec[x]->cell->mVec[m]->deviceProperties.size(); d++){
 
+                                Device td;
+                                 td = comapreAndRevertDeviceValue(locVec[n]->xVec[x]->cell->mVec[m]->deviceProperties[d],locVec[n]->xVec[x]->deviceProperties);
+                                tm->deviceProperties.push_back(td);
                             }
 
                             locVec[n]->mVec.push_back(tm);
                             tm = NULL;
                         }
-
                         for(uint m = 0 ; m < locVec[n]->xVec[x]->cell->rVec.size() ; m++)
                         {
 
@@ -337,15 +351,8 @@ std::vector<CellCBKT *> NetlistParserBF::parse(QString path, char hint)
                         {
 
                         }
-
-                        for(uint p = 0 ; p < locVec[n]->xVec[x]->ports.size();p++)
-                        {
-                            //tm->ports.push_back(locVec[n]->xVec[x]->ports[p]);
-
-                        }
-                    }
                 }
-                locVec[n]->xVec.clear();
+                locVec[n]->xVec.clear();//optional clear
             }
             else
             {
