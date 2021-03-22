@@ -323,6 +323,10 @@ std::vector<CellCBKT *> NetlistParserBF::parse(QString path, char hint)
                         {//number ports for xcall and its relvant cell need to be the same
                              dt = getPortNameMatchArray(locVec[n]->xVec[x]->ports,locVec[n]->xVec[x]->cell->ports);//populate
                         }
+                        else{
+                            qInfo() << "Port count mismatch please check if netlist file is correct.";
+                        }
+
                         MMos* tm;
                         for(uint m = 0 ; m < locVec[n]->xVec[x]->cell->mVec.size() ; m++)//For every Mmos in Xcall cell.
                         {
@@ -372,7 +376,7 @@ std::vector<CellCBKT *> NetlistParserBF::parse(QString path, char hint)
                             }
 
                             locVec[n]->cVec.push_back(cm);
-                            rm = NULL;
+                            cm = NULL;
                         }
                 }
                 locVec[n]->xVec.clear();//optional clear
@@ -382,6 +386,8 @@ std::vector<CellCBKT *> NetlistParserBF::parse(QString path, char hint)
                 qInfo() << "No Xcall found to flatten in" << locVec[n]->name;
             }
         }
+
+        return locVec;
     }
     if(hint == 'R')
     {
