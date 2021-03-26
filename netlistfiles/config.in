@@ -4,19 +4,6 @@
 * View Name: schematic
 ************************************************************************
 
-// .SUBCKT nand2 A B Y vdd vnw vpw vss
-// MNM0 Y A net12_4 vpw N M=1 L=lna W=wna
-// Ra1 net12 net12_1 30
-// Ra2 net12_1 net12_2 30
-// Ra3 net12_2 net12_3 30
-// Ra4 net12_3 net12_4 30
-// Ca1 A vss 10
-// Ca2 A B 10
-// MNM1 net12 B vss vpw N M=1 L=lnb W=wnb
-// MPM0 Y A vdd vnw P W=wpa L=lpa M=1
-// MPM1 Y B vdd vnw P W=wpb L=lpb M=1
-// .ENDS
-
 .SUBCKT nand3 A B Y vdd vnw vpw vss
 MM0 Y B vdd vnw P W=wpa L=lpa M=1
 MPM0 Y A vdd vnw P W=wpa L=lpa M=1
@@ -44,25 +31,56 @@ MPM0 Y A vdd vnw P W=wpa L=lpa M=1
 MPM1 Y B vdd vnw P W=wpb L=lpb M=1
 .ENDS
 
-.SUBCKT writedriver2 bnksel1_b bnksel1_t bnksel2_b bnksel2_t bnksel3_b bnksel3_t bnksel4_b bnksel4_t cadd_n_0 cadd_n_1 iclk pdec00 pdec01 pdec02 pdec03 pdec04 pdec05 pdec06 pdec07 pdec10 pdec11 pdec12 pdec13 pdec14 pdec15 pdec16 pdec17 pdec0 pdec1 radd_n_0 reset vdd vnw vpw vss wenb wl_l<0> wl_l<1> wl_r<0> wl_r<1> wlclk0 wlclk1 
-Xdrvwlr1 nwl1 wl_r<1> vdd vnw vpw vss / inverter lp=0.13u wp=8.6u wn=5.7u 
+.SUBCKT transmission_gate A B C D vnw vpw 
+MPM1 A C B vnw P W=wp L=lp M=1
+MNM1 A D B vpw N M=1 L=ln W=wn
+.ENDS
+
+.SUBCKT tristate_inverter A B C Y vdd vnw vpw vss 
+MPM1 net23 B vdd vnw P W=wpb L=lpb M=1
+MPM0 Y A net23 vnw P W=wpa L=lpa M=1
+MNM1 net8 C vss vpw N M=1 L=lnb W=wnb
+MNM0 Y A net8 vpw N M=1 L=lna W=wna
+.ENDS
+
+.SUBCKT latch_addr In Out clk clkb vdd vnw vpw vss 
+XI1 In Inb vdd vnw vpw vss / inverter lp=0.13u wp=0.69u wn=0.345u ln=0.13u
+XI2 Outb Out vdd vnw vpw vss / inverter lp=0.13u wp=1.44u wn=0.86u ln=0.13u
+XI0 Inb Outb clk clkb vnw vpw / transmission_gate wn=0.69u ln=130n lp=130n 
++ wp=0.69u
+XIfbinv Out clkb clk Outb vdd vnw vpw vss / tristate_inverter wna=0.46u 
++ lna=130n wnb=0.46u lnb=130n lpa=130n wpa=0.345u lpb=130n wpb=0.345u
+.ENDS
+
+.SUBCKT GCK A<0> A<1> A<2> A<3> A<4> A<5> A<6> A<7> A<8> A<9> A<10> A<11> bnksel1_b bnksel1_t bnksel2_b bnksel2_t bnksel3_b bnksel3_t bnksel4_b bnksel4_t cadd_n_0 cadd_n_1 cen clk iclk pdec00 pdec01 pdec02 pdec03 pdec04 pdec05 pdec06 pdec07 pdec10 pdec11 pdec12 pdec13 pdec14 pdec15 pdec16 pdec17 radd_n_0 reset vdd vnw vpw vss vsse wclk wen wenb wlclk0 wlclk1
+XIwendrv net43 wenb vdd vnw vpw vss / inverter lp=0.13u wp=2.8u wn=1.7u 
 + ln=0.13u
-Xdrvwlr0 nwl0 wl_r<0> vdd vnw vpw vss / inverter lp=0.13u wp=8.6u wn=5.7u 
+XI24 la<1> cadd_n_1 vdd vnw vpw vss / inverter lp=0.13u wp=8.6u wn=5.7u
 + ln=0.13u
-Xpredrvwl0 rdec0 prewl0 vdd vnw vpw vss / inverter lp=0.13u wp=2.2u wn=1.4u 
+XIwenpredrv wen_lat net43 vdd vnw vpw vss / inverter lp=0.13u wp=2.8u wn=1.7u 
 + ln=0.13u
-Xdrvwll1 nwl1 wl_l<1> vdd vnw vpw vss / inverter lp=0.13u wp=8.6u wn=5.7u 
+XI23 la<0> cadd_n_0 vdd vnw vpw vss / inverter lp=0.13u wp=8.6u wn=5.7u 
 + ln=0.13u
-Xdrvwll0 nwl0 wl_l<0> vdd vnw vpw vss / inverter lp=0.13u wp=8.6u wn=5.7u 
+XI17 nwclk wclk vdd vnw vpw vss / inverter lp=0.13u wp=8.6u wn=5.7u ln=0.13u
+XIrowadd0drv la<2> radd_n_0 vdd vnw vpw vss / inverter lp=0.13u wp=8.6u 
++ wn=5.7u ln=0.13u
+XIbclkdrv niclk biclk vdd vnw vpw vss / inverter lp=0.13u wp=2.8u wn=1.7u 
 + ln=0.13u
-Xrowdec0 pdec1 pdec0 rdec0 vdd vnw vpw vss / nand2 lpb=0.13u wpb=0.460u 
-+ lpa=0.13u wpa=0.460u wnb=0.345u lnb=0.13u wna=0.345u lna=0.13u
-XI11 wlclk0 prewl0 nwl0 vdd vnw vpw vss / nand2 lpb=0.13u wpb=4.32u lpa=0.13u 
-+ wpa=4.32u wnb=4.32u lnb=0.13u wna=4.32u lna=0.13u
-XI10 wlclk1 prewl0 nwl1 vdd vnw vpw vss / nand2 lpb=0.13u wpb=4.32u lpa=0.13u 
-+ wpa=4.32u wnb=4.32u lnb=0.13u wna=4.32u lna=0.13u
-//test line
-XI10 wlclk1 prewl0 nwl1 vdd vnw vpw vss / nand3 lpb=0.13u wpb=4.32u lpa=0.13u 
-+ wpa=4.32u wnb=4.32u lnb=0.13u wna=4.32u lna=0.13u
-//test line
+XIniclkdrv iclk niclk vdd vnw vpw vss / inverter lp=0.13u wp=2.8u wn=1.7u 
++ ln=0.13u
+XIbankaddrlat<0> A<9> la<9> biclk niclk vdd vnw vpw vss / latch_addr
+XIbankaddrlat<1> A<10> la<10> biclk niclk vdd vnw vpw vss / latch_addr
+XIbankaddrlat<2> A<11> la<11> biclk niclk vdd vnw vpw vss / latch_addr
+XIddrlat<0> A<0> la<0> biclk niclk vdd vnw vpw vss / latch_addr
+XIddrlat<1> A<1> la<1> biclk niclk vdd vnw vpw vss / latch_addr
+XIddrlat<2> A<2> la<2> biclk niclk vdd vnw vpw vss / latch_addr
+XIddrlat<3> A<3> la<3> biclk niclk vdd vnw vpw vss / latch_addr
+XIddrlat<4> A<4> la<4> biclk niclk vdd vnw vpw vss / latch_addr
+XIddrlat<5> A<5> la<5> biclk niclk vdd vnw vpw vss / latch_addr
+XIddrlat<6> A<6> la<6> biclk niclk vdd vnw vpw vss / latch_addr
+XIddrlat<7> A<7> la<7> biclk niclk vdd vnw vpw vss / latch_addr
+XIddrlat<8> A<8> la<8> biclk niclk vdd vnw vpw vss / latch_addr
+XIwenlat wen wen_lat biclk niclk vdd vnw vpw vss / latch_addr
+XI16 wen_lat iclk nwclk vdd vnw vpw vss / nand2 lpb=0.13u wpb=2.8u lpa=0.13u 
++ wpa=2.8u wnb=2.8u lnb=0.13u wna=2.8u lna=0.13u
 .ENDS

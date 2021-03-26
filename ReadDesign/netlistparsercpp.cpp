@@ -255,7 +255,13 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
 
     return cells;
 }
-
+/*
+ * Takes in Parameters for the port names from Xcall and the relvant subcell,
+ * compares the names and creates relvant match associations base on the order
+ * wich the ports were introduces to the arrays.
+ * Returns a vetor of Device type objects with hold a set of two string
+ * Author: Aditya Mattoo
+ */
 std::vector<Device> NetlistParserBF::getPortNameMatchArray(std::vector<QString> xc ,std::vector<QString> mcr){
 
     std::vector<Device> d;
@@ -269,7 +275,13 @@ std::vector<Device> NetlistParserBF::getPortNameMatchArray(std::vector<QString> 
 
     return d;
 }
-
+/*
+ * Takes in Parameters for the port names from Xcall and the relvant subcell,
+ * compares the names and creates relvant match associations base on the order
+ * wich the ports were introduces to the arrays.
+ * Returns a map with key value pairs.
+ * Author: Aditya Mattoo
+ */
 std::map<QString,QString> NetlistParserBF::getPortNameMatchMap(std::vector<QString> xc ,std::vector<QString> mcr){
 
     std::map<QString,QString> compMap;
@@ -279,7 +291,11 @@ std::map<QString,QString> NetlistParserBF::getPortNameMatchMap(std::vector<QStri
     }
     return compMap;
 }
-
+/*
+ * Find the relative port from the precreated associative Array above in the getPortNameMatchArray()
+ * function to give you the correct port name that was associated with it in the Xcall\Cell component
+* Author: Aditya Mattoo
+*/
 QString NetlistParserBF::findRelativePort(QString po,std::vector<Device> arr,QString Xcallname){
     for(uint i = 0 ; i < arr.size() ; i++){
         if(po == arr[i].paramName){
@@ -289,7 +305,7 @@ QString NetlistParserBF::findRelativePort(QString po,std::vector<Device> arr,QSt
     return Xcallname + "/" + po;//if name does not match then add it as an internal conntection
 }
 
-Device comapreAndRevertDeviceValue(Device cellMos,std::vector<Device> XcallDevices){
+Device NetlistParserBF::comapreAndRevertDeviceValue(Device cellMos,std::vector<Device> XcallDevices){
 
     Device rd;
     for(uint n = 0 ; n < XcallDevices.size() ; n++){
@@ -313,7 +329,7 @@ std::vector<CellCBKT *> NetlistParserBF::parse(QString path, char hint)
         std::vector<Device> dt;//comparitve array for ports.
         for(uint n = 0; n < locVec.size(); n++)
         {
-            if(locVec[n]->xVec.size() != 0)
+            if(locVec[n] != nullptr && locVec[n]->xVec.size() != 0)
             {
                 qInfo() << "Flatenning started" << locVec[n]->name;
                 for(uint x = 0 ; x < locVec[n]->xVec.size() ; x++)//for every Xcall
@@ -323,7 +339,8 @@ std::vector<CellCBKT *> NetlistParserBF::parse(QString path, char hint)
                         {//number ports for xcall and its relvant cell need to be the same
                              dt = getPortNameMatchArray(locVec[n]->xVec[x]->ports,locVec[n]->xVec[x]->cell->ports);//populate
                         }
-                        else{
+                        else
+                        {
                             qInfo() << "Port count mismatch please check if netlist file is correct.";
                         }
 
@@ -383,7 +400,10 @@ std::vector<CellCBKT *> NetlistParserBF::parse(QString path, char hint)
             }
             else
             {
-                qInfo() << "No Xcall found to flatten in" << locVec[n]->name;
+                if(locVec[n] != nullptr)
+                    qInfo() << "No Xcall found to flatten in" << locVec[n]->name;
+                else
+                    qInfo() << "No cell boject found";
             }
         }
 

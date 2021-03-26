@@ -17,6 +17,7 @@ class NetlistParserBF : public NetlistParser_I
         std::map<QString,QString> getPortNameMatchMap(std::vector<QString> xc ,std::vector<QString> mcr);
         std::vector<Device> getPortNameMatchArray(std::vector<QString> xc ,std::vector<QString> mcr);
         QString findRelativePort(QString po,std::vector<Device> arr,QString Xcallname);
+        Device comapreAndRevertDeviceValue(Device cellMos,std::vector<Device> XcallDevices);
 
         std::vector<QString> lines;
         std::vector<CellCBKT*> cells;

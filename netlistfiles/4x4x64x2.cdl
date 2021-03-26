@@ -612,7 +612,7 @@ MNM1 A D B vpw N M=1 L=ln W=wn
 * View Name: schematic
 ************************************************************************
 
-.SUBCKT tristate_inverter A B C Y vdd vnw vpw vss 
+.SUBCKT 00 A B C Y vdd vnw vpw vss 
 *.PININFO A:I B:I C:I vdd:I vnw:I vpw:I vss:I Y:O
 MPM1 net23 B vdd vnw P W=wpb L=lpb M=1
 MPM0 Y A net23 vnw P W=wpa L=lpa M=1
@@ -842,7 +842,6 @@ XIfbinv Out clkb clk Outb vdd vnw vpw vss / tristate_inverter wna=0.46u
 ************************************************************************
 
 .SUBCKT Clk_generator CEN clk iclk reset vdd vnw vpw vss vsse 
-*.PININFO CEN:I clk:I reset:I vdd:I vnw:I vpw:I vss:I vsse:I iclk:O
 XI15 net036 trip vdd vnw vpw vss / inverter lp=0.13u wp=0.40u wn=0.20u ln=0.13u
 XI12 net013 net0112 vdd vnw vpw vss / inverter lp=0.13u wp=0.52u wn=0.345u 
 + ln=0.13u
