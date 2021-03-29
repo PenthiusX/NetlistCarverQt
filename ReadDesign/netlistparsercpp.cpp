@@ -78,7 +78,8 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
     QRegExp rx3(R"(\w+=\w+\.\w+)");//word before and after includeing numbers with decimals.//fors Xcall
     QRegExp rx4(R"(/\s\w+)");//word after '/' for name of cellSbkt
     QRegExp rx5(R"([a-z0-9/<>_-]{1,20})");//encompasses a wide set with /, <> and _ undersore from 2 to 20 letters
-    QRegExp rx6(R"((\w+)|([a-z0-9\/<>_-]{1,20}))");//
+    //QRegExp rx6(R"((\w+)|([a-z0-9\/<>_-]{1,20}))");//
+    QRegExp rx6(R"((\w+[a-z0-9<>_-]{1,20})|(\w+)|(\/))");//
     //--------------------
 
     //Start parsing the lines.
@@ -163,7 +164,7 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
 //                    name.insert(0,'X');
                     xc->name = name;
                 }
-                if(!hitStop && count > 0)//all pins till it hits '/' in file ,and skips the first word that is the name.
+                if(hitStop == false && count > 0)//all pins till it hits '/' in file ,and skips the first word that is the name.
                 {
                     xc->ports.push_back(rx6.cap(0));
                 }
