@@ -131,16 +131,14 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
                 count++;
             }
             pos = 0;
-            while((pos = rx2.indexIn(lines[i],pos)) != -1)//parse over the device properties
+            while((pos = rx3.indexIn(lines[i],pos)) != -1)//capture the name of the Sbkt
             {
-                //for device properties
-                QString ts = rx2.cap(1);
-                ts.truncate(ts.lastIndexOf(QChar('=')));
+                QString t = rx3.cap(0);
                 Device d;
-                d.paramName = ts;
-                d.paramValue = rx2.cap(1).remove(QRegularExpression("\\w+="));
-                tm->deviceProperties.push_back(d);
-                pos += rx2.matchedLength();//iterate pos over each word
+                d.paramName = rx3.cap(0).remove(QRegularExpression("(=\\w+\\.\\w+)|(=\\w+\\w+)"));
+                d.paramValue = rx3.cap(0).remove(QRegularExpression("\\w+="));
+                tm->deviceProperties.push_back(d);//add all device and values for the current Xcall;
+                pos += rx3.matchedLength();
             }
             tcell->mVec.push_back(tm);//store the Mmos info
         }
@@ -366,7 +364,7 @@ std::vector<CellCBKT *> NetlistParserBF::parse(QString path, char hint)
                         locVec[n]->mVec.push_back(tm);
                         tm = NULL;
                     }
-                    Res* rm;
+                    Res* rm;//For every Resistor encoutered
                     for(uint r = 0 ; r < locVec[n]->xVec[x]->cell->rVec.size() ; r++)
                     {
                         rm = new Res();
@@ -381,7 +379,7 @@ std::vector<CellCBKT *> NetlistParserBF::parse(QString path, char hint)
                         locVec[n]->rVec.push_back(rm);
                         rm = NULL;
                     }
-                    Cap* cm;
+                    Cap* cm;//For every Cpacitor encountered
                     for(uint c = 0 ; c < locVec[n]->xVec[x]->cell->cVec.size() ; c++)
                     {
                         cm = new Cap();
@@ -397,7 +395,7 @@ std::vector<CellCBKT *> NetlistParserBF::parse(QString path, char hint)
                         cm = NULL;
                     }
                 }
-                locVec[n]->xVec.clear();//optional clear
+                locVec[n]->xVec.clear();//optional clear after flatening the Xcall to its sub m/c/r moses
             }
             else
             {
@@ -436,15 +434,6 @@ CellCBKT* NetlistParserBF::findCellFromName(QString name)
         qInfo() << "THe cell array is empty cant find any such Object";
     }
 }
-
-void recXcalls(CellCBKT* cell){
-
-    if(cell->xVec.size() != 0)
-    {
-//        recXcalls(cell->xVec[0] - );
-    }
-}
-
 
 
 

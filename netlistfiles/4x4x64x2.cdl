@@ -488,7 +488,7 @@ Xrdwrselx4_top blc0_top blc1_top blc2_top blc3_top blpchx_top blt0_top
 + blt1_top blt2_top blt3_top rblc_top rblt_top rdselx0_top rdselx1_top 
 + rdselx2_top rdselx3_top vdd vnw vpw lwdatac lwdatat wrsel0_top wrsel1_top 
 + wrsel2_top wrsel3_top / rdwrselx4
-Xrdwrselx4_bot blc0_bot blc1_bot blc2_bot blc3_bot blpchx_bot blt0_bot 
+Xrdwrselx4_bot blc0_bot blc1_bot blc2_bot blc3_bot blpchx_bot blt0_bot //*.Adi
 + blt1_bot blt2_bot blt3_bot rblc_bot rblt_bot rdselx0_bot rdselx1_bot 
 + rdselx2_bot rdselx3_bot vdd vnw vpw lwdatac lwdatat wrsel0_bot wrsel1_bot 
 + wrsel2_bot wrsel3_bot / rdwrselx4
