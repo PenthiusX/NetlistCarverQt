@@ -151,24 +151,24 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
             count = 0;
             ::XCall* xc = new ::XCall();
             bool hitStop = false;
-            while((pos = rx5.indexIn(lines[i],pos)) != -1)
+            while((pos = rx6.indexIn(lines[i],pos)) != -1)
             {
-                if(rx5.cap(0) == '/')//bool flag on '/' hit
+                if(rx6.cap(0) == '/')//bool flag on '/' hit #Note : Need to add another condition for it as well witout slash.
                 {
                     hitStop = true;
                 }
                 if(count == 0)//First word the name
                 {
-                    QString name = rx5.cap(0);
-                    name.insert(0,'X');
+                    QString name = rx6.cap(0);
+//                    name.insert(0,'X');
                     xc->name = name;
                 }
                 if(!hitStop && count > 0)//all pins till it hits '/' in file ,and skips the first word that is the name.
                 {
-                    xc->ports.push_back(rx5.cap(0));
+                    xc->ports.push_back(rx6.cap(0));
                 }
-                QString t = rx5.cap(0);
-                pos += rx5.matchedLength();//iterate pos over each word
+                QString t = rx6.cap(0);
+                pos += rx6.matchedLength();//iterate pos over each word
                 count++;
             }
             pos = 0;
@@ -253,6 +253,7 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
         }
     }
 
+    cells.pop_back();//Temporary fix, for the extra empty array element created, due to bug, needs fix.
     return cells;
 }
 /*
@@ -335,66 +336,65 @@ std::vector<CellCBKT *> NetlistParserBF::parse(QString path, char hint)
                 for(uint x = 0 ; x < locVec[n]->xVec.size() ; x++)//for every Xcall
                 {
                     //FOr each xcall push the relvant mos /res/cap variant in existant vectors
-                        if(locVec[n]->xVec[x]->ports.size() == locVec[n]->xVec[x]->cell->ports.size())
-                        {//number ports for xcall and its relvant cell need to be the same
-                             dt = getPortNameMatchArray(locVec[n]->xVec[x]->ports,locVec[n]->xVec[x]->cell->ports);//populate
-                        }
-                        else
+                    if(locVec[n]->xVec[x]->ports.size() == locVec[n]->xVec[x]->cell->ports.size())
+                    {//number ports for xcall and its relvant cell need to be the same
+                        dt = getPortNameMatchArray(locVec[n]->xVec[x]->ports,locVec[n]->xVec[x]->cell->ports);//populate
+                    }
+                    else
+                    {
+                        qInfo() << "Port count mismatch please check if netlist file is correct.";
+                    }
+
+                    MMos* tm;
+                    for(uint m = 0 ; m < locVec[n]->xVec[x]->cell->mVec.size() ; m++)//For every Mmos in Xcall cell.
+                    {
+                        tm = new MMos;
+                        tm->name = locVec[n]->xVec[x]->name + "/" + locVec[n]->xVec[x]->cell->mVec[m]->name;//set name
+
+                        for(uint p = 0 ; p < locVec[n]->xVec[x]->cell->mVec[m]->ports.size(); p++)//set port names
                         {
-                            qInfo() << "Port count mismatch please check if netlist file is correct.";
+                            tm->ports.push_back(findRelativePort(locVec[n]->xVec[x]->cell->mVec[m]->ports[p],dt,locVec[n]->xVec[x]->name));
                         }
-
-                        MMos* tm;
-                        for(uint m = 0 ; m < locVec[n]->xVec[x]->cell->mVec.size() ; m++)//For every Mmos in Xcall cell.
+                        for(uint d = 0 ; d < locVec[n]->xVec[x]->cell->mVec[m]->deviceProperties.size(); d++)
                         {
-                            tm = new MMos;
-                            tm->name = locVec[n]->xVec[x]->name + "/" + locVec[n]->xVec[x]->cell->mVec[m]->name;//set name
-
-                            for(uint p = 0 ; p < locVec[n]->xVec[x]->cell->mVec[m]->ports.size(); p++)//set port names
-                            {
-                                tm->ports.push_back(findRelativePort(locVec[n]->xVec[x]->cell->mVec[m]->ports[p],dt,locVec[n]->xVec[x]->name));
-                            }
-                            for(uint d = 0 ; d < locVec[n]->xVec[x]->cell->mVec[m]->deviceProperties.size(); d++)
-                            {
-                                Device td;
-                                td = comapreAndRevertDeviceValue(locVec[n]->xVec[x]->cell->mVec[m]->deviceProperties[d],locVec[n]->xVec[x]->deviceProperties);
-                                tm->deviceProperties.push_back(td);
-                            }
-
-                            locVec[n]->mVec.push_back(tm);
-                            tm = NULL;
+                            Device td;
+                            td = comapreAndRevertDeviceValue(locVec[n]->xVec[x]->cell->mVec[m]->deviceProperties[d],locVec[n]->xVec[x]->deviceProperties);
+                            tm->deviceProperties.push_back(td);
                         }
-                        Res* rm;
-                        for(uint r = 0 ; r < locVec[n]->xVec[x]->cell->rVec.size() ; r++)
+
+                        locVec[n]->mVec.push_back(tm);
+                        tm = NULL;
+                    }
+                    Res* rm;
+                    for(uint r = 0 ; r < locVec[n]->xVec[x]->cell->rVec.size() ; r++)
+                    {
+                        rm = new Res();
+                        rm->name = locVec[n]->xVec[x]->name + "/" + locVec[n]->xVec[x]->cell->rVec[r]->name;
+                        rm->value = locVec[n]->xVec[x]->cell->rVec[r]->value;
+
+                        for(uint p = 0 ; p < locVec[n]->xVec[x]->cell->rVec[r]->ports.size(); p++)
                         {
-                           rm = new Res();
-                           rm->name = locVec[n]->xVec[x]->name + "/" + locVec[n]->xVec[x]->cell->rVec[r]->name;
-                           rm->value = locVec[n]->xVec[x]->cell->rVec[r]->value;
-
-                           for(uint p = 0 ; p < locVec[n]->xVec[x]->cell->rVec[r]->ports.size(); p++)
-                           {
-                                rm->ports.push_back(findRelativePort(locVec[n]->xVec[x]->cell->rVec[r]->ports[p],dt,locVec[n]->xVec[x]->name));
-                           }
-
-                           locVec[n]->rVec.push_back(rm);
-                           rm = NULL;
+                            rm->ports.push_back(findRelativePort(locVec[n]->xVec[x]->cell->rVec[r]->ports[p],dt,locVec[n]->xVec[x]->name));
                         }
-                        Cap* cm;
-                        for(uint c = 0 ; c < locVec[n]->xVec[x]->cell->cVec.size() ; c++)
+
+                        locVec[n]->rVec.push_back(rm);
+                        rm = NULL;
+                    }
+                    Cap* cm;
+                    for(uint c = 0 ; c < locVec[n]->xVec[x]->cell->cVec.size() ; c++)
+                    {
+                        cm = new Cap();
+                        cm->name = locVec[n]->xVec[x]->name + "/" + locVec[n]->xVec[x]->cell->cVec[c]->name;
+                        cm->value = locVec[n]->xVec[x]->cell->cVec[c]->value;
+
+                        for(uint p = 0 ; p < locVec[n]->xVec[x]->cell->cVec[c]->ports.size(); p++)
                         {
-
-                            cm = new Cap();
-                            cm->name = locVec[n]->xVec[x]->name + "/" + locVec[n]->xVec[x]->cell->cVec[c]->name;
-                            cm->value = locVec[n]->xVec[x]->cell->cVec[c]->value;
-
-                            for(uint p = 0 ; p < locVec[n]->xVec[x]->cell->cVec[c]->ports.size(); p++)
-                            {
-                                 cm->ports.push_back(findRelativePort(locVec[n]->xVec[x]->cell->cVec[c]->ports[p],dt,locVec[n]->xVec[x]->name));
-                            }
-
-                            locVec[n]->cVec.push_back(cm);
-                            cm = NULL;
+                            cm->ports.push_back(findRelativePort(locVec[n]->xVec[x]->cell->cVec[c]->ports[p],dt,locVec[n]->xVec[x]->name));
                         }
+
+                        locVec[n]->cVec.push_back(cm);
+                        cm = NULL;
+                    }
                 }
                 locVec[n]->xVec.clear();//optional clear
             }
@@ -436,7 +436,13 @@ CellCBKT* NetlistParserBF::findCellFromName(QString name)
     }
 }
 
+void recXcalls(CellCBKT* cell){
 
+    if(cell->xVec.size() != 0)
+    {
+//        recXcalls(cell->xVec[0] - );
+    }
+}
 
 
 
