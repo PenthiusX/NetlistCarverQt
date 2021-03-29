@@ -75,7 +75,7 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
     //Regexp captures-----
     QRegExp rx(R"((\w+))");//word of any length
     QRegExp rx2(R"((\w+=\w+))");//word before and after = // for Mmos
-    QRegExp rx3(R"(\w+=\w+\.\w+)");//word before and after includeing numbers with decimals.//fors Xcall
+    QRegExp rx3(R"((\w+=\w+\.\w+)|(\w+=\w+\w+))");//word before and after includeing numbers with decimals.//fors Xcall
     QRegExp rx4(R"(/\s\w+)");//word after '/' for name of cellSbkt
     QRegExp rx5(R"([a-z0-9/<>_-]{1,20})");//encompasses a wide set with /, <> and _ undersore from 2 to 20 letters
     //QRegExp rx6(R"((\w+)|([a-z0-9\/<>_-]{1,20}))");//
@@ -186,7 +186,7 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
             {
                 QString t = rx3.cap(0);
                 Device d;
-                d.paramName = rx3.cap(0).remove(QRegularExpression("=\\w+\\.\\w+"));
+                d.paramName = rx3.cap(0).remove(QRegularExpression("(=\\w+\\.\\w+)|(=\\w+\\w+)"));
                 d.paramValue = rx3.cap(0).remove(QRegularExpression("\\w+="));
                 xc->deviceProperties.push_back(d);//add all device and values for the current Xcall;
                 pos += rx3.matchedLength();
