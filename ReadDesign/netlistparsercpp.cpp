@@ -1,6 +1,9 @@
 #include "ReadDesign/netlistparsercpp.h"
 #include <QRegularExpression>
 
+#include <QDebug>
+#include <QtDebug>
+
 NetlistParserBF::NetlistParserBF()
 {
 
@@ -75,7 +78,7 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
     //Regexp captures-----
     QRegExp rx(R"((\w+))");//word of any length
     QRegExp rx2(R"((\w+=\w+))");//word before and after = // for Mmos
-    QRegExp rx3(R"((\w+=\w+\.\w+)|(\w+=\w+\w+))");//word before and after includeing numbers with decimals.//fors Xcall
+    QRegExp rx3(R"((\w+=\w+\.\w+)|(\w+=\w+\w+)|(\w+\=\d))");//word before and after includeing numbers with decimals.//fors Xcall
     QRegExp rx4(R"(/\s\w+)");//word after '/' for name of cellSbkt
     QRegExp rx5(R"([a-z0-9/<>_-]{1,20})");//encompasses a wide set with /, <> and _ undersore from 2 to 20 letters
     //QRegExp rx6(R"((\w+)|([a-z0-9\/<>_-]{1,20}))");//
@@ -135,7 +138,7 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
             {
                 QString t = rx3.cap(0);
                 Device d;
-                d.paramName = rx3.cap(0).remove(QRegularExpression("(=\\w+\\.\\w+)|(=\\w+\\w+)"));
+                d.paramName = rx3.cap(0).remove(QRegularExpression(R"("(=\w+\.\w+)|(=\w+\w+)|(=\d))"));
                 d.paramValue = rx3.cap(0).remove(QRegularExpression("\\w+="));
                 tm->deviceProperties.push_back(d);//add all device and values for the current Xcall;
                 pos += rx3.matchedLength();
@@ -159,7 +162,7 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
                 if(count == 0)//First word the name
                 {
                     QString name = rx6.cap(0);
-//                    name.insert(0,'X');
+                    //                    name.insert(0,'X');
                     xc->name = name;
                 }
                 if(hitStop == false && count > 0)//all pins till it hits '/' in file ,and skips the first word that is the name.
@@ -317,6 +320,39 @@ Device NetlistParserBF::comapreAndRevertDeviceValue(Device cellMos,std::vector<D
     }
     return cellMos;
 }
+/*
+ * Temp implementation to dump the info as Application output
+ */
+void NetlistParserBF::netlistDump(std::vector<CellCBKT *> locVec)
+{
+    for(uint l = 0; l < locVec.size(); l++)
+    {
+        QString s;
+        s += locVec[l]->name;
+        for(uint p = 0 ; p < locVec[l]->ports.size(); p++)
+        {
+            s += " " + locVec[l]->ports[p];
+        }
+        qInfo() << s;
+        s.clear();
+        for(uint m = 0; m < locVec[l]->mVec.size(); m++)
+        {
+            s += locVec[l]->mVec[m]->name ;
+            for(uint p2 = 0 ; p2 < locVec[l]->mVec[m]->ports.size(); p2++)
+            {
+                s += " " + locVec[l]->mVec[m]->ports[p2];
+            }
+            for(uint d = 0 ; d < locVec[l]->mVec[m]->deviceProperties.size(); d++)
+            {
+                s += " " + locVec[l]->mVec[m]->deviceProperties[d].paramName + ":" + locVec[l]->mVec[m]->deviceProperties[d].paramValue;
+            }
+                qInfo() << s;
+                s.clear();
+        }
+        qInfo() << "--------------------------------------------------";
+        s.clear();
+    }
+}
 
 std::vector<CellCBKT *> NetlistParserBF::parse(QString path, char hint)
 {
@@ -406,6 +442,7 @@ std::vector<CellCBKT *> NetlistParserBF::parse(QString path, char hint)
             }
         }
 
+        netlistDump(locVec);//Test dump
         return locVec;
     }
     if(hint == 'R')
@@ -434,6 +471,4 @@ CellCBKT* NetlistParserBF::findCellFromName(QString name)
         qInfo() << "THe cell array is empty cant find any such Object";
     }
 }
-
-
 

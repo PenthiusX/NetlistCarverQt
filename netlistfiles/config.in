@@ -47,24 +47,6 @@ XIfbinv Out clkb clk Outb vdd vnw vpw vss / tristate_inverter wna=0.46u
 .ENDS
 
 .SUBCKT GCK A<0> A<1> A<2> A<3> A<4> A<5> A<6> A<7> A<8> A<9> A<10> A<11> bnksel1_b bnksel1_t bnksel2_b bnksel2_t bnksel3_b bnksel3_t bnksel4_b bnksel4_t cadd_n_0 cadd_n_1 cen clk iclk pdec00 pdec01 pdec02 pdec03 pdec04 pdec05 pdec06 pdec07 pdec10 pdec11 pdec12 pdec13 pdec14 pdec15 pdec16 pdec17 radd_n_0 reset vdd vnw vpw vss vsse wclk wen wenb wlclk0 wlclk1
-XIwendrv net43 wenb vdd vnw vpw vss / inverter lp=0.13u wp=2.8u wn=1.7u 
-+ ln=0.13u
+XIwendrv net43 wenb vdd vnw vpw vss / inverter lp=0.13u wp=2.8u wn=1.7u ln=0.13u
 XIbankaddrlat<0> A<9> la<9> biclk niclk vdd vnw vpw vss / latch_addr
-.ENDS
-
-//Case for slash less cell instance no /instance name.
-.SUBCKT SRAM6T blc blt dc dt vdd vss wl vpw vnw 
-MPDC dc dt vss vpw NHV M=1 L=180n W=400n
-MPDT dt dc vss vpw NHV M=1 L=180n W=400n
-MPGT dt wl blt vpw NHV M=1 L=180n W=260n
-MPGC dc wl blc vpw NHV M=1 L=180n W=260n
-MPUC dc dt vdd vnw PHV W=175n L=180n M=1
-MPUT dt dc vdd vnw PHV W=175n L=180n M=1
-.ENDS
-
-.SUBCKT bitcell_mux_slice_0 blc<0> blc<1> blc<2> blc<3> blt<0> blt<1> blt<2> blt<3> vdd vss wl vpw vnw 
-XSRAM6T__1 blc<0> blt<0> dc1 dt1 vdd vss wl vpw vnw SRAM6T 
-XSRAM6T__2 blc<1> blt<1> dc2 dt2 vdd vss wl vpw vnw SRAM6T 
-XSRAM6T__3 blc<2> blt<2> dc3 dt3 vdd vss wl vpw vnw SRAM6T 
-XSRAM6T__4 blc<3> blt<3> dc4 dt4 vdd vss wl vpw vnw SRAM6T 
 .ENDS
