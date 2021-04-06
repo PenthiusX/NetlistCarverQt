@@ -612,7 +612,7 @@ MNM1 A D B vpw N M=1 L=ln W=wn
 * View Name: schematic
 ************************************************************************
 
-.SUBCKT 00 A B C Y vdd vnw vpw vss 
+.SUBCKT tristate_inverter A B C Y vdd vnw vpw vss 
 *.PININFO A:I B:I C:I vdd:I vnw:I vpw:I vss:I Y:O
 MPM1 net23 B vdd vnw P W=wpb L=lpb M=1
 MPM0 Y A net23 vnw P W=wpa L=lpa M=1

@@ -174,16 +174,28 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
                 count++;
             }
             pos = 0;
-            while((pos = rx4.indexIn(lines[i],pos)) != -1)//capture the name of the Sbkt
-            {
-                QString name = rx4.cap(0);
-                name.remove("/ ");
-                // passes the real refrence to the object , so changes to the cell here will change the actual values.
-                xc->cell = findCellFromName(name);
-                pos += rx4.matchedLength();
+            if(lines[i].contains("/")){
+                while((pos = rx4.indexIn(lines[i],pos)) != -1)//capture the name of the Sbkt
+                {
+                    QString name = rx4.cap(0);
+                    name.remove("/ ");
+                    // passes the real refrence to the object , so changes to the cell here will change the actual values.
+                    xc->cell = findCellFromName(name);
+                    pos += rx4.matchedLength();
+                }
             }
+            if(!lines[i].contains("/")){
+                QString name;
+                while((pos = rx6.indexIn(lines[i],pos)) != -1)//capture the name of the Sbkt
+                {
+                    name = rx6.cap(0);
+                    pos += rx6.matchedLength();
+                }
+                xc->cell = findCellFromName(name);
+            }
+
             pos = 0;
-            while((pos = rx3.indexIn(lines[i],pos)) != -1)//capture the name of the Sbkt
+            while((pos = rx3.indexIn(lines[i],pos)) != -1)//capture the device and its property value
             {
                 QString t = rx3.cap(0);
                 Device d;
@@ -367,17 +379,20 @@ std::vector<CellCBKT *> NetlistParserBF::parse(QString path, char hint)
         {
             if(locVec[n] != nullptr && locVec[n]->xVec.size() != 0)
             {
-                qInfo() << "Flatenning started" << locVec[n]->name;
+                qInfo() << "Flatenning started" << locVec[n]->name;//Post this message on UI
                 for(uint x = 0 ; x < locVec[n]->xVec.size() ; x++)//for every Xcall
                 {
                     //FOr each xcall push the relvant mos /res/cap variant in existant vectors
+                    if(locVec[n]->xVec[x]->cell == NULL){
+                        qInfo() << "Problem in file , Check if Xcall has definition for its cell.";//Post this message on UI
+                    }
                     if(locVec[n]->xVec[x]->ports.size() == locVec[n]->xVec[x]->cell->ports.size())
                     {//number ports for xcall and its relvant cell need to be the same
                         dt = getPortNameMatchArray(locVec[n]->xVec[x]->ports,locVec[n]->xVec[x]->cell->ports);//populate
                     }
                     else
                     {
-                        qInfo() << "Port count mismatch please check if netlist file is correct.";
+                        qInfo() << "Port count mismatch please check if netlist file is correct.";//Post this message on UI
                     }
 
                     MMos* tm;
@@ -436,9 +451,9 @@ std::vector<CellCBKT *> NetlistParserBF::parse(QString path, char hint)
             else
             {
                 if(locVec[n] != nullptr)
-                    qInfo() << "No Xcall found to flatten in" << locVec[n]->name;
+                    qInfo() << "No Xcall found to flatten in" << locVec[n]->name; //Post this message on UI
                 else
-                    qInfo() << "No cell boject found";
+                    qInfo() << "No cell oject found"; //Post this message on UI
             }
         }
 
@@ -451,7 +466,7 @@ std::vector<CellCBKT *> NetlistParserBF::parse(QString path, char hint)
         return this->parse(path);
     }
 
-    qInfo() << "Please enter the correct hint.";
+    qInfo() << "Please enter the correct hint."; //Post this message on UI
 }
 /*
  * Used to return the refrence of the cell for use in a Xcall container
@@ -466,6 +481,8 @@ CellCBKT* NetlistParserBF::findCellFromName(QString name)
             }
         }
         qInfo() << "no Cell with the matching name found";
+        CellCBKT* badCell = NULL;
+        return badCell;
     }
     else{
         qInfo() << "THe cell array is empty cant find any such Object";

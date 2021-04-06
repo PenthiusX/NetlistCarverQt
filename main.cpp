@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
 
     //--Netlist parser Instansce--//
     NetlistParser_I* n = new NetlistParserBF();
-    std::vector<CellCBKT*> tVector = n->parse("../NetlistCarverQt/netlistfiles/config.in",'F');//path needs to come from a UI solution
+    std::vector<CellCBKT*> tVector = n->parse("../NetlistCarverQt/netlistfiles/4x4x64x2.cdl",'F');//path needs to come from a UI solution
     //-------------------------//
 
     MainWindow w;

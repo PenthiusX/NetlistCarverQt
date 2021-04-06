@@ -46,96 +46,32 @@ XIfbinv Out clkb clk Outb vdd vnw vpw vss / tristate_inverter wna=0.46u
 + lna=130n wnb=0.46u lnb=130n lpa=130n wpa=0.345u lpb=130n wpb=0.345u
 .ENDS
 
-
-.SUBCKT Clk_generator CEN clk iclk reset vdd vnw vpw vss vsse 
-XI15 net036 trip vdd vnw vpw vss / inverter lp=0.13u wp=0.40u wn=0.20u ln=0.13u
-XI12 net013 net0112 vdd vnw vpw vss / inverter lp=0.13u wp=0.52u wn=0.345u 
-+ ln=0.13u
-XI11 net099 dnclk vdd vnw vpw vss / inverter lp=0.13u wp=2.8u wn=1.7u ln=0.13u
-XI19 clk net047 vdd vnw vpw vss / inverter lp=0.13u wp=0.52u wn=0.345u ln=0.13u
-XI7 net013 iclk vdd vnw vpw vss / inverter lp=0.13u wp=11.52u wn=5.7u ln=0.13u
-MNM2 net37 dnclk vsse vpw N M=1 L=130n W=11.52u
-MNM6 net0104 reset vsse vpw N M=1 L=130n W=2.8u
-MNM5 net013 net0112 net0104 vpw N M=1 L=130n W=2.8u
-MNM7 net013 clk net37 vpw N M=1 L=130n W=11.52u
-XI17 net047 CEN net099 vdd vnw vpw vss / nand2 lpb=0.13u wpb=0.52u lpa=0.13u 
-+ wpa=0.52u wnb=0.52u lnb=0.13u wna=0.52u lna=0.13u
-XI14 clk dnclk net036 vdd vnw vpw vss / nand2 lpb=0.13u wpb=0.69u lpa=0.13u 
-+ wpa=0.69u wnb=0.69u lnb=0.13u wna=0.69u lna=0.13u
-MPM0 net013 reset vdd vnw P W=2.8u L=130n M=1
-MPM1 net063 net0112 net013 vnw P W=345n L=130n M=1
-MPM3 net063 trip vdd vnw P W=345n L=130n M=1
-.ENDS
-
-
-.SUBCKT inverter2stack In Out vdd vnw vpw vss 
-*.PININFO In:I vdd:I vnw:I vpw:I vss:I Out:O
-MNM0 Out In net26 vpw N M=1 L=ln W=wn
-MNM2 net26 In vss vpw N M=1 L=ln W=wn
-MPM0 Out In net11 vnw P W=wp L=lp M=1
-MPM1 net11 In vdd vnw P W=wp L=lp M=1
-.ENDS
-
-
-.SUBCKT reset_delay In Out vdd vnw vpw vss 
-XI5 net5 Out vdd vnw vpw vss / inverter lp=0.13u wp=0.17u wn=0.17u ln=0.13u
-XI0 net071 net35 vdd vnw vpw vss / inverter2stack lp=0.13u wp=0.17u wn=0.17u 
-+ ln=0.13u
-XI1 net35 net29 vdd vnw vpw vss / inverter2stack lp=0.13u wp=0.17u wn=0.17u 
-+ ln=0.13u
-XI2 net17 net23 vdd vnw vpw vss / inverter2stack lp=0.13u wp=0.17u wn=0.17u 
-+ ln=0.13u
-XI3 net29 net17 vdd vnw vpw vss / inverter2stack lp=0.13u wp=0.17u wn=0.17u 
-+ ln=0.13u
-XI9 net021 net042 vdd vnw vpw vss / inverter2stack lp=0.13u wp=0.17u wn=0.17u 
-+ ln=0.13u
-XI8 net042 net036 vdd vnw vpw vss / inverter2stack lp=0.13u wp=0.17u wn=0.17u 
-+ ln=0.13u
-XI7 net024 net071 vdd vnw vpw vss / inverter2stack lp=0.13u wp=0.17u wn=0.17u 
-+ ln=0.13u
-XI6 net036 net024 vdd vnw vpw vss / inverter2stack lp=0.13u wp=0.17u wn=0.17u 
-+ ln=0.13u
-XI13 In net030 vdd vnw vpw vss / inverter2stack lp=0.13u wp=0.17u wn=0.17u 
-+ ln=0.13u
-XI12 net030 net022 vdd vnw vpw vss / inverter2stack lp=0.13u wp=0.17u wn=0.17u 
-+ ln=0.13u
-XI11 net048 net021 vdd vnw vpw vss / inverter2stack lp=0.13u wp=0.17u wn=0.17u 
-+ ln=0.13u
-XI10 net022 net048 vdd vnw vpw vss / inverter2stack lp=0.13u wp=0.17u wn=0.17u 
-+ ln=0.13u
-.ENDS
-
-
 .SUBCKT GCK A<0> A<1> A<2> A<3> A<4> A<5> A<6> A<7> A<8> A<9> A<10> A<11> bnksel1_b bnksel1_t bnksel2_b bnksel2_t bnksel3_b bnksel3_t bnksel4_b bnksel4_t cadd_n_0 cadd_n_1 cen clk iclk pdec00 pdec01 pdec02 pdec03 pdec04 pdec05 pdec06 pdec07 pdec10 pdec11 pdec12 pdec13 pdec14 pdec15 pdec16 pdec17 radd_n_0 reset vdd vnw vpw vss vsse wclk wen wenb wlclk0 wlclk1
-XICLKresetpath niclk reset vdd vnw vpw vss / reset_delay
 XIwendrv net43 wenb vdd vnw vpw vss / inverter lp=0.13u wp=2.8u wn=1.7u ln=0.13u
-XI24 la<1> cadd_n_1 vdd vnw vpw vss / inverter lp=0.13u wp=8.6u wn=5.7u 
-+ ln=0.13u
-XIwenpredrv wen_lat net43 vdd vnw vpw vss / inverter lp=0.13u wp=2.8u wn=1.7u 
-+ ln=0.13u
-XI23 la<0> cadd_n_0 vdd vnw vpw vss / inverter lp=0.13u wp=8.6u wn=5.7u 
-+ ln=0.13u
-XI17 nwclk wclk vdd vnw vpw vss / inverter lp=0.13u wp=8.6u wn=5.7u ln=0.13u
-XIrowadd0drv la<2> radd_n_0 vdd vnw vpw vss / inverter lp=0.13u wp=8.6u 
-+ wn=5.7u ln=0.13u
-XIbclkdrv niclk biclk vdd vnw vpw vss / inverter lp=0.13u wp=2.8u wn=1.7u 
-+ ln=0.13u
-XIniclkdrv iclk niclk vdd vnw vpw vss / inverter lp=0.13u wp=2.8u wn=1.7u 
-+ ln=0.13u
 XIbankaddrlat<0> A<9> la<9> biclk niclk vdd vnw vpw vss / latch_addr
-XIbankaddrlat<1> A<10> la<10> biclk niclk vdd vnw vpw vss / latch_addr
-XIbankaddrlat<2> A<11> la<11> biclk niclk vdd vnw vpw vss / latch_addr
-XIddrlat<0> A<0> la<0> biclk niclk vdd vnw vpw vss / latch_addr
-XIddrlat<1> A<1> la<1> biclk niclk vdd vnw vpw vss / latch_addr
-XIddrlat<2> A<2> la<2> biclk niclk vdd vnw vpw vss / latch_addr
-XIddrlat<3> A<3> la<3> biclk niclk vdd vnw vpw vss / latch_addr
-XIddrlat<4> A<4> la<4> biclk niclk vdd vnw vpw vss / latch_addr
-XIddrlat<5> A<5> la<5> biclk niclk vdd vnw vpw vss / latch_addr
-XIddrlat<6> A<6> la<6> biclk niclk vdd vnw vpw vss / latch_addr
-XIddrlat<7> A<7> la<7> biclk niclk vdd vnw vpw vss / latch_addr
-XIddrlat<8> A<8> la<8> biclk niclk vdd vnw vpw vss / latch_addr
-XIwenlat wen wen_lat biclk niclk vdd vnw vpw vss / latch_addr
-XIclkgen cen clk iclk reset vdd vnw vpw vss vsse / Clk_generator
-XI16 wen_lat iclk nwclk vdd vnw vpw vss / nand2 lpb=0.13u wpb=2.8u lpa=0.13u 
-+ wpa=2.8u wnb=2.8u lnb=0.13u wna=2.8u lna=0.13u
+.ENDS
+
+.SUBCKT liomux4 blc0_bot blc0_top blc1_bot blc1_top blc2_bot blc2_top blc3_bot blc3_top blpchx_bot blpchx_top blt0_bot blt0_top blt1_bot blt1_top blt2_bot blt2_top blt3_bot blt3_top lwdint rdout rdselx0_bot rdselx0_top rdselx1_bot rdselx1_top rdselx2_bot rdselx2_top rdselx3_bot rdselx3_top saex sapchx vdd vnw vpw vss wrsel0_bot wrsel0_top wrsel1_bot wrsel1_top wrsel2_bot wrsel2_top wrsel3_bot wrsel3_top
+XI9 saex sae vdd vnw vpw vss / inverter lp=0.13u wp=0.345u wn=0.345u ln=0.13u
+XI14 blpchx_bot rdiso_bot vdd vnw vpw vss / inverter lp=0.13u wp=0.345u 
++ wn=0.345u ln=0.13u
+XI13 blpchx_top rdiso_top vdd vnw vpw vss / inverter lp=0.13u wp=0.345u 
++ wn=0.345u ln=0.13u
+Misopmc_b rblc_bot rdiso_bot sc vnw P W=720n L=130n M=1
+Misopmt_b rblt_bot rdiso_bot st vnw P W=720n L=130n M=1
+MPM5 st rdiso_top rblt_top vnw P W=720n L=130n M=1
+MPM6 sc rdiso_top rblc_top vnw P W=720n L=130n M=1
+MPM12 rblc_bot sapchx vdd vnw P W=345n L=130n M=1
+MPM11 rblt_bot sapchx vdd vnw P W=345n L=130n M=1
+MPM10 rblt_bot sapchx rblc_bot vnw P W=345n L=130n M=1
+MPM9 rblt_top sapchx rblc_top vnw P W=345n L=130n M=1
+MPM8 rblt_top sapchx vdd vnw P W=345n L=130n M=1
+MPM7 rblc_top sapchx vdd vnw P W=345n L=130n M=1
+.ENDS
+
+.SUBCKT lio_array_slice vdd vss vnw vpw lwdint0 lwdint1 lwdint2 lwdint3 rdout0 rdout1 rdout2 rdout3 bnksel1 bnksel3 bnksel5 bnksel7 bnksel0 bnksel2 bnksel4 bnksel6 cadd_n_0 cadd_n_1 reset sae_left sae_right saprech_left saprech_right wenb pch_bot_left pch_bot_right pch_top_left pch_top_right iclk bot_rowclk_0 bot_rowclk_1 top_rowclk_0 top_rowclk_1 pdec00 pdec01 pdec02 pdec03 pdec04 pdec05 pdec06 pdec07 pdec10 pdec11 pdec12 pdec13 pdec14 pdec15 pdec16 pdec17 radd_n_0 
+Xliomux4__1 pch_bot_left pch_top_left lwdint0 rdout0 sae_left saprech_left vdd vnw vpw vss liomux4 
+Xliomux4__2 pch_bot_left pch_top_left lwdint1 rdout1 sae_left saprech_left vdd vnw vpw vss liomux4 
+Xliomux4__4 pch_bot_right pch_top_right lwdint2 rdout2 sae_right saprech_right vdd vnw vpw vss liomux4 
+Xliomux4__5 pch_bot_right pch_top_right lwdint3 rdout3 sae_right saprech_right vdd vnw vpw vss liomux4 
 .ENDS
