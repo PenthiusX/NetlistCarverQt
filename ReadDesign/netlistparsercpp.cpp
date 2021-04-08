@@ -339,6 +339,9 @@ void NetlistParserBF::netlistDump(std::vector<CellCBKT *> locVec)
 {
     for(uint l = 0; l < locVec.size(); l++)
     {
+        qInfo() << " ";
+        qInfo() << "--------------------------------------------------";
+        qInfo() << " ";
         QString s;
         s += locVec[l]->name;
         for(uint p = 0 ; p < locVec[l]->ports.size(); p++)
@@ -361,7 +364,9 @@ void NetlistParserBF::netlistDump(std::vector<CellCBKT *> locVec)
                 qInfo() << s;
                 s.clear();
         }
+        qInfo() << " ";
         qInfo() << "--------------------------------------------------";
+        qInfo() << " ";
         s.clear();
     }
 }
