@@ -46,32 +46,22 @@ XIfbinv Out clkb clk Outb vdd vnw vpw vss / tristate_inverter wna=0.46u
 + lna=130n wnb=0.46u lnb=130n lpa=130n wpa=0.345u lpb=130n wpb=0.345u
 .ENDS
 
-.SUBCKT GCK A<0> A<1> A<2> A<3> A<4> A<5> A<6> A<7> A<8> A<9> A<10> A<11> bnksel1_b bnksel1_t bnksel2_b bnksel2_t bnksel3_b bnksel3_t bnksel4_b bnksel4_t cadd_n_0 cadd_n_1 cen clk iclk pdec00 pdec01 pdec02 pdec03 pdec04 pdec05 pdec06 pdec07 pdec10 pdec11 pdec12 pdec13 pdec14 pdec15 pdec16 pdec17 radd_n_0 reset vdd vnw vpw vss vsse wclk wen wenb wlclk0 wlclk1
-XIwendrv net43 wenb vdd vnw vpw vss / inverter lp=0.13u wp=2.8u wn=1.7u ln=0.13u
-XIbankaddrlat<0> A<9> la<9> biclk niclk vdd vnw vpw vss / latch_addr
-.ENDS
 
-.SUBCKT liomux4 blc0_bot blc0_top blc1_bot blc1_top blc2_bot blc2_top blc3_bot blc3_top blpchx_bot blpchx_top blt0_bot blt0_top blt1_bot blt1_top blt2_bot blt2_top blt3_bot blt3_top lwdint rdout rdselx0_bot rdselx0_top rdselx1_bot rdselx1_top rdselx2_bot rdselx2_top rdselx3_bot rdselx3_top saex sapchx vdd vnw vpw vss wrsel0_bot wrsel0_top wrsel1_bot wrsel1_top wrsel2_bot wrsel2_top wrsel3_bot wrsel3_top
-XI9 saex sae vdd vnw vpw vss / inverter lp=0.13u wp=0.345u wn=0.345u ln=0.13u
-XI14 blpchx_bot rdiso_bot vdd vnw vpw vss / inverter lp=0.13u wp=0.345u 
-+ wn=0.345u ln=0.13u
-XI13 blpchx_top rdiso_top vdd vnw vpw vss / inverter lp=0.13u wp=0.345u 
-+ wn=0.345u ln=0.13u
-Misopmc_b rblc_bot rdiso_bot sc vnw P W=720n L=130n M=1
-Misopmt_b rblt_bot rdiso_bot st vnw P W=720n L=130n M=1
-MPM5 st rdiso_top rblt_top vnw P W=720n L=130n M=1
-MPM6 sc rdiso_top rblc_top vnw P W=720n L=130n M=1
-MPM12 rblc_bot sapchx vdd vnw P W=345n L=130n M=1
-MPM11 rblt_bot sapchx vdd vnw P W=345n L=130n M=1
-MPM10 rblt_bot sapchx rblc_bot vnw P W=345n L=130n M=1
-MPM9 rblt_top sapchx rblc_top vnw P W=345n L=130n M=1
-MPM8 rblt_top sapchx vdd vnw P W=345n L=130n M=1
-MPM7 rblc_top sapchx vdd vnw P W=345n L=130n M=1
-.ENDS
-
-.SUBCKT lio_array_slice vdd vss vnw vpw lwdint0 lwdint1 lwdint2 lwdint3 rdout0 rdout1 rdout2 rdout3 bnksel1 bnksel3 bnksel5 bnksel7 bnksel0 bnksel2 bnksel4 bnksel6 cadd_n_0 cadd_n_1 reset sae_left sae_right saprech_left saprech_right wenb pch_bot_left pch_bot_right pch_top_left pch_top_right iclk bot_rowclk_0 bot_rowclk_1 top_rowclk_0 top_rowclk_1 pdec00 pdec01 pdec02 pdec03 pdec04 pdec05 pdec06 pdec07 pdec10 pdec11 pdec12 pdec13 pdec14 pdec15 pdec16 pdec17 radd_n_0 
-Xliomux4__1 pch_bot_left pch_top_left lwdint0 rdout0 sae_left saprech_left vdd vnw vpw vss liomux4 
-Xliomux4__2 pch_bot_left pch_top_left lwdint1 rdout1 sae_left saprech_left vdd vnw vpw vss liomux4 
-Xliomux4__4 pch_bot_right pch_top_right lwdint2 rdout2 sae_right saprech_right vdd vnw vpw vss liomux4 
-Xliomux4__5 pch_bot_right pch_top_right lwdint3 rdout3 sae_right saprech_right vdd vnw vpw vss liomux4 
+.SUBCKT writedriver2 bnksel1_b bnksel1_t bnksel2_b bnksel2_t bnksel3_b bnksel3_t bnksel4_b bnksel4_t cadd_n_0 cadd_n_1 iclk pdec00 pdec01 pdec02 pdec03 pdec04 pdec05 pdec06 pdec07 pdec10 pdec11 pdec12 pdec13 pdec14 pdec15 pdec16 pdec17 pdec0 pdec1 radd_n_0 reset vdd vnw vpw vss wenb wl_l<0> wl_l<1> wl_r<0> wl_r<1> wlclk0 wlclk1 
+Xdrvwlr1 nwl1 wl_r<1> vdd vnw vpw vss / inverter lp=0.13u wp=8.6u wn=5.7u 
++ ln=0.13u
+Xdrvwlr0 nwl0 wl_r<0> vdd vnw vpw vss / inverter lp=0.13u wp=8.6u wn=5.7u 
++ ln=0.13u
+Xpredrvwl0 rdec0 prewl0 vdd vnw vpw vss / inverter lp=0.13u wp=2.2u wn=1.4u 
++ ln=0.13u
+Xdrvwll1 nwl1 wl_l<1> vdd vnw vpw vss / inverter lp=0.13u wp=8.6u wn=5.7u 
++ ln=0.13u
+Xdrvwll0 nwl0 wl_l<0> vdd vnw vpw vss / inverter lp=0.13u wp=8.6u wn=5.7u 
++ ln=0.13u
+Xrowdec0 pdec1 pdec0 rdec0 vdd vnw vpw vss / nand2 lpb=0.13u wpb=0.460u 
++ lpa=0.13u wpa=0.460u wnb=0.345u lnb=0.13u wna=0.345u lna=0.13u
+XI11 wlclk0 prewl0 nwl0 vdd vnw vpw vss / nand2 lpb=0.13u wpb=4.32u lpa=0.13u 
++ wpa=4.32u wnb=4.32u lnb=0.13u wna=4.32u lna=0.13u
+XI10 wlclk1 prewl0 nwl1 vdd vnw vpw vss / nand2 lpb=0.13u wpb=4.32u lpa=0.13u 
++ wpa=4.32u wnb=4.32u lnb=0.13u wna=4.32u lna=0.13u
 .ENDS

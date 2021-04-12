@@ -11,9 +11,7 @@
 
 int main(int argc, char *argv[])
 {
-
     QApplication a(argc, argv);
-
 
     //Read constraint instance//
      std::string readConstraintInputFile = "../NetlistCarverQt/netlistfiles/readConstraint_new1.xml";
@@ -22,9 +20,8 @@ int main(int argc, char *argv[])
 
     //--Netlist parser Instansce--//
     NetlistParser_I* n = new NetlistParserBF();
-    std::vector<CellCBKT*> tVector = n->parse("../NetlistCarverQt/netlistfiles/4x4x64x2.cdl",'F');//path needs to come from a UI solution
+    std::vector<CellCBKT*> tVector = n->parse("../NetlistCarverQt/netlistfiles/config.in",'F');//path needs to come from a UI solution
     //-------------------------//
-
     MainWindow w;
     w.show();
 

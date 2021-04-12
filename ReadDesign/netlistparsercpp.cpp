@@ -352,10 +352,10 @@ void NetlistParserBF::netlistDump(std::vector<CellCBKT *> locVec)
         s.clear();
         for(uint m = 0; m < locVec[l]->mVec.size(); m++)
         {
-            s += locVec[l]->mVec[m]->name ;
+            s += locVec[l]->mVec[m]->name +"|" ;
             for(uint p2 = 0 ; p2 < locVec[l]->mVec[m]->ports.size(); p2++)
             {
-                s += " " + locVec[l]->mVec[m]->ports[p2];
+                s += " (" + locVec[l]->mVec[m]->ports[p2] + ")";
             }
             for(uint d = 0 ; d < locVec[l]->mVec[m]->deviceProperties.size(); d++)
             {
@@ -389,7 +389,7 @@ std::vector<CellCBKT *> NetlistParserBF::parse(QString path, char hint)
                 {
                     //FOr each xcall push the relvant mos /res/cap variant in existant vectors
                     if(locVec[n]->xVec[x]->cell == NULL){
-                        qInfo() << "Problem in file , Check if Xcall has definition for its cell.";//Post this message on UI
+                        qInfo() << "Problem in file , Check if Xcall has definition for its cell." + locVec[n]->xVec[x]->cell->name;//Post this message on UI
                     }
                     if(locVec[n]->xVec[x]->ports.size() == locVec[n]->xVec[x]->cell->ports.size())
                     {//number ports for xcall and its relvant cell need to be the same
