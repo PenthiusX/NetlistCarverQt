@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     //Read constraint instance//
-     std::string readConstraintInputFile = "../NetlistCarverQt/netlistfiles/readConstraint_new1.xml";
+     std::string readConstraintInputFile = "../NetlistCarverQt/netlistfiles/constraintFile1.xml";
      CReadConstraints obj;
      CReadConstraints c = obj.parseLoadConstraintFile(readConstraintInputFile);
 

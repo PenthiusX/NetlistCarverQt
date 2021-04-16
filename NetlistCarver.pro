@@ -8,6 +8,7 @@ CONFIG += console
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    ReadDesign/readdesign.cpp \
     main.cpp \
     mainwindow.cpp \
     ReadDesign/netlistparsercpp.cpp \
@@ -15,6 +16,8 @@ SOURCES += \
 
 HEADERS += \
     ReadDesign/NetlistParser_I.h \
+    ReadDesign/ReadDesign_I.h \
+    ReadDesign/readdesign.h \
     mainwindow.h \
     ReadDesign/cellcbkt.h \
     ReadDesign/netlistparsercpp.h \
