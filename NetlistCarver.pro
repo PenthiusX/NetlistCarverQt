@@ -9,6 +9,7 @@ CONFIG += console
 
 SOURCES += \
     ReadDesign/readdesign.cpp \
+    deligator.cpp \
     main.cpp \
     mainwindow.cpp \
     ReadDesign/netlistparsercpp.cpp \
@@ -18,6 +19,7 @@ HEADERS += \
     ReadDesign/NetlistParser_I.h \
     ReadDesign/ReadDesign_I.h \
     ReadDesign/readdesign.h \
+    deligator.h \
     mainwindow.h \
     ReadDesign/cellcbkt.h \
     ReadDesign/netlistparsercpp.h \

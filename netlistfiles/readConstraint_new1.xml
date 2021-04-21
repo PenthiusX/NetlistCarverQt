@@ -12,6 +12,7 @@
 
 <?xml version="1.0"?>
 <GF_CONSTRAINT name="GF22FDSOI">
+
 	<CONSTRAINT name="set_high">
 		<NET1> net1 </NET1>
 		<NET2> net2 </NET2>
@@ -49,6 +50,7 @@
 		<GETNETS> net2?5 </GETNETS>
 		<PINS> P1 </PINS>
 	</CONSTRAINT>
+	
 	<CONSTRAINT name="dump">
 		<slow> 1 </slow>
 		<fast> 2 </fast>
