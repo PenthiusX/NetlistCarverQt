@@ -83,6 +83,7 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
     QRegExp rx5(R"([a-z0-9/<>_-]{1,20})");//encompasses a wide set with /, <> and _ undersore from 2 to 20 letters
     //QRegExp rx6(R"((\w+)|([a-z0-9\/<>_-]{1,20}))");//
     QRegExp rx6(R"((\w+[a-z0-9<>_-]{1,20})|(\w+)|(\/))");//
+    QRegExp rx7(R"((\s\w\s))");
     //--------------------
 
     //Start parsing the lines.
@@ -98,7 +99,7 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
             int pos = 0;
             count = 0;
             tcell = new CellCBKT();//creates a new cell evertime it find a .SBKT in the linesss
-            while((pos = rx6.indexIn(lines[i],pos)) != -1)//parse over each word in the line
+            while((pos = rx6.indexIn(lines[i],pos)) != -1)
             {
                 if(count == 1)
                 {
@@ -108,7 +109,7 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
                 { // saves the port names
                     tcell->ports.push_back(rx6.cap(0));
                 }
-                pos += rx6.matchedLength();//iterate pos over each word
+                pos += rx6.matchedLength();
                 count++;
             }
         }
@@ -120,7 +121,7 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
             count = 0;
 
             ::MMos* tm = new ::MMos();
-            while((pos = rx.indexIn(lines[i],pos)) != -1)//parse over each word in the line
+            while((pos = rx.indexIn(lines[i],pos)) != -1)
             {
                 if(count == 0)//First word
                 {
@@ -130,11 +131,11 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
                 {
                     tm->ports.push_back(rx.cap(1));
                 }
-                pos += rx.matchedLength();//iterate pos over each word
+                pos += rx.matchedLength();
                 count++;
             }
             pos = 0;
-            while((pos = rx3.indexIn(lines[i],pos)) != -1)//capture the name of the Sbkt
+            while((pos = rx3.indexIn(lines[i],pos)) != -1)
             {
                 QString t = rx3.cap(0);
                 Device d;
@@ -143,6 +144,16 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
                 tm->deviceProperties.push_back(d);//add all device and values for the current Xcall;
                 pos += rx3.matchedLength();
             }
+            pos = 0;
+            while((pos = rx7.indexIn(lines[i],pos)) != -1)
+            {
+                QString t = rx7.cap(0);
+                if(t == 'N' || t == 'P'){
+                    tm->type = t;
+                }
+                pos += rx7.matchedLength();
+            }
+
             tcell->mVec.push_back(tm);//store the Mmos info
         }
 
@@ -334,6 +345,7 @@ Device NetlistParserBF::comapreAndRevertDeviceValue(Device cellMos,std::vector<D
 }
 /*
  * Temp implementation to dump the info as Application output
+ * Author:Aditya Mattoo
  */
 void NetlistParserBF::netlistDump(std::vector<CellCBKT *> locVec)
 {
@@ -361,8 +373,8 @@ void NetlistParserBF::netlistDump(std::vector<CellCBKT *> locVec)
             {
                 s += " " + locVec[l]->mVec[m]->deviceProperties[d].paramName + ":" + locVec[l]->mVec[m]->deviceProperties[d].paramValue;
             }
-                qInfo() << s;
-                s.clear();
+            qInfo() << s;
+            s.clear();
         }
         qInfo() << " ";
         qInfo() << "--------------------------------------------------";
@@ -370,7 +382,10 @@ void NetlistParserBF::netlistDump(std::vector<CellCBKT *> locVec)
         s.clear();
     }
 }
-
+/*
+ *
+ *
+*/
 std::vector<CellCBKT *> NetlistParserBF::parse(QString path, char hint)
 {
     //start flatenign if hint = 'F'

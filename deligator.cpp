@@ -28,7 +28,8 @@ void Deligator::parseNetlist()
         NetlistParser_I* n = new NetlistParserBF();
         this->tVector = n->parse(this->netlistFilePath,'F');//path needs to come from a UI solution
     }
-    else{
+    else
+    {
         qInfo() << "Nelist file is empty or incorrect";
     }
 }

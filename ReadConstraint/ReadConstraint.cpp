@@ -14,20 +14,20 @@ using namespace std;
 
 CReadConstraints CReadConstraints::parseLoadConstraintFile(string readConstraintFile)
 {
-	string readConstraintType ;
-	string netName ;
-	string pinName ;
-	string getNetsString ;
-	string tagName ;
-	string tagValue ;
+    string readConstraintType ;
+    string netName ;
+    string pinName ;
+    string getNetsString ;
+    string tagName ;
+    string tagValue ;
 
 
-	string netPat = "NET" ;
-	string pinPat = "PIN" ;
+    string netPat = "NET" ;
+    string pinPat = "PIN" ;
 
 	// declare all the vectors
-	vector<string> netNames;
-	vector<string> pinNames;
+    vector<string> netNames;
+    vector<string> pinNames;
 
 	//Creating a object of class CReadConstraint
 	CReadConstraints constraintList;

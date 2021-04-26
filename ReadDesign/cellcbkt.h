@@ -17,6 +17,7 @@ struct MMos//Mmos
     QString name;
     std::vector<QString> ports;
     std::vector<Device> deviceProperties;
+    QString type;//n or p type
 };
 
 struct Res {//Resistor
