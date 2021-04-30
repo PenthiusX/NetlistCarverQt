@@ -147,9 +147,13 @@ std::vector<CellCBKT*> NetlistParserBF::parse(QString path)
             pos = 0;
             while((pos = rx7.indexIn(lines[i],pos)) != -1)
             {
-                QString t = rx7.cap(0);
-                if(t == 'N' || t == 'P'){
-                    tm->type = t;
+                QString t7 = rx7.cap(0);
+                t7.remove(" ");
+                if(t7 == "P"){
+                    tm->type = t7;
+                }
+                if(t7 == "N"){
+                    tm->type = t7;
                 }
                 pos += rx7.matchedLength();
             }

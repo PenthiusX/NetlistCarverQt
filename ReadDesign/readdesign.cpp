@@ -14,7 +14,6 @@ ReadDesign::~ReadDesign()
 
 void ReadDesign::setStates(std::vector<CellCBKT *> cv, CReadConstraints cr)
 {
-    uint count1 = 0,count2 = 0;
     for(uint c = 0 ; c < cr.setHigh[0].nets.size(); c++)
     {
         //search for name.
@@ -23,22 +22,36 @@ void ReadDesign::setStates(std::vector<CellCBKT *> cv, CReadConstraints cr)
             for(uint p = 0 ; p < cv[cv.size()-1]->mVec[i]->ports.size() ; p++)
             {
                 QString s1 = cv[cv.size()-1]->mVec[i]->ports[p];
+                QString type = cv[cv.size()-1]->mVec[i]->type;
                 QString s2 = cr.setHigh[0].nets[c].c_str();
-                if(s1 == s2)//compare the ports.
+                if(s1 == s2 &&  type == "P")//compare the ports.
                 {
-                      qInfo() << cv[cv.size()-1]->mVec[i]->ports[p] << "---" << cr.setHigh[0].nets[c].c_str();
-                      if(p == 0){
-                         count1++;//output
-                      }
-                      if(p == 1){
-                          count2++;//input
-                      }
+                    qInfo() << cv[cv.size()-1]->mVec[i]->ports[p] << "---" << cr.setHigh[0].nets[c].c_str();
+                    if(p == 0)//output
+                    {
+
+                    }
+                    if(p == 1)//input
+                    {
+                        cv[cv.size()-1]->mVec[i]->ports[p] = "1";
+                    }
+                }
+                if(s1 == s2 &&  cv[cv.size()-1]->mVec[i]->type == "N")//compare the ports.
+                {
+                    qInfo() << cv[cv.size()-1]->mVec[i]->ports[p] << "---" << cr.setHigh[0].nets[c].c_str();
+                    if(p == 0)
+                    {
+                    }
+                    if(p == 1)
+                    {
+                        cv[cv.size()-1]->mVec[i]->ports[p] = "1";
+                    }
                 }
             }
         }
     }
 
-    for(uint l = 0; l < cv.size(); l++)
+    for(uint l = cv.size()-1; l < cv.size(); l++)
     {
         QString s;
         s += cv[l]->name;
