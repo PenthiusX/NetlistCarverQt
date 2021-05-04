@@ -10,5 +10,8 @@ public:
 
     void setStates(std::vector<CellCBKT*> cv , CReadConstraints c );
 
-
+private:
+    void propegate(QString port,QString state);//state : 0 = low , 1=high ,2 = nochange/default
+    std::vector<CellCBKT*> lcv; //local cell vector
+    CReadConstraints lcr; // local constraint file
 };

@@ -424,6 +424,7 @@ std::vector<CellCBKT *> NetlistParserBF::parse(QString path, char hint)
                     {
                         tm = new MMos;
                         tm->name = locVec[n]->xVec[x]->name + "/" + locVec[n]->xVec[x]->cell->mVec[m]->name;//set name
+                        tm->type =  locVec[n]->xVec[x]->cell->mVec[m]->type;
 
                         for(uint p = 0 ; p < locVec[n]->xVec[x]->cell->mVec[m]->ports.size(); p++)//set port names
                         {

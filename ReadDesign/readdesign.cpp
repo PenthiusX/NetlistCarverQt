@@ -14,67 +14,126 @@ ReadDesign::~ReadDesign()
 
 void ReadDesign::setStates(std::vector<CellCBKT *> cv, CReadConstraints cr)
 {
-    for(uint c = 0 ; c < cr.setHigh[0].nets.size(); c++)
-    {
-        //search for name.
-        for(uint i = 0 ; i < cv[cv.size()-1]->mVec.size() ; i++)
-        {
-            for(uint p = 0 ; p < cv[cv.size()-1]->mVec[i]->ports.size() ; p++)
-            {
-                QString s1 = cv[cv.size()-1]->mVec[i]->ports[p];
-                QString type = cv[cv.size()-1]->mVec[i]->type;
-                QString s2 = cr.setHigh[0].nets[c].c_str();
-                if(s1 == s2 &&  type == "P")//compare the ports.
-                {
-                    qInfo() << cv[cv.size()-1]->mVec[i]->ports[p] << "---" << cr.setHigh[0].nets[c].c_str();
-                    if(p == 0)//output
-                    {
 
-                    }
-                    if(p == 1)//input
-                    {
-                        cv[cv.size()-1]->mVec[i]->ports[p] = "1";
-                    }
-                }
-                if(s1 == s2 &&  cv[cv.size()-1]->mVec[i]->type == "N")//compare the ports.
-                {
-                    qInfo() << cv[cv.size()-1]->mVec[i]->ports[p] << "---" << cr.setHigh[0].nets[c].c_str();
-                    if(p == 0)
-                    {
-                    }
-                    if(p == 1)
-                    {
-                        cv[cv.size()-1]->mVec[i]->ports[p] = "1";
-                    }
-                }
-            }
-        }
+    this->lcv = cv;
+    this->lcr = cr;
+
+    for(uint c = 0 ; c < cr.setHigh[0].nets.size(); c++)
+    {   //1 to set high
+        propegate(cr.setHigh[0].nets[c].c_str(),"1");
+
+        //        //search for name.
+        //        for(uint i = 0 ; i < cv[cv.size()-1]->mVec.size() ; i++)
+        //        {
+        //            for(uint p = 0 ; p < cv[cv.size()-1]->mVec[i]->ports.size() ; p++)
+        //            {
+        //                QString s1 = cv[cv.size()-1]->mVec[i]->ports[p];
+        //                QString type = cv[cv.size()-1]->mVec[i]->type;
+        //                QString s2 = cr.setHigh[0].nets[c].c_str();
+        //                if(s1 == s2 &&  type == "P")//compare the ports.
+        //                {
+        //                    if(p == 0)//output
+        //                    {
+        //                        cv[cv.size()-1]->mVec[i]->ports[p] = cv[cv.size()-1]->mVec[i]->ports[p] + "[1]";
+        //                        //for set high on p type no change
+        //                    }
+        //                    if(p == 1)//input
+        //                    {
+        //                        cv[cv.size()-1]->mVec[i]->ports[p] = cv[cv.size()-1]->mVec[i]->ports[p] + "[1]";
+        //                        //default or no change
+        //                        cv[cv.size()-1]->mVec[i]->ports[p-1] = cv[cv.size()-1]->mVec[i]->ports[p-1] + "[*]";
+        //                    }
+        //                }
+        //                if(s1 == s2 &&  cv[cv.size()-1]->mVec[i]->type == "N")//compare the ports.
+        //                {
+        //                    if(p == 0)//output
+        //                    {
+        //                        cv[cv.size()-1]->mVec[i]->ports[p] = cv[cv.size()-1]->mVec[i]->ports[p] + "[1]";
+
+        //                    }
+        //                    if(p == 1)//input
+        //                    {
+        //                        cv[cv.size()-1]->mVec[i]->ports[p] = cv[cv.size()-1]->mVec[i]->ports[p] + "[1]";
+        //                        //for N type is value is 1 out put is 0
+        //                        cv[cv.size()-1]->mVec[i]->ports[p-1] = cv[cv.size()-1]->mVec[i]->ports[p-1] + "[0]";
+        //                    }
+        //                }
+        //            }
+        //        }
     }
 
-    for(uint l = cv.size()-1; l < cv.size(); l++)
+    for(uint l = lcv.size()-1; l < lcv.size(); l++)
     {
         QString s;
-        s += cv[l]->name;
-        for(uint p = 0 ; p < cv[l]->ports.size(); p++)
+        s += lcv[l]->name;
+        for(uint p = 0 ; p < lcv[l]->ports.size(); p++)
         {
-            s += " " + cv[l]->ports[p];
+            s += " " + lcv[l]->ports[p];
         }
         qInfo() << s;
         s.clear();
-        for(uint m = 0; m < cv[l]->mVec.size(); m++)
+        for(uint m = 0; m < lcv[l]->mVec.size(); m++)
         {
-            s += cv[l]->mVec[m]->name +"|" ;
-            for(uint p2 = 0 ; p2 < cv[l]->mVec[m]->ports.size(); p2++)
+            s += lcv[l]->mVec[m]->name +"|" ;
+            for(uint p2 = 0 ; p2 < lcv[l]->mVec[m]->ports.size(); p2++)
             {
-                s += " (" + cv[l]->mVec[m]->ports[p2] + ")";
+                s += " (" + lcv[l]->mVec[m]->ports[p2] + ")";
             }
-            for(uint d = 0 ; d < cv[l]->mVec[m]->deviceProperties.size(); d++)
+            for(uint d = 0 ; d < lcv[l]->mVec[m]->deviceProperties.size(); d++)
             {
-                s += " " + cv[l]->mVec[m]->deviceProperties[d].paramName + ":" + cv[l]->mVec[m]->deviceProperties[d].paramValue;
+                s += " " + lcv[l]->mVec[m]->deviceProperties[d].paramName + ":" + lcv[l]->mVec[m]->deviceProperties[d].paramValue;
             }
             qInfo() << s;
             s.clear();
         }
         s.clear();
+    }
+}
+
+void ReadDesign::propegate(QString port,QString state)//runs recursively
+{
+    //search for name.
+    for(uint i = 0 ; i < lcv[lcv.size()-1]->mVec.size() ; i++)
+    {
+        for(uint p = 0 ; p < lcv[lcv.size()-1]->mVec[i]->ports.size() ; p++)
+        {
+            QString s1 = lcv[lcv.size()-1]->mVec[i]->ports[p];
+            QString type = lcv[lcv.size()-1]->mVec[i]->type;
+            QString s2 = port;//the port flip
+            if(s1 == s2 &&  type == "P")//compare the ports.
+            {
+                if(p == 0)//output
+                {
+                    lcv[lcv.size()-1]->mVec[i]->ports[p] = lcv[lcv.size()-1]->mVec[i]->ports[p] + "["+state+"]";
+                    //for set high on p type no change
+                }
+                if(p == 1)//input
+                {
+                    lcv[lcv.size()-1]->mVec[i]->ports[p] = lcv[lcv.size()-1]->mVec[i]->ports[p] + "["+state+"]";
+                    if(state == "1"){
+//                      lcv[lcv.size()-1]->mVec[i]->ports[p-1] = lcv[lcv.size()-1]->mVec[i]->ports[p-1] + "[*]";
+                        propegate(lcv[lcv.size()-1]->mVec[i]->ports[p-1],"*");
+                    }
+                    if(state == "0"){
+                       // lcv[lcv.size()-1]->mVec[i]->ports[p-1] = lcv[lcv.size()-1]->mVec[i]->ports[p-1] + "[1]";
+                        propegate(lcv[lcv.size()-1]->mVec[i]->ports[p-1],"0");
+                    }
+                }
+            }
+            if(s1 == s2 &&  lcv[lcv.size()-1]->mVec[i]->type == "N")//compare the ports.
+            {
+                if(p == 0)//output
+                {
+                    lcv[lcv.size()-1]->mVec[i]->ports[p] = lcv[lcv.size()-1]->mVec[i]->ports[p] + "[1]";
+
+                }
+                if(p == 1)//input
+                {
+                    lcv[lcv.size()-1]->mVec[i]->ports[p] = lcv[lcv.size()-1]->mVec[i]->ports[p] + "[1]";
+                    //for N type is value is 1 out put is 0
+                    lcv[lcv.size()-1]->mVec[i]->ports[p-1] = lcv[lcv.size()-1]->mVec[i]->ports[p-1] + "[0]";
+                }
+            }
+        }
     }
 }
