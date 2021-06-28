@@ -14,7 +14,6 @@ ReadDesign::~ReadDesign()
 
 void ReadDesign::setStates(std::vector<CellCBKT *> cv, CReadConstraints cr)
 {
-
     this->lcv = cv;
     this->lcr = cr;
 
@@ -62,6 +61,7 @@ void ReadDesign::setStates(std::vector<CellCBKT *> cv, CReadConstraints cr)
         //        }
     }
 
+    //Print the info
     for(uint l = lcv.size()-1; l < lcv.size(); l++)
     {
         QString s;
@@ -98,33 +98,36 @@ void ReadDesign::propegate(QString port,QString state)//runs recursively
         for(uint p = 0 ; p < lcv[lcv.size()-1]->mVec[i]->ports.size() ; p++)
         {
             QString s1 = lcv[lcv.size()-1]->mVec[i]->ports[p];
-            QString type = lcv[lcv.size()-1]->mVec[i]->type;
             QString s2 = port;//the port flip
+            QString type = lcv[lcv.size()-1]->mVec[i]->type;
+
             if(s1 == s2 &&  type == "P")//compare the ports.
             {
                 if(p == 0)//output
                 {
                     lcv[lcv.size()-1]->mVec[i]->ports[p] = lcv[lcv.size()-1]->mVec[i]->ports[p] + "["+state+"]";
-                    //for set high on p type no change
+                    //for set high on p type no change  
                 }
                 if(p == 1)//input
                 {
                     lcv[lcv.size()-1]->mVec[i]->ports[p] = lcv[lcv.size()-1]->mVec[i]->ports[p] + "["+state+"]";
-                    if(state == "1"){
+                    if(state == "1")//high
+                    {
 //                      lcv[lcv.size()-1]->mVec[i]->ports[p-1] = lcv[lcv.size()-1]->mVec[i]->ports[p-1] + "[*]";
                         propegate(lcv[lcv.size()-1]->mVec[i]->ports[p-1],"*");
                     }
-                    if(state == "0"){
+                    if(state == "0")//low
+                    {
                        // lcv[lcv.size()-1]->mVec[i]->ports[p-1] = lcv[lcv.size()-1]->mVec[i]->ports[p-1] + "[1]";
-                        propegate(lcv[lcv.size()-1]->mVec[i]->ports[p-1],"0");
+                        propegate(lcv[lcv.size()-1]->mVec[i]->ports[p-1],"1");
                     }
                 }
             }
-            if(s1 == s2 &&  lcv[lcv.size()-1]->mVec[i]->type == "N")//compare the ports.
+            if(s1 == s2 &&  type == "N")//compare the ports.
             {
                 if(p == 0)//output
                 {
-                    lcv[lcv.size()-1]->mVec[i]->ports[p] = lcv[lcv.size()-1]->mVec[i]->ports[p] + "[1]";
+                    lcv[lcv.size()-1]->mVec[i]->ports[p] = lcv[lcv.size()-1]->mVec[i]->ports[p] + "["+state+"]";
 
                 }
                 if(p == 1)//input
