@@ -19,7 +19,7 @@ void ReadDesign::setStates(std::vector<CellCBKT *> cv, CReadConstraints cr)
 
     for(uint c = 0 ; c < cr.setHigh[0].nets.size(); c++)
     {   //1 to set high
-        propegate(cr.setHigh[0].nets[c].c_str(),"1");
+        propegate(cr.setHigh[0].nets[c].c_str(),"1");//setting high
 
         //        //search for name.
         //        for(uint i = 0 ; i < cv[cv.size()-1]->mVec.size() ; i++)
@@ -103,12 +103,12 @@ void ReadDesign::propegate(QString port,QString state)//runs recursively
 
             if(s1 == s2 &&  type == "P")//compare the ports.
             {
-                if(p == 0)//output
+                if(p == 0)//output/drain
                 {
                     lcv[lcv.size()-1]->mVec[i]->ports[p] = lcv[lcv.size()-1]->mVec[i]->ports[p] + "["+state+"]";
                     //for set high on p type no change  
                 }
-                if(p == 1)//input
+                if(p == 1)//input/gate
                 {
                     lcv[lcv.size()-1]->mVec[i]->ports[p] = lcv[lcv.size()-1]->mVec[i]->ports[p] + "["+state+"]";
                     if(state == "1")//high
@@ -122,19 +122,34 @@ void ReadDesign::propegate(QString port,QString state)//runs recursively
                         propegate(lcv[lcv.size()-1]->mVec[i]->ports[p-1],"1");
                     }
                 }
+                if(p == 2)//source
+                {
+                    lcv[lcv.size()-1]->mVec[i]->ports[p] = lcv[lcv.size()-1]->mVec[i]->ports[p] + "["+state+"]";
+                    //check what the status of the Gate/input is
+                }
             }
             if(s1 == s2 &&  type == "N")//compare the ports.
             {
-                if(p == 0)//output
+                if(p == 0)//output/drain
                 {
                     lcv[lcv.size()-1]->mVec[i]->ports[p] = lcv[lcv.size()-1]->mVec[i]->ports[p] + "["+state+"]";
-
                 }
-                if(p == 1)//input
+                if(p == 1)//input/gate
                 {
-                    lcv[lcv.size()-1]->mVec[i]->ports[p] = lcv[lcv.size()-1]->mVec[i]->ports[p] + "[1]";
-                    //for N type is value is 1 out put is 0
-                    lcv[lcv.size()-1]->mVec[i]->ports[p-1] = lcv[lcv.size()-1]->mVec[i]->ports[p-1] + "[0]";
+                    lcv[lcv.size()-1]->mVec[i]->ports[p] = lcv[lcv.size()-1]->mVec[i]->ports[p] + "["+state+"]";
+                    if(state == "1")//high
+                    {
+                        propegate(lcv[lcv.size()-1]->mVec[i]->ports[p-1],"0");
+                    }
+                    if(state == "0")//low
+                    {
+                        propegate(lcv[lcv.size()-1]->mVec[i]->ports[p-1],"*");
+                    }
+                }
+                if(p == 2)//source
+                {
+                    lcv[lcv.size()-1]->mVec[i]->ports[p] = lcv[lcv.size()-1]->mVec[i]->ports[p] + "["+state+"]";
+                    //check what the status of the Gate/input is
                 }
             }
         }
